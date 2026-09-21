@@ -51,15 +51,15 @@ button{font:inherit;color:inherit}
 .top-in{position:relative;max-width:1040px;margin:0 auto;padding:26px 20px 0}
 .top .kicker{margin:0 0 6px;font-weight:600;opacity:.85;font-size:.95rem}
 .top h1{font-size:clamp(1.55rem,4.2vw,2.3rem);max-width:22ch}
-.tabs{display:flex;gap:8px;margin-top:22px;overflow-x:auto;padding-bottom:0;scrollbar-width:none}
+.tabs{display:flex;gap:6px;margin-top:22px;overflow-x:auto;padding-bottom:0;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
 .tab{
-  flex:1 0 auto;display:flex;align-items:center;gap:10px;
+  flex:1 0 auto;display:flex;align-items:center;gap:8px;
   background:rgba(255,255,255,.12);border:0;border-radius:14px 14px 0 0;
-  padding:12px 14px;cursor:pointer;color:var(--brand-ink);font-weight:600;font-size:.98rem;text-align:left;min-height:48px;
+  padding:12px 9px;cursor:pointer;color:var(--brand-ink);font-weight:600;font-size:.9rem;text-align:left;min-height:48px;
 }
 .tab .n{
-  flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;
+  flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;
   background:rgba(255,255,255,.22);font-family:"Play",sans-serif;font-weight:700;font-size:.9rem;
 }
 .tab .tick{color:var(--accent);font-weight:800;margin-left:auto}
@@ -178,6 +178,35 @@ main{max-width:1040px;margin:0 auto;padding:22px 20px 40px}
 .pc.wrong .badge{background:var(--bad-bg);color:var(--bad)}
 .pc.dim{opacity:.6}
 
+/* ---------- Activities 4-6 ---------- */
+.mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.mc{
+  min-height:108px;border-radius:14px;border:3px solid var(--brand);background:var(--brand);color:var(--brand-ink);
+  cursor:pointer;padding:8px;display:grid;place-items:center;text-align:center;line-height:1.25;
+  box-shadow:0 4px 0 rgba(0,0,0,.25);
+}
+.mc .back{font-family:"Play",sans-serif;font-size:2.2rem;font-weight:700;color:var(--accent)}
+.mc .face{display:none;font-weight:600;font-size:.95rem}
+.mc.term .face{font-family:"Play","Commissioner",sans-serif;font-weight:700;font-size:1.08rem}
+.mc.open,.mc.done{background:var(--panel);color:var(--ink);border-color:var(--line);box-shadow:0 4px 0 var(--line)}
+.mc.open .back,.mc.done .back{display:none}
+.mc.open .face,.mc.done .face{display:block}
+.mc.done{background:var(--ok-bg);border-color:var(--ok);color:var(--ok);box-shadow:none;opacity:1}
+.mc[disabled]{cursor:default}
+.mc:hover:not(.open):not(.done){border-color:var(--accent)}
+.fills{display:grid;gap:10px;margin-top:6px}
+.fs{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 16px 12px 52px;line-height:2.2;position:relative}
+.fs .no{position:absolute;left:14px;top:12px;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:"Play",sans-serif;font-weight:700;font-size:.9rem}
+select.gap{
+  font:inherit;font-weight:700;border:2px solid var(--trace);border-radius:8px;padding:3px 8px;
+  background:var(--panel2);color:var(--ink);max-width:100%;cursor:pointer;min-height:40px;
+}
+select.gap.right{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+select.gap.wrong{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+.actions2{display:flex;gap:10px;flex-wrap:wrap}
+@media (max-width:820px){ .mgrid{grid-template-columns:repeat(3,1fr);gap:10px} .mc .face{font-size:.88rem} .mc.term .face{font-size:.98rem} }
+@media (max-width:420px){ .mgrid{grid-template-columns:repeat(2,1fr)} }
+
 .foot{max-width:1040px;margin:0 auto;padding:0 20px 28px;color:var(--muted);font-size:.9rem}
 
 @media (max-width:820px){
@@ -214,9 +243,12 @@ main{max-width:1040px;margin:0 auto;padding:22px 20px 40px}
     <p class="kicker">Πληροφορική ΣΤ΄ Δημοτικού, Μάθημα 12ο</p>
     <h1>Το υλικό του υπολογιστή και τα χαρακτηριστικά του</h1>
     <div class="tabs" role="tablist" aria-label="Δραστηριότητες">
-      <button class="tab" role="tab" id="tab-sort" aria-controls="p-sort" aria-selected="true"><span class="n">1</span><span class="tt">Ταξινόμηση εξαρτημάτων</span><span class="tick" hidden>✓</span></button>
-      <button class="tab" role="tab" id="tab-quiz" aria-controls="p-quiz" aria-selected="false" tabindex="-1"><span class="n">2</span><span class="tt">Μονάδες και χαρακτηριστικά</span><span class="tick" hidden>✓</span></button>
-      <button class="tab" role="tab" id="tab-build" aria-controls="p-build" aria-selected="false" tabindex="-1"><span class="n">3</span><span class="tt">Σύμβουλος υπολογιστών</span><span class="tick" hidden>✓</span></button>
+      <button class="tab" role="tab" id="tab-sort" aria-controls="p-sort" aria-selected="true"><span class="n">1</span><span class="tt">Ταξινόμηση</span><span class="tick" hidden>✓</span></button>
+      <button class="tab" role="tab" id="tab-quiz" aria-controls="p-quiz" aria-selected="false" tabindex="-1"><span class="n">2</span><span class="tt">Μονάδες</span><span class="tick" hidden>✓</span></button>
+      <button class="tab" role="tab" id="tab-build" aria-controls="p-build" aria-selected="false" tabindex="-1"><span class="n">3</span><span class="tt">Σύμβουλος</span><span class="tick" hidden>✓</span></button>
+      <button class="tab" role="tab" id="tab-mem" aria-controls="p-mem" aria-selected="false" tabindex="-1"><span class="n">4</span><span class="tt">Παιχνίδι μνήμης</span><span class="tick" hidden>✓</span></button>
+      <button class="tab" role="tab" id="tab-tf" aria-controls="p-tf" aria-selected="false" tabindex="-1"><span class="n">5</span><span class="tt">Σωστό ή Λάθος</span><span class="tick" hidden>✓</span></button>
+      <button class="tab" role="tab" id="tab-fill" aria-controls="p-fill" aria-selected="false" tabindex="-1"><span class="n">6</span><span class="tt">Συμπλήρωσε</span><span class="tick" hidden>✓</span></button>
     </div>
   </div>
 </header>
@@ -250,6 +282,44 @@ main{max-width:1040px;margin:0 auto;padding:22px 20px 40px}
       <p>Η Υπατία, ο Ήρωνας και οι φίλοι τους χρειάζονται συμβουλή. Διάβασε τι θέλει ο καθένας και πάτησε τον υπολογιστή που του ταιριάζει καλύτερα.</p>
     </div>
     <div id="b-box"></div>
+  </section>
+
+  <section id="p-mem" role="tabpanel" aria-labelledby="tab-mem" hidden>
+    <div class="brief">
+      <h2>Παιχνίδι μνήμης</h2>
+      <p>Γύρνα δύο κάρτες κάθε φορά. Βρες το εξάρτημα και αυτό που κάνει. Όταν ταιριάζουν, οι κάρτες μένουν ανοιχτές.</p>
+    </div>
+    <div class="row">
+      <div class="pills" id="m-score"></div>
+      <button class="btn soft" id="m-reset" type="button">Ανακάτεψε ξανά</button>
+    </div>
+    <div class="msg" id="m-msg" aria-live="polite">Γύρνα μια κάρτα για να ξεκινήσεις.</div>
+    <div class="mgrid" id="m-grid"></div>
+  </section>
+
+  <section id="p-tf" role="tabpanel" aria-labelledby="tab-tf" hidden>
+    <div class="brief">
+      <h2>Σωστό ή Λάθος;</h2>
+      <p>Διάβασε κάθε πρόταση και πάτησε αν είναι σωστή ή λάθος. Μετά από κάθε απάντηση θα δεις γιατί.</p>
+    </div>
+    <div id="t-box"></div>
+  </section>
+
+  <section id="p-fill" role="tabpanel" aria-labelledby="tab-fill" hidden>
+    <div class="brief">
+      <h2>Συμπλήρωσε τις προτάσεις</h2>
+      <p>Διάλεξε τη σωστή λέξη σε κάθε κενό και πάτησε «Έλεγχος».</p>
+    </div>
+    <div class="row">
+      <div class="pills" id="f-score"></div>
+    </div>
+    <div class="fills" id="f-list"></div>
+    <div class="msg" id="f-msg" aria-live="polite" style="margin-top:14px">Διάλεξε λέξεις και πάτησε «Έλεγχος».</div>
+    <div class="actions2">
+      <button class="btn" id="f-check" type="button">Έλεγχος</button>
+      <button class="btn soft" id="f-show" type="button">Δείξε τις απαντήσεις</button>
+      <button class="btn soft" id="f-reset" type="button">Ξανά από την αρχή</button>
+    </div>
   </section>
 </main>
 <p class="foot">Βασισμένο στο Μάθημα 12ο του βιβλίου Πληροφορικής ΣΤ΄ Δημοτικού (σελ. 42–44).</p>
@@ -286,7 +356,7 @@ function shuffle(a){
 const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ---------- tabs ---------- */
-const TABS = ['sort','quiz','build'];
+const TABS = ['sort','quiz','build','mem','tf','fill'];
 function showTab(key){
   TABS.forEach(k=>{
     const on = k === key;
@@ -510,9 +580,9 @@ function markDone(key){ $('#tab-'+key+' .tick').hidden = false; }
     {q:'Το μέγεθος της οθόνης, π.χ. 24″, μετριέται σε…',
      o:['Byte (π.χ. GB)','Pixel (π.χ. Mp)','Hertz (π.χ. Hz)','Ίντσες (″)'], a:3,
      why:'Το μέγεθος της οθόνης μετριέται σε ίντσες.'},
-    {q:'Ο ρυθμός ανανέωσης της οθόνης μετριέται σε…',
-     o:['GB','Hz','Mp','Ίντσες (″)'], a:1,
-     why:'Ο ρυθμός ανανέωσης της οθόνης μετριέται σε Hz.'},
+    {q:'Η εικόνα στην οθόνη ανανεώνεται πολλές φορές το δευτερόλεπτο. Αυτό λέγεται ρυθμός ανανέωσης. Σε ποια μονάδα μετριέται;',
+     o:['Hz (Χερτζ)','GB (Γκιγκαμπάιτ)','Mp (Μεγαπίξελ)','Ίντσες (″)'], a:0,
+     why:'Ο ρυθμός ανανέωσης της οθόνης μετριέται σε Hz. Όσες περισσότερες φορές το δευτερόλεπτο ανανεώνεται η εικόνα, τόσο πιο ομαλά φαίνεται.'},
     {q:'Ποιος δίσκος αποθήκευσης είναι ταχύτερος;',
      o:['SSD','HDD'], a:0,
      why:'Η τεχνολογία SSD είναι ταχύτερη από την HDD και επηρεάζει την απόδοση του υπολογιστή.'},
@@ -720,6 +790,224 @@ function markDone(key){ $('#tab-'+key+' .tick').hidden = false; }
     ));
   }
   start();
+})();
+
+/* =====================================================
+   Activity 4 · Memory game
+   ===================================================== */
+(function initMem(){
+  const PAIRS = [
+    ['Επεξεργαστής','Κάνει την επεξεργασία των δεδομένων'],
+    ['Μνήμη','Σβήνεται όταν κλείνει ο υπολογιστής'],
+    ['Δίσκος αποθήκευσης','Κρατά μόνιμα τα αρχεία μας'],
+    ['Μητρική πλακέτα','Έχει τις θύρες σύνδεσης'],
+    ['Κάρτα γραφικών','Ελέγχει τη λειτουργία της οθόνης'],
+    ['SSD','Δίσκος ταχύτερος από τον HDD']
+  ];
+  const grid = $('#m-grid'), msg = $('#m-msg'), score = $('#m-score');
+  let first = null, lock = false, moves = 0, found = 0;
+
+  function setMsg(t, c){ msg.className = 'msg'+(c?' '+c:''); msg.textContent = t; }
+  function renderScore(){
+    score.replaceChildren(
+      h('span',{class:'pill ok',text:'Ζευγάρια '+found+' από '+PAIRS.length}),
+      h('span',{class:'pill',text:'Προσπάθειες '+moves}));
+  }
+  function build(){
+    first = null; lock = false; moves = 0; found = 0;
+    grid.replaceChildren();
+    const cards = shuffle(PAIRS.flatMap((p,i)=>[{k:i,t:p[0],type:'term'},{k:i,t:p[1],type:'desc'}]));
+    cards.forEach((c,n)=>{
+      const b = h('button',{class:'mc '+c.type,type:'button','aria-label':'Κάρτα '+(n+1)+', κλειστή'},
+        h('span',{class:'back','aria-hidden':'true',text:'?'}),
+        h('span',{class:'face',text:c.t}));
+      b.addEventListener('click',()=>flip(b,c,n));
+      grid.append(b);
+    });
+    setMsg('Γύρνα μια κάρτα για να ξεκινήσεις.');
+    renderScore();
+  }
+  function flip(b, c, n){
+    if (lock || b.classList.contains('open') || b.classList.contains('done')) return;
+    b.classList.add('open');
+    b.setAttribute('aria-label', c.t);
+    if (!first){ first = {b,c,n}; return; }
+    moves++;
+    const a = first; first = null;
+    if (a.c.k === c.k){
+      [a.b, b].forEach(x=>{ x.classList.remove('open'); x.classList.add('done'); x.disabled = true; });
+      found++;
+      const P = PAIRS[c.k];
+      if (found === PAIRS.length){
+        markDone('mem');
+        setMsg('Μπράβο! Βρήκες και τα '+PAIRS.length+' ζευγάρια με '+moves+' προσπάθειες.', 'win');
+      } else {
+        setMsg('✓ '+P[0]+': '+P[1], 'ok');
+      }
+    } else {
+      lock = true;
+      setMsg('Δεν ταιριάζουν. Θυμήσου πού ήταν!', 'bad');
+      setTimeout(()=>{
+        [a.b, b].forEach((x,j)=>{ x.classList.remove('open'); x.setAttribute('aria-label','Κάρτα κλειστή'); });
+        lock = false;
+      }, 1100);
+    }
+    renderScore();
+  }
+  $('#m-reset').addEventListener('click', build);
+  build();
+})();
+
+/* =====================================================
+   Activity 5 · True or false
+   ===================================================== */
+(function initTF(){
+  const S = [
+    {t:'Η μνήμη κρατά τα αρχεία μας για πάντα, ακόμα και όταν κλείνει ο υπολογιστής.', a:false,
+     why:'Το περιεχόμενο της μνήμης σβήνεται όταν κλείνει ο υπολογιστής. Τα αρχεία τα κρατά ο δίσκος αποθήκευσης.'},
+    {t:'Ο δίσκος SSD είναι ταχύτερος από τον δίσκο HDD.', a:true,
+     why:'Η τεχνολογία SSD είναι ταχύτερη από την HDD και επηρεάζει την απόδοση του υπολογιστή.'},
+    {t:'Το ποντίκι είναι συσκευή εξόδου.', a:false,
+     why:'Το ποντίκι είναι συσκευή εισόδου. Με αυτό δίνουμε εντολές στον υπολογιστή.'},
+    {t:'Η κάρτα γραφικών ελέγχει τη λειτουργία της οθόνης.', a:true,
+     why:'Η κάρτα γραφικών είναι σημαντική για ταινίες και 3D παιχνίδια.'},
+    {t:'Η ταχύτητα του επεξεργαστή μετριέται σε GB.', a:false,
+     why:'Η ταχύτητα του επεξεργαστή μετριέται σε GHz. Τα GB μετρούν χωρητικότητα.'},
+    {t:'Στην ταμπλέτα και στο κινητό το πληκτρολόγιο είναι εικονικό.', a:true,
+     why:'Στον φορητό υπολογιστή το πληκτρολόγιο είναι ενσωματωμένο, ενώ στην ταμπλέτα και στο κινητό είναι εικονικό.'},
+    {t:'Τα ηχεία είναι συσκευές εισόδου.', a:false,
+     why:'Τα ηχεία είναι συσκευές εξόδου. Βγάζουν ήχο προς εμάς.'},
+    {t:'Πάνω στη μητρική πλακέτα τοποθετούνται όλα τα εσωτερικά εξαρτήματα.', a:true,
+     why:'Η μητρική πλακέτα έχει και τις θύρες σύνδεσης.'},
+    {t:'Η ανάλυση της κάμερας μετριέται σε ίντσες.', a:false,
+     why:'Η ανάλυση της κάμερας μετριέται σε pixel (Mp). Οι ίντσες μετρούν το μέγεθος της οθόνης.'},
+    {t:'Σε έναν φορητό υπολογιστή έχουν σημασία το βάρος και η διάρκεια της μπαταρίας.', a:true,
+     why:'Το βάρος και η μπαταρία είναι σημαντικά για τους υπολογιστές που μεταφέρονται.'}
+  ];
+  const box = $('#t-box');
+  let deck, i, score, answers, missed;
+
+  function start(){ deck = shuffle(S); i = 0; score = 0; answers = []; missed = []; render(); }
+  function dots(){
+    return h('div',{class:'dots','aria-hidden':'true'},
+      deck.map((_,k)=>h('span',{class:'dot'+(answers[k]===true?' r':answers[k]===false?' w':'')+(k===i&&answers[k]===undefined?' now':'')})));
+  }
+  function render(){
+    if (i >= deck.length) return finish();
+    const q = deck[i];
+    const fb = h('div',{'aria-live':'polite'});
+    const nextWrap = h('div',{class:'qnext'});
+    const btnT = h('button',{class:'qopt',type:'button',onclick:()=>answer(true)},'✓ Σωστό');
+    const btnF = h('button',{class:'qopt',type:'button',onclick:()=>answer(false)},'✗ Λάθος');
+    box.replaceChildren(h('div',{class:'qcard'},
+      h('div',{class:'row',style:'margin:0'}, dots(),
+        h('div',{class:'pills'}, h('span',{class:'pill',text:'Πρόταση '+(i+1)+' από '+deck.length}))),
+      h('div',{class:'qtext',id:'tt',text:q.t}),
+      h('div',{class:'qopts',role:'group','aria-labelledby':'tt'}, btnT, btnF),
+      fb, nextWrap));
+
+    function answer(v){
+      const ok = v === q.a;
+      answers[i] = ok;
+      if (ok) score++; else missed.push(q);
+      [[btnT,true],[btnF,false]].forEach(([b,val])=>{
+        b.disabled = true;
+        if (val === q.a) b.classList.add('right');
+        else if (val === v) b.classList.add('wrong');
+        else b.classList.add('dim');
+      });
+      fb.replaceChildren(h('div',{class:'qfb '+(ok?'ok':'bad')},
+        h('strong',{text: ok ? '✓ Σωστά!' : '✗ Σχεδόν! Η πρόταση είναι '+(q.a?'σωστή.':'λάθος.')}), q.why));
+      const last = i === deck.length-1;
+      const nb = h('button',{class:'btn',type:'button',onclick:()=>{ i++; render(); }}, last ? 'Δες το αποτέλεσμα' : 'Επόμενη πρόταση');
+      nextWrap.replaceChildren(nb);
+      nb.focus();
+      $('.dots', box).replaceWith(dots());
+    }
+  }
+  function finish(){
+    markDone('tf');
+    const t = score === deck.length ? 'Τέλεια! Δεν έκανες κανένα λάθος.'
+            : score >= 7 ? 'Πολύ καλά! Ξέρεις καλά το μάθημα.'
+            : score >= 4 ? 'Καλή προσπάθεια! Δες τι να θυμάσαι παρακάτω.'
+            : 'Ξαναδιάβασε το μάθημα και δοκίμασε πάλι. Θα τα καταφέρεις!';
+    box.replaceChildren(h('div',{class:'qcard'},
+      h('div',{class:'big',text:score+' / '+deck.length}),
+      h('p',{style:'font-weight:600;margin:10px 0 0',text:t}),
+      missed.length ? h('div',{},
+        h('h3',{style:'margin:18px 0 0',text:'Να θυμάσαι'}),
+        h('ul',{class:'missed'}, missed.map(m=>h('li',{}, h('b',{text:(m.a?'Σωστό: ':'Λάθος: ')}), m.t+' ', m.why)))) : null,
+      h('div',{class:'qnext',style:'justify-content:flex-start'},
+        h('button',{class:'btn',type:'button',onclick:start},'Παίξε ξανά'))));
+  }
+  start();
+})();
+
+/* =====================================================
+   Activity 6 · Fill in the blanks
+   ===================================================== */
+(function initFill(){
+  // Text parts alternate with gaps: {o:[options], a:correct}
+  const F = [
+    ['Ο ', {o:['επεξεργαστής','μνήμη','οθόνη','μικρόφωνο'], a:'επεξεργαστής'}, ' είναι το πιο σημαντικό εξάρτημα και κάνει την επεξεργασία των δεδομένων.'],
+    ['Η ταχύτητα του επεξεργαστή μετριέται σε ', {o:['GHz','GB','Mp','ίντσες'], a:'GHz'}, '.'],
+    ['Ο ', {o:['δίσκος αποθήκευσης','επεξεργαστής','ποντίκι','κάρτα γραφικών'], a:'δίσκος αποθήκευσης'}, ' αποθηκεύει μόνιμα το λογισμικό και τα αρχεία μας.'],
+    ['Η ', {o:['κάρτα γραφικών','μητρική πλακέτα','μνήμη','μπαταρία'], a:'κάρτα γραφικών'}, ' ελέγχει τη λειτουργία της οθόνης.'],
+    ['Το μέγεθος της οθόνης μετριέται σε ', {o:['ίντσες','Hz','GB','Mp'], a:'ίντσες'}, ' και ο ρυθμός ανανέωσής της σε ', {o:['Hz','ίντσες','GB','Mp'], a:'Hz'}, '.'],
+    ['Πάνω στη ', {o:['μητρική πλακέτα','οθόνη','κάρτα γραφικών','μπαταρία'], a:'μητρική πλακέτα'}, ' τοποθετούνται όλα τα εσωτερικά εξαρτήματα.'],
+    ['Όταν κλείνει ο υπολογιστής, το περιεχόμενο της ', {o:['μνήμης','δίσκου αποθήκευσης','μητρικής πλακέτας','οθόνης'], a:'μνήμης'}, ' σβήνεται.'],
+    ['Στους φορητούς υπολογιστές έχουν σημασία το βάρος και η διάρκεια της ', {o:['μπαταρίας','οθόνης','κάμερας','μνήμης'], a:'μπαταρίας'}, '.']
+  ];
+  const list = $('#f-list'), msg = $('#f-msg'), score = $('#f-score');
+  let selects = [];
+
+  function setMsg(t,c){ msg.className = 'msg'+(c?' '+c:''); msg.textContent = t; }
+  function build(){
+    selects = [];
+    list.replaceChildren();
+    F.forEach((parts,n)=>{
+      const p = h('div',{class:'fs'}, h('span',{class:'no','aria-hidden':'true',text:String(n+1)}));
+      parts.forEach(x=>{
+        if (typeof x === 'string'){ p.append(document.createTextNode(x)); return; }
+        const sel = h('select',{class:'gap','aria-label':'Κενό στην πρόταση '+(n+1)},
+          h('option',{value:'',text:'διάλεξε…'}),
+          shuffle(x.o).map(w=>h('option',{value:w,text:w})));
+        sel.dataset.a = x.a;
+        sel.addEventListener('change',()=>{ sel.classList.remove('right','wrong'); });
+        selects.push(sel);
+        p.append(sel);
+      });
+      list.append(p);
+    });
+    setMsg('Διάλεξε λέξεις και πάτησε «Έλεγχος».');
+    score.replaceChildren();
+  }
+  function check(){
+    let right = 0, empty = 0;
+    selects.forEach(sel=>{
+      sel.classList.remove('right','wrong');
+      if (!sel.value){ empty++; return; }
+      if (sel.value === sel.dataset.a){ right++; sel.classList.add('right'); } else sel.classList.add('wrong');
+    });
+    score.replaceChildren(h('span',{class:'pill ok',text:'Σωστά '+right+' από '+selects.length}));
+    if (right === selects.length){
+      markDone('fill');
+      setMsg('Μπράβο! Όλες οι προτάσεις είναι σωστές.', 'win');
+    } else if (empty){
+      setMsg('Λείπουν '+empty+' κενά. Συμπλήρωσέ τα και ξαναπάτησε «Έλεγχος».', 'bad');
+    } else {
+      setMsg('Σχεδόν! Διόρθωσε όσα είναι με κόκκινο και ξαναπάτησε «Έλεγχος».', 'bad');
+    }
+  }
+  function show(){
+    selects.forEach(sel=>{ sel.value = sel.dataset.a; sel.classList.remove('wrong'); sel.classList.add('right'); });
+    score.replaceChildren();
+    setMsg('Αυτές είναι οι σωστές απαντήσεις. Δοκίμασε «Ξανά από την αρχή» για να τις θυμηθείς μόνος σου.');
+  }
+  $('#f-check').addEventListener('click', check);
+  $('#f-show').addEventListener('click', show);
+  $('#f-reset').addEventListener('click', build);
+  build();
 })();
 
 })();
