@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Μάθημα 12: Το Υλικό του Υπολογιστή - ΣΤ΄ Δημοτικού</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .tab-btn.active {
+      border-bottom: 3px solid #4f46e5;
+      color: #4f46e5;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-indigo-700 text-white py-6 px-4 shadow-md">
+    <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div>
+        <span class="bg-indigo-900 text-indigo-200 text-xs font-semibold px-2.5 py-0.5 rounded uppercase tracking-wide">Πληροφορική ΣΤ΄ Δημοτικού</span>
+        <h1 class="text-2xl md:text-3xl font-bold mt-1">Μάθημα 12: Το υλικό του υπολογιστή</h1>
+      </div>
+      <div class="text-indigo-200 text-sm flex items-center gap-2">
+        <i class="fa-solid fa-microchip text-xl"></i>
+        <span>Ενότητα 2: Υπολογιστικά Συστήματα</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="bg-white border-b border-slate-200 sticky top-0 z-20 shadow-sm">
+    <div class="max-w-4xl mx-auto flex justify-around md:justify-start gap-2 md:gap-6 px-4">
+      <button onclick="switchTab(1)" id="tab-btn-1" class="tab-btn active py-3.5 px-3 text-xs md:text-sm font-medium transition-colors">
+        <i class="fa-solid fa-cubes mr-1"></i> 1. Μονάδες & Ρόλοι
+      </button>
+      <button onclick="switchTab(2)" id="tab-btn-2" class="tab-btn py-3.5 px-3 text-xs md:text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors">
+        <i class="fa-solid fa-scale-balanced mr-1"></i> 2. Σύμβουλος Αγοράς
+      </button>
+      <button onclick="switchTab(3)" id="tab-btn-3" class="tab-btn py-3.5 px-3 text-xs md:text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors">
+        <i class="fa-solid fa-magnifying-glass-chart mr-1"></i> 3. Ντετέκτιβ Συστήματος
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content Area -->
+  <main class="max-w-4xl mx-auto w-full p-4 md:p-6 flex-grow space-y-6">
+
+    <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 1 -->
+    <section id="activity-1" class="space-y-4">
+      <div class="bg-white p-5 md:p-6 rounded-xl shadow-sm border border-slate-200">
+        <div class="flex items-center gap-3 pb-3 border-b border-slate-100">
+          <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">1</span>
+          <div>
+            <h2 class="text-lg md:text-xl font-bold text-slate-900">Αντιστοίχιση: Εξαρτήματα, Μονάδες & Λειτουργίες</h2>
+            <p class="text-slate-500 text-xs md:text-sm">Επίλεξε τη σωστή μονάδα μέτρησης και τον βασικό ρόλο για κάθε στοιχείο υλικού (σελ. 42-44).</p>
+          </div>
+        </div>
+
+        <div class="mt-5 space-y-3">
+          <!-- CPU -->
+          <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5">
+              <i class="fa-solid fa-microchip text-indigo-600 text-lg w-5 text-center"></i>
+              <span class="font-semibold text-sm md:text-base text-slate-800">Επεξεργαστής (CPU)</span>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <select id="m-cpu-unit" class="text-xs md:text-sm p-2 rounded border border-slate-300 bg-white">
+                <option value="">-- Μονάδα Μέτρησης --</option>
+                <option value="byte">GB / TB (Χωρητικότητα)</option>
+                <option value="ghz">GHz (Συχνότητα/Ταχύτητα)</option>
+                <option value="mp">Megapixel (Ανάλυση)</option>
+              </select>
+              <select id="m-cpu-role" class="text-xs md:text-sm p-2 rounded border border-slate-300 bg-white">
+                <option value="">-- Βασική Λειτουργία --</option>
+                <option value="calc">Κάνει την επεξεργασία δεδομένων</option>
+                <option value="temp">Προσωρινή αποθήκευση (σβήνεται)</option>
+                <option value="perm">Μόνιμη αποθήκευση αρχείων</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- RAM -->
+          <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5">
+              <i class="fa-solid fa-memory text-emerald-600 text-lg w-5 text-center"></i>
+              <span class="font-semibold text-sm md:text-base text-slate-800">Μνήμη RAM</span>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <select id="m-ram-unit" class="text-xs md:text-sm p-2 rounded border border-slate-300 bg-white">
+                <option value="">-- Μονάδα Μέτρησης --</option>
+                <option value="ghz">GHz (Ταχύτητα)</option>
+                <option value="byte">GB (Μέγεθος / Χωρητικότητα)</option>
+                <option value="inch">Ίντσες (")</option>
+              </select>
+              <select id="m-ram-role" class="text-xs md:text-sm p-2 rounded border border-slate-300 bg-white">
+                <option value="">-- Βασική Λειτουργία --</option>
+                <option value="calc">Κάνει την επεξεργασία δεδομένων</option>
+                <option value="temp">Αποθηκεύει προσωρινά (σβήνει στο τέλος)</option>
+                <option value="perm">Μόνιμη αποθήκευση λογισμικού</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Hard Disk -->
+          <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5">
+              <i class="fa-solid fa-hard-drive text-amber-600 text-lg w-5 text-center"></i>
+              <span class="font-semibold text-sm md:text-base text-slate-800">Δίσκος Αποθήκευσης</span>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <select id="m-disk-unit" class="text-xs md:text-sm p-2 rounded border border-slate-300 bg-white">
+                <option value="">-- Μονάδα Μέτρησης --</option>
+                <option value="byte">GB ή TB (Χωρητικότητα)</option>
+                <option value="ghz">GHz (Συχνότητα)</option>
+                <option value="hz">Hz (Ανανέωση)</option>
+              </select>
+              <select id="m-disk-role" class="text-xs md:text-sm p-2 rounded border border-slate-300 bg-white">
+                <option value="">-- Βασική Λειτουργία --</option>
+                <option value="perm">Μόνιμη αποθήκευση λειτουργικού & αρχείων</option>
+                <option value="temp">Προσωρινή μνήμη εργασίας</option>
+                <option value="calc">Επεξεργασία μαθηματικών πράξεων</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Camera -->
+          <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5">
+              <i class="fa-solid fa-camera text-sky-600 text-lg w-5 text-center"></i>
+              <span class="font-semibold text-sm md:text-base text-slate-800">Κάμερα (Webcam)</span>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <select id="m-cam-unit" class="text-xs md:text-sm p-2 rounded border border-slate-300 bg-white">
+                <option value="">-- Μονάδα Μέτρησης --</option>
+                <option value="mp">Pixel / Megapixel (MP)</option>
+                <option value="byte">GB (Μέγεθος)</option>
+                <option value="ghz">GHz</option>
+              </select>
+              <select id="m-cam-role" class="text-xs md:text-sm p-2 rounded border border-slate-300 bg-white">
+                <option value="">-- Βασική Λειτουργία --</option>
+                <option value="pic">Λήψη φωτογραφιών και βίντεο</option>
+                <option value="calc">Εκτέλεση προγραμμάτων</option>
+                <option value="temp">Αποθήκευση προσωρινών εικόνων</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-5 pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <button type="button" onclick="checkActivity1()" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2.5 px-6 rounded-lg transition-colors shadow-sm">
+            Έλεγχος Απαντήσεων
+          </button>
+          <div id="act1-feedback" class="text-sm font-semibold"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 2 -->
+    <section id="activity-2" class="space-y-4 hidden">
+      <div class="bg-white p-5 md:p-6 rounded-xl shadow-sm border border-slate-200">
+        <div class="flex items-center gap-3 pb-3 border-b border-slate-100">
+          <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">2</span>
+          <div>
+            <h2 class="text-lg md:text-xl font-bold text-slate-900">Σύμβουλος Αγοράς Υπολογιστή</h2>
+            <p class="text-slate-500 text-xs md:text-sm">Βοήθησε τη θεία Ιουλία (σελ. 42) να επιλέξει τα σωστά χαρακτηριστικά για τις ανάγκες της.</p>
+          </div>
+        </div>
+
+        <div class="mt-5 space-y-4">
+          <!-- Dilemma 1 -->
+          <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
+            <p class="font-medium text-slate-800 text-sm md:text-base">
+              <strong>1. Επιλογή Δίσκου:</strong> «Μου προτείνουν υπολογιστή με δίσκο <strong>SSD</strong> ή με δίσκο <strong>HDD</strong> στην ίδια χωρητικότητα. Τι να προτιμήσω;»
+            </p>
+            <div class="space-y-2 text-xs md:text-sm">
+              <label class="flex items-start gap-2.5 p-3 bg-white border border-slate-200 rounded-md cursor-pointer hover:bg-indigo-50">
+                <input type="radio" name="dilemma1" value="hdd" class="mt-0.5">
+                <span><strong>HDD:</strong> Είναι παλαιότερη αλλά ταχύτερη τεχνολογία από τους SSD.</span>
+              </label>
+              <label class="flex items-start gap-2.5 p-3 bg-white border border-slate-200 rounded-md cursor-pointer hover:bg-indigo-50">
+                <input type="radio" name="dilemma1" value="ssd" class="mt-0.5">
+                <span><strong>SSD:</strong> Είναι πολύ ταχύτερος από τον HDD και επιταχύνει όλο τον υπολογιστή.</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Dilemma 2 -->
+          <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
+            <p class="font-medium text-slate-800 text-sm md:text-base">
+              <strong>2. Ταινίες & Παιχνίδια 3D:</strong> «Θέλω ο υπολογιστής να παίζει τρισδιάστατα παιχνίδια (3D) και βίντεο υψηλής ευκρίνειας. Πού πρέπει να δώσω προσοχή;»
+            </p>
+            <div class="space-y-2 text-xs md:text-sm">
+              <label class="flex items-start gap-2.5 p-3 bg-white border border-slate-200 rounded-md cursor-pointer hover:bg-indigo-50">
+                <input type="radio" name="dilemma2" value="wrong" class="mt-0.5">
+                <span>Στην ποιότητα των ηχείων και στο ασύρματο ποντίκι.</span>
+              </label>
+              <label class="flex items-start gap-2.5 p-3 bg-white border border-slate-200 rounded-md cursor-pointer hover:bg-indigo-50">
+                <input type="radio" name="dilemma2" value="correct" class="mt-0.5">
+                <span>Στην κάρτα γραφικών και στην ανάλυση-μέγεθος της οθόνης.</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Dilemma 3 -->
+          <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
+            <p class="font-medium text-slate-800 text-sm md:text-base">
+              <strong>3. Φορητός για Ταξίδια:</strong> «Θέλω να παίρνω τον υπολογιστή συχνά μαζί μου εκτός σπιτιού. Ποια δύο στοιχεία είναι καθοριστικά;»
+            </p>
+            <div class="space-y-2 text-xs md:text-sm">
+              <label class="flex items-start gap-2.5 p-3 bg-white border border-slate-200 rounded-md cursor-pointer hover:bg-indigo-50">
+                <input type="radio" name="dilemma3" value="correct" class="mt-0.5">
+                <span>Το χαμηλό βάρος και η μεγάλη διάρκεια (αυτονομία) της μπαταρίας.</span>
+              </label>
+              <label class="flex items-start gap-2.5 p-3 bg-white border border-slate-200 rounded-md cursor-pointer hover:bg-indigo-50">
+                <input type="radio" name="dilemma3" value="wrong" class="mt-0.5">
+                <span>Το μέγεθος του πληκτρολογίου και ο αριθμός των εξωτερικών καλωδίων.</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-5 pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <button type="button" onclick="checkActivity2()" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2.5 px-6 rounded-lg transition-colors shadow-sm">
+            Υποβολή Συμβουλών
+          </button>
+          <div id="act2-feedback" class="text-sm font-semibold"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 3 -->
+    <section id="activity-3" class="space-y-4 hidden">
+      <div class="bg-white p-5 md:p-6 rounded-xl shadow-sm border border-slate-200">
+        <div class="flex items-center gap-3 pb-3 border-b border-slate-100">
+          <span class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">3</span>
+          <div>
+            <h2 class="text-lg md:text-xl font-bold text-slate-900">Ντετέκτιβ Τεχνικών Χαρακτηριστικών</h2>
+            <p class="text-slate-500 text-xs md:text-sm">Διάβασε τα στοιχεία από το παράθυρο συστήματος (όπως στη σελίδα 43 του βιβλίου) και απάντησε.</p>
+          </div>
+        </div>
+
+        <!-- System Window Mockup -->
+        <div class="mt-4 bg-slate-900 rounded-lg shadow-inner border border-slate-700 overflow-hidden font-mono text-xs md:text-sm">
+          <div class="bg-slate-800 px-3 py-2 text-slate-300 flex items-center justify-between border-b border-slate-700 font-sans">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+              <span class="ml-2 text-slate-200 font-semibold text-xs">Παρακολούθηση Συστήματος — Καρτέλα «Σύστημα»</span>
+            </div>
+            <span class="text-slate-400 text-xs hidden sm:inline">Σχολικό Εργαστήριο</span>
+          </div>
+          <div class="p-4 text-slate-100 space-y-3 font-sans">
+            <div class="bg-slate-800/60 p-3 rounded border border-slate-700/60">
+              <span class="text-emerald-400 font-bold text-sm font-mono block">eps10-School-PC01</span>
+              <span class="text-slate-400 text-xs">Λειτουργικό: Ubuntu Linux (64-bit)</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs md:text-sm">
+              <div class="p-2 bg-slate-800/40 rounded border border-slate-700/40">
+                <span class="text-slate-400 block text-xs">Μνήμη RAM:</span>
+                <span class="text-yellow-300 font-mono font-bold">8,0 GB</span>
+              </div>
+              <div class="p-2 bg-slate-800/40 rounded border border-slate-700/40">
+                <span class="text-slate-400 block text-xs">Επεξεργαστής:</span>
+                <span class="text-yellow-300 font-mono font-bold">Intel Core i5 @ 3.20GHz</span>
+              </div>
+              <div class="p-2 bg-slate-800/40 rounded border border-slate-700/40">
+                <span class="text-slate-400 block text-xs">Κάρτα Γραφικών:</span>
+                <span class="text-yellow-300 font-mono font-bold">Intel HD Graphics 2000</span>
+              </div>
+              <div class="p-2 bg-slate-800/40 rounded border border-slate-700/40">
+                <span class="text-slate-400 block text-xs">Δίσκος Αποθήκευσης:</span>
+                <span class="text-yellow-300 font-mono font-bold">SSD 500 GB (Διαθέσιμος: 340 GB)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Questions -->
+        <div class="mt-5 space-y-3">
+          <div class="space-y-1">
+            <label class="block text-xs md:text-sm font-semibold text-slate-700">1. Πόση μνήμη RAM διαθέτει το σύστημα;</label>
+            <select id="sys-q1" class="text-xs md:text-sm p-2 w-full md:w-80 rounded border border-slate-300 bg-white">
+              <option value="">-- Επίλεξε τιμή --</option>
+              <option value="wrong1">500 GB</option>
+              <option value="correct">8,0 GB</option>
+              <option value="wrong2">3.20 GHz</option>
+            </select>
+          </div>
+
+          <div class="space-y-1">
+            <label class="block text-xs md:text-sm font-semibold text-slate-700">2. Ποια είναι η ταχύτητα (συχνότητα) του επεξεργαστή;</label>
+            <select id="sys-q2" class="text-xs md:text-sm p-2 w-full md:w-80 rounded border border-slate-300 bg-white">
+              <option value="">-- Επίλεξε τιμή --</option>
+              <option value="correct">3.20 GHz</option>
+              <option value="wrong1">8,0 GB</option>
+              <option value="wrong2">64-bit</option>
+            </select>
+          </div>
+
+          <div class="space-y-1">
+            <label class="block text-xs md:text-sm font-semibold text-slate-700">3. Ποιος είναι ο ελεύθερος διαθέσιμος χώρος στον δίσκο SSD;</label>
+            <select id="sys-q3" class="text-xs md:text-sm p-2 w-full md:w-80 rounded border border-slate-300 bg-white">
+              <option value="">-- Επίλεξε τιμή --</option>
+              <option value="wrong1">500 GB</option>
+              <option value="correct">340 GB</option>
+              <option value="wrong2">8 GB</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mt-5 pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <button type="button" onclick="checkActivity3()" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2.5 px-6 rounded-lg transition-colors shadow-sm">
+            Έλεγχος Αναφοράς
+          </button>
+          <div id="act3-feedback" class="text-sm font-semibold"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 py-4 px-4 text-center text-xs text-slate-500 mt-auto">
+    Μάθημα 12: Το Υλικό του Υπολογιστή • Πληροφορική ΣΤ΄ Δημοτικού • Έτοιμο για χρήση στο σχολικό εργαστήριο
+  </footer>
+
+  <script>
+    function switchTab(num) {
+      for (let i = 1; i <= 3; i++) {
+        document.getElementById('activity-' + i).classList.add('hidden');
+        document.getElementById('tab-btn-' + i).classList.remove('active');
+      }
+      document.getElementById('activity-' + num).classList.remove('hidden');
+      document.getElementById('tab-btn-' + num).classList.add('active');
+    }
+
+    function checkActivity1() {
+      const isCpuOk = (document.getElementById('m-cpu-unit').value === 'ghz' && document.getElementById('m-cpu-role').value === 'calc');
+      const isRamOk = (document.getElementById('m-ram-unit').value === 'byte' && document.getElementById('m-ram-role').value === 'temp');
+      const isDiskOk = (document.getElementById('m-disk-unit').value === 'byte' && document.getElementById('m-disk-role').value === 'perm');
+      const isCamOk = (document.getElementById('m-cam-unit').value === 'mp' && document.getElementById('m-cam-role').value === 'pic');
+
+      const fb = document.getElementById('act1-feedback');
+      const score = [isCpuOk, isRamOk, isDiskOk, isCamOk].filter(Boolean).length;
+
+      if (score === 4) {
+        fb.innerHTML = '<span class="text-emerald-600"><i class="fa-solid fa-circle-check mr-1"></i> Άριστα! Όλες οι αντιστοιχίσεις είναι σωστές (4/4)!</span>';
+      } else {
+        fb.innerHTML = `<span class="text-amber-600"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Έχεις ${score}/4 σωστά. Δοκίμασε ξανά!</span>`;
+      }
+    }
+
+    function checkActivity2() {
+      const d1 = document.querySelector('input[name="dilemma1"]:checked');
+      const d2 = document.querySelector('input[name="dilemma2"]:checked');
+      const d3 = document.querySelector('input[name="dilemma3"]:checked');
+      const fb = document.getElementById('act2-feedback');
+
+      if (!d1 || !d2 || !d3) {
+        fb.innerHTML = '<span class="text-rose-600">Παρακαλώ επέλεξε απάντηση και στα 3 διλήμματα!</span>';
+        return;
+      }
+
+      const score = (d1.value === 'ssd' ? 1 : 0) + (d2.value === 'correct' ? 1 : 0) + (d3.value === 'correct' ? 1 : 0);
+      if (score === 3) {
+        fb.innerHTML = '<span class="text-emerald-600"><i class="fa-solid fa-circle-check mr-1"></i> Εξαιρετικά! Συμβούλευσες άψογα τη θεία Ιουλία (3/3)!</span>';
+      } else {
+        fb.innerHTML = `<span class="text-amber-600"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Βρήκες ${score}/3 σωστές συμβουλές. Ξαναδιάβασε τις προτάσεις του βιβλίου!</span>`;
+      }
+    }
+
+    function checkActivity3() {
+      const q1 = document.getElementById('sys-q1').value;
+      const q2 = document.getElementById('sys-q2').value;
+      const q3 = document.getElementById('sys-q3').value;
+      const fb = document.getElementById('act3-feedback');
+
+      if (!q1 || !q2 || !q3) {
+        fb.innerHTML = '<span class="text-rose-600">Παρακαλώ απάντησε σε όλες τις ερωτήσεις!</span>';
+        return;
+      }
+
+      const score = (q1 === 'correct' ? 1 : 0) + (q2 === 'correct' ? 1 : 0) + (q3 === 'correct' ? 1 : 0);
+      if (score === 3) {
+        fb.innerHTML = '<span class="text-emerald-600"><i class="fa-solid fa-circle-check mr-1"></i> Συγχαρητήρια Ντετέκτιβ! Εντόπισες όλα τα τεχνικά χαρακτηριστικά (3/3)!</span>';
+      } else {
+        fb.innerHTML = `<span class="text-amber-600"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Σωστές απαντήσεις: ${score}/3. Κοίταξε πιο προσεκτικά το παράθυρο!</span>`;
+      }
+    }
+  </script>
+</body>
+</html>
