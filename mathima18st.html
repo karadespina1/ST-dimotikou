@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Μάθημα 18: Ταξινόμηση Δεδομένων στο LibreOffice Calc</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .calc-grid th, .calc-grid td {
+      border: 1px solid #cbd5e1;
+      user-select: none;
+    }
+    .calc-row-header {
+      background-color: #f1f5f9;
+      color: #475569;
+      font-weight: 600;
+      text-align: center;
+      width: 32px;
+    }
+    .calc-col-header {
+      background-color: #f1f5f9;
+      color: #475569;
+      font-weight: 600;
+      text-align: center;
+    }
+    .cell-selected {
+      outline: 2px solid #0284c7 !important;
+      background-color: #e0f2fe !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen p-3 md:p-6 flex flex-col items-center">
+
+  <div class="max-w-5xl w-full bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
+
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-blue-600 to-indigo-700 p-5 text-white flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl backdrop-blur-md">
+          🌪️
+        </div>
+        <div>
+          <span class="bg-white/20 text-blue-100 text-xs font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+            Πληροφορική ΣΤ΄ Δημοτικού • Μάθημα 18
+          </span>
+          <h1 class="text-xl md:text-2xl font-black">Συγκέντρωση & Ταξινόμηση Δεδομένων στο Υπολογιστικό Φύλλο</h1>
+        </div>
+      </div>
+      <div class="bg-white/20 px-4 py-2 rounded-xl text-center backdrop-blur-md border border-white/20">
+        <div class="text-[11px] text-blue-100 font-bold uppercase">Πρόοδος Αποστολών</div>
+        <div id="mission-progress" class="text-lg font-black text-white">0 / 3 Ολοκληρώθηκαν</div>
+      </div>
+    </div>
+
+    <div class="p-4 md:p-6 space-y-8">
+
+      <!-- ========================================================= -->
+      <!-- ΠΡΟΣΟΜΟΙΩΣΗ LIBREOFFICE CALC - ΤΑΞΙΝΟΜΗΣΗ                 -->
+      <!-- ========================================================= -->
+      <div class="border-2 border-slate-300 rounded-2xl overflow-hidden shadow-md bg-white">
+        
+        <!-- Window Title Bar -->
+        <div class="bg-slate-200 px-3 py-1.5 border-b border-slate-300 flex items-center justify-between text-xs text-slate-700">
+          <div class="flex items-center gap-2">
+            <span class="text-blue-600 font-bold"><i class="fa-solid fa-table"></i></span>
+            <span class="font-semibold">Μετεωρολογικές μετρήσεις.ods — LibreOffice Calc</span>
+          </div>
+          <div class="flex items-center gap-1.5 text-slate-500">
+            <span class="w-3 h-3 rounded-full bg-slate-300 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-slate-300 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-slate-400 inline-block"></span>
+          </div>
+        </div>
+
+        <!-- Menu Bar -->
+        <div class="bg-slate-100 px-3 py-1 border-b border-slate-250 flex flex-wrap gap-4 text-xs font-medium text-slate-700">
+          <span class="hover:text-blue-700 cursor-pointer">Αρχείο</span>
+          <span class="hover:text-blue-700 cursor-pointer">Επεξεργασία</span>
+          <span class="hover:text-blue-700 cursor-pointer">Προβολή</span>
+          <span class="hover:text-blue-700 cursor-pointer">Εισαγωγή</span>
+          <span class="hover:text-blue-700 cursor-pointer">Μορφή</span>
+          
+          <!-- Dropdown Δεδομένα -->
+          <div class="relative inline-block">
+            <button onclick="toggleMenuData()" id="menu-data-btn" class="font-bold text-blue-800 bg-blue-100 px-2 py-0.5 rounded border border-blue-300 flex items-center gap-1">
+              <span>Δεδομένα</span> <i class="fa-solid fa-caret-down text-[10px]"></i>
+            </button>
+            <div id="menu-data-dropdown" class="hidden absolute left-0 mt-1 w-52 bg-white border border-slate-300 rounded-lg shadow-xl z-30 py-1 text-xs">
+              <button onclick="applySort('asc')" class="w-full text-left px-3 py-1.5 hover:bg-blue-50 text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-arrow-down-short-wide text-blue-600"></i>
+                <span>Αύξουσα ταξινόμηση</span>
+              </button>
+              <button onclick="applySort('desc')" class="w-full text-left px-3 py-1.5 hover:bg-blue-50 text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-arrow-up-wide-short text-blue-600"></i>
+                <span>Φθίνουσα ταξινόμηση</span>
+              </button>
+              <div class="border-t border-slate-150 my-1"></div>
+              <button onclick="resetSortOrder()" class="w-full text-left px-3 py-1.5 hover:bg-slate-50 text-slate-500">
+                Επαναφορά αρχικής σειράς
+              </button>
+            </div>
+          </div>
+
+          <span class="hover:text-blue-700 cursor-pointer">Εργαλεία</span>
+          <span class="hover:text-blue-700 cursor-pointer">Παράθυρο</span>
+          <span class="hover:text-blue-700 cursor-pointer">Βοήθεια</span>
+        </div>
+
+        <!-- Formula Bar -->
+        <div class="bg-white px-3 py-1.5 border-b border-slate-200 flex items-center gap-2 text-xs">
+          <span id="calc-active-cell" class="bg-slate-100 px-2 py-0.5 border border-slate-300 font-mono font-bold text-slate-600 rounded">D3</span>
+          <span class="text-slate-400 font-serif italic text-sm">fx</span>
+          <input type="text" id="calc-fx-val" readonly value="5 Μποφόρ Ν" class="w-full bg-slate-50 border border-slate-200 px-2 py-0.5 rounded font-mono text-slate-700">
+        </div>
+
+        <!-- Spreadsheet Grid Container -->
+        <div class="relative overflow-x-auto">
+          <table class="w-full text-xs calc-grid border-collapse bg-white">
+            <thead>
+              <tr class="h-6">
+                <th class="calc-row-header"></th>
+                <th class="calc-col-header w-28">A</th>
+                <th class="calc-col-header w-32">B</th>
+                <th class="calc-col-header w-24">C</th>
+                <th class="calc-col-header w-36 bg-blue-50 text-blue-900">D</th>
+                <th class="calc-col-header w-24">E</th>
+                <th class="calc-col-header w-36">F</th>
+              </tr>
+              <!-- Headers Row (Row 1) -->
+              <tr class="h-8 bg-slate-50 font-bold text-slate-800">
+                <td class="calc-row-header">1</td>
+                <td class="px-2">Πόλη</td>
+                <td class="px-2">Ημερομηνία - Ώρα</td>
+                <td class="px-2">Θερμοκρασία</td>
+                <td class="px-2 bg-blue-50/80 text-blue-900 flex items-center justify-between">
+                  <span>Άνεμος</span>
+                  <span class="text-[10px] text-blue-600 bg-blue-100 px-1 rounded">Κριτήριο</span>
+                </td>
+                <td class="px-2">Πίεση</td>
+                <td class="px-2">Φαινόμενα</td>
+              </tr>
+            </thead>
+            <!-- Data Rows -->
+            <tbody id="calc-table-body">
+              <!-- Rendered via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Sheet Footer Bar -->
+        <div class="bg-slate-100 p-2 border-t border-slate-200 text-xs text-slate-500 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="bg-white px-3 py-1 rounded border border-slate-300 font-bold text-blue-800 shadow-sm">Φύλλο 1</span>
+            <span class="text-slate-400">+</span>
+          </div>
+          <div id="calc-status-text" class="text-blue-800 font-semibold">
+            Κατάσταση: Αρχική καταγραφή δεδομένων (σελ. 61)
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Αποστολές Προσομοιωτή -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="p-4 bg-blue-50/60 rounded-2xl border border-blue-200 space-y-2">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold text-blue-900 text-sm flex items-center gap-1.5">
+              <span class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs">1</span>
+              Επιλογή Κελιού
+            </h3>
+            <span id="badge-m1" class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">✓ Έτοιμο (D3)</span>
+          </div>
+          <p class="text-xs text-slate-600">
+            Κάνε κλικ σε ένα κελί της στήλης D (Άνεμος) για να ορίσεις το χαρακτηριστικό ταξινόμησης (σελ. 62).
+          </p>
+        </div>
+
+        <div class="p-4 bg-blue-50/60 rounded-2xl border border-blue-200 space-y-2">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold text-blue-900 text-sm flex items-center gap-1.5">
+              <span class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs">2</span>
+              Φθίνουσα Ταξινόμηση
+            </h3>
+            <span id="badge-m2" class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-200 text-slate-500">Σε εκκρεμότητα</span>
+          </div>
+          <p class="text-xs text-slate-600">
+            Πάτησε <strong>«Δεδομένα»</strong> ➔ <strong>«Φθίνουσα ταξινόμηση»</strong> ώστε οι πόλεις με τους ισχυρότερους ανέμους (16 μποφόρ) να βγουν πρώτες.
+          </p>
+        </div>
+
+        <div class="p-4 bg-blue-50/60 rounded-2xl border border-blue-200 space-y-2">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold text-blue-900 text-sm flex items-center gap-1.5">
+              <span class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs">3</span>
+              Αύξουσα Ταξινόμηση
+            </h3>
+            <span id="badge-m3" class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-200 text-slate-500">Σε εκκρεμότητα</span>
+          </div>
+          <p class="text-xs text-slate-600">
+            Πάτησε <strong>«Δεδομένα»</strong> ➔ <strong>«Αύξουσα ταξινόμηση»</strong> ώστε οι πόλεις με τους πιο ασθενείς ανέμους (3 μποφόρ) να πάνε πρώτες.
+          </p>
+        </div>
+      </div>
+
+      <!-- ========================================================= -->
+      <!-- ΣΕΤ 1: Ερωτήσεις Πολλαπλής Επιλογής                       -->
+      <!-- ========================================================= -->
+      <div id="set1-box" class="p-5 md:p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between border-b pb-3">
+          <h2 class="text-sm md:text-base font-bold text-slate-800 flex items-center gap-2">
+            <span class="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold">Α</span>
+            Σετ 1: Ερωτήσεις Πολλαπλής Επιλογής
+          </h2>
+          <span id="set1-status" class="text-xs font-semibold text-slate-500">3 ερωτήσεις</span>
+        </div>
+
+        <div class="space-y-4">
+          <!-- 1.1 -->
+          <div class="p-3.5 bg-white rounded-xl border border-slate-200 space-y-2" id="q1_1_container">
+            <p class="text-xs md:text-sm font-medium text-slate-700">1. Με τη χρήση της «Αύξουσας» ή «Φθίνουσας» ταξινόμησης επιλέγουμε (σελ. 63):</p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+              <label class="flex items-center gap-2 p-2 border rounded-lg cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="set1_q1" value="w1" class="text-blue-600">
+                <span>Να γίνουν αριθμητικές πράξεις στα δεδομένα</span>
+              </label>
+              <label class="flex items-center gap-2 p-2 border rounded-lg cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="set1_q1" value="correct" class="text-blue-600">
+                <span>Να αλλάξει η σειρά των γραμμών των δεδομένων σύμφωνα με κριτήριο της επιλογής μας</span>
+              </label>
+              <label class="flex items-center gap-2 p-2 border rounded-lg cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="set1_q1" value="w2" class="text-blue-600">
+                <span>Να εμφανίζονται μόνο οι γραμμές που έχουν συγκεκριμένη τιμή</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 1.2 -->
+          <div class="p-3.5 bg-white rounded-xl border border-slate-200 space-y-2" id="q1_2_container">
+            <p class="text-xs md:text-sm font-medium text-slate-700">2. Με ποια σειρά εμφανίζονται οι γραμμές όταν εφαρμόζουμε «Φθίνουσα ταξινόμηση» (σελ. 62);</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <label class="flex items-center gap-2 p-2 border rounded-lg cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="set1_q2" value="w1" class="text-blue-600">
+                <span>Πρώτη εμφανίζεται η γραμμή με τη μικρότερη τιμή και ακολουθούν οι μεγαλύτερες</span>
+              </label>
+              <label class="flex items-center gap-2 p-2 border rounded-lg cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="set1_q2" value="correct" class="text-blue-600">
+                <span>Πρώτη εμφανίζεται η γραμμή με τη μεγαλύτερη τιμή και ακολουθούν οι μικρότερες</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 1.3 -->
+          <div class="p-3.5 bg-white rounded-xl border border-slate-200 space-y-2" id="q1_3_container">
+            <p class="text-xs md:text-sm font-medium text-slate-700">3. Πριν πατήσουμε ταξινόμηση, σε ποιο κελί πρέπει να κάνουμε κλικ (σελ. 62);</p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+              <label class="flex items-center gap-2 p-2 border rounded-lg cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="set1_q3" value="w1" class="text-blue-600">
+                <span>Σε οποιοδήποτε άδειο κελί έξω από τον πίνακα</span>
+              </label>
+              <label class="flex items-center gap-2 p-2 border rounded-lg cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="set1_q3" value="w2" class="text-blue-600">
+                <span>Υποχρεωτικά στο κελί A1</span>
+              </label>
+              <label class="flex items-center gap-2 p-2 border rounded-lg cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="set1_q3" value="correct" class="text-blue-600">
+                <span>Σε ένα κελί δεδομένων της στήλης με το χαρακτηριστικό ταξινόμησης (π.χ. στο D3)</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="flex gap-2">
+            <button onclick="checkSet1()" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow transition-all">
+              Έλεγχος Σετ 1
+            </button>
+            <button onclick="resetSet1()" id="btn-reset-set1" class="hidden px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition-all">
+              Διόρθωση / Δοκίμασε ξανά
+            </button>
+          </div>
+          <div id="set1-feedback" class="text-xs font-bold"></div>
+        </div>
+      </div>
+
+      <!-- ========================================================= -->
+      <!-- ΣΕΤ 2: Σωστό ή Λάθος                                      -->
+      <!-- ========================================================= -->
+      <div id="set2-box" class="p-5 md:p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between border-b pb-3">
+          <h2 class="text-sm md:text-base font-bold text-slate-800 flex items-center gap-2">
+            <span class="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold">Β</span>
+            Σετ 2: Σωστό ή Λάθος;
+          </h2>
+          <span id="set2-status" class="text-xs font-semibold text-slate-500">4 προτάσεις</span>
+        </div>
+
+        <div class="space-y-3">
+          <!-- 2.1 -->
+          <div class="p-3 bg-white rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2" id="q2_1_container">
+            <span class="text-xs md:text-sm font-medium text-slate-700">1. Κατά την ταξινόμηση, τα δεδομένα μιας γραμμής μετακινούνται όλα μαζί χωρίς να μπερδεύονται οι πόλεις με λάθος μετρήσεις.</span>
+            <div class="flex gap-2 shrink-0">
+              <label class="px-3.5 py-1.5 border rounded-lg text-xs font-semibold cursor-pointer hover:bg-slate-50 flex items-center gap-1.5">
+                <input type="radio" name="set2_q1" value="L" class="text-blue-600"> <span>Λάθος</span>
+              </label>
+              <label class="px-3.5 py-1.5 border rounded-lg text-xs font-semibold cursor-pointer hover:bg-slate-50 flex items-center gap-1.5">
+                <input type="radio" name="set2_q1" value="S" class="text-blue-600"> <span>Σωστό</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 2.2 -->
+          <div class="p-3 bg-white rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2" id="q2_2_container">
+            <span class="text-xs md:text-sm font-medium text-slate-700">2. Η ταξινόμηση κρύβει κάποιες γραμμές από την οθόνη όπως ακριβώς κάνει και το φίλτρο.</span>
+            <div class="flex gap-2 shrink-0">
+              <label class="px-3.5 py-1.5 border rounded-lg text-xs font-semibold cursor-pointer hover:bg-slate-50 flex items-center gap-1.5">
+                <input type="radio" name="set2_q2" value="S" class="text-blue-600"> <span>Σωστό</span>
+              </label>
+              <label class="px-3.5 py-1.5 border rounded-lg text-xs font-semibold cursor-pointer hover:bg-slate-50 flex items-center gap-1.5">
+                <input type="radio" name="set2_q2" value="L" class="text-blue-600"> <span>Λάθος</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 2.3 -->
+          <div class="p-3 bg-white rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2" id="q2_3_container">
+            <span class="text-xs md:text-sm font-medium text-slate-700">3. Η ταξινόμηση είναι χρήσιμη κυρίως όταν έχουμε πολλές γραμμές δεδομένων (σελ. 62).</span>
+            <div class="flex gap-2 shrink-0">
+              <label class="px-3.5 py-1.5 border rounded-lg text-xs font-semibold cursor-pointer hover:bg-slate-50 flex items-center gap-1.5">
+                <input type="radio" name="set2_q3" value="L" class="text-blue-600"> <span>Λάθος</span>
+              </label>
+              <label class="px-3.5 py-1.5 border rounded-lg text-xs font-semibold cursor-pointer hover:bg-slate-50 flex items-center gap-1.5">
+                <input type="radio" name="set2_q3" value="S" class="text-blue-600"> <span>Σωστό</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 2.4 -->
+          <div class="p-3 bg-white rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2" id="q2_4_container">
+            <span class="text-xs md:text-sm font-medium text-slate-700">4. Αν θέλουμε να διατηρηθεί η νέα σειρά των γραμμών, πρέπει να αποθηκεύσουμε ξανά το αρχείο μας (σελ. 63).</span>
+            <div class="flex gap-2 shrink-0">
+              <label class="px-3.5 py-1.5 border rounded-lg text-xs font-semibold cursor-pointer hover:bg-slate-50 flex items-center gap-1.5">
+                <input type="radio" name="set2_q4" value="L" class="text-blue-600"> <span>Λάθος</span>
+              </label>
+              <label class="px-3.5 py-1.5 border rounded-lg text-xs font-semibold cursor-pointer hover:bg-slate-50 flex items-center gap-1.5">
+                <input type="radio" name="set2_q4" value="S" class="text-blue-600"> <span>Σωστό</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="flex gap-2">
+            <button onclick="checkSet2()" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow transition-all">
+              Έλεγχος Σετ 2
+            </button>
+            <button onclick="resetSet2()" id="btn-reset-set2" class="hidden px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition-all">
+              Διόρθωση / Δοκίμασε ξανά
+            </button>
+          </div>
+          <div id="set2-feedback" class="text-xs font-bold"></div>
+        </div>
+      </div>
+
+      <!-- ========================================================= -->
+      <!-- ΣΕΤ 3: Ανάλυση Δεδομένων Πίνακα                           -->
+      <!-- ========================================================= -->
+      <div id="set3-box" class="p-5 md:p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between border-b pb-3">
+          <h2 class="text-sm md:text-base font-bold text-slate-800 flex items-center gap-2">
+            <span class="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold">Γ</span>
+            Σετ 3: Ανάλυση Ταξινομημένων Δεδομένων (σελ. 62-63)
+          </h2>
+          <span id="set3-status" class="text-xs font-semibold text-slate-500">3 ερωτήσεις</span>
+        </div>
+
+        <div class="space-y-3">
+          <!-- 3.1 -->
+          <div class="p-3 bg-white rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2" id="q3_1_container">
+            <span class="text-xs md:text-sm font-medium text-slate-700">1. Ποιες δύο πόλεις έχουν τον ισχυρότερο άνεμο (16 Μποφόρ) στον πίνακα;</span>
+            <select id="set3_q1" class="p-1.5 border rounded-lg bg-white text-xs font-medium text-slate-700">
+              <option value="">-- Επίλεξε πόλεις --</option>
+              <option value="wars_bel">Βαρσοβία και Βελιγράδι</option>
+              <option value="dub_mas">Δουβλίνο και Μασσαλία</option>
+              <option value="gen_bud">Γενεύη και Βουδαπέστη</option>
+            </select>
+          </div>
+
+          <!-- 3.2 -->
+          <div class="p-3 bg-white rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2" id="q3_2_container">
+            <span class="text-xs md:text-sm font-medium text-slate-700">2. Αν εφαρμόσουμε αύξουσα ταξινόμηση στη στήλη «Άνεμος», ποια πόλη θα εμφανιστεί στην 1η γραμμή;</span>
+            <select id="set3_q2" class="p-1.5 border rounded-lg bg-white text-xs font-medium text-slate-700">
+              <option value="">-- Επίλεξε πόλη --</option>
+              <option value="dub">Δουβλίνο (16 Μποφόρ)</option>
+              <option value="ams">Άμστερνταμ (5 Μποφόρ)</option>
+              <option value="gen">Γενεύη (3 Μποφόρ)</option>
+            </select>
+          </div>
+
+          <!-- 3.3 -->
+          <div class="p-3 bg-white rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2" id="q3_3_container">
+            <span class="text-xs md:text-sm font-medium text-slate-700">3. Ποια πόλη έχει τη μεγαλύτερη θερμοκρασία (18°C) στον πίνακα της σελίδας 61;</span>
+            <select id="set3_q3" class="p-1.5 border rounded-lg bg-white text-xs font-medium text-slate-700">
+              <option value="">-- Επίλεξε πόλη --</option>
+              <option value="barc">Βαρκελώνη</option>
+              <option value="vienna">Βιέννη</option>
+              <option value="dublin">Δουβλίνο</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="flex gap-2">
+            <button onclick="checkSet3()" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow transition-all">
+              Έλεγχος Σετ 3
+            </button>
+            <button onclick="resetSet3()" id="btn-reset-set3" class="hidden px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition-all">
+              Διόρθωση / Δοκίμασε ξανά
+            </button>
+          </div>
+          <div id="set3-feedback" class="text-xs font-bold"></div>
+        </div>
+      </div>
+
+      <!-- ========================================================= -->
+      <!-- ΣΕΤ 4: Επιλογή Εργαλείου (Ταξινόμηση ή Φίλτρο)             -->
+      <!-- ========================================================= -->
+      <div id="set4-box" class="p-5 md:p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-4">
+        <div class="flex items-center justify-between border-b pb-3">
+          <h2 class="text-sm md:text-base font-bold text-slate-800 flex items-center gap-2">
+            <span class="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold">Δ</span>
+            Σετ 4: Ποιο Εργαλείο Επιλέγουμε;
+          </h2>
+          <span id="set4-status" class="text-xs font-semibold text-slate-500">2 σενάρια</span>
+        </div>
+
+        <div class="space-y-4">
+          <!-- 4.1 -->
+          <div class="p-3.5 bg-white rounded-xl border border-slate-200 space-y-2" id="q4_1_container">
+            <p class="text-xs md:text-sm font-medium text-slate-700">1. «Θέλω να βρω ποιες πόλεις έχουν άνεμο 5 μποφόρ, κρύβοντας όλες τις υπόλοιπες.» Ποιο εργαλείο ταιριάζει;</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <label class="flex items-center gap-2 p-2 border rounded-lg cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="set4_q1" value="w1" class="text-blue-600">
+                <span>Αύξουσα Ταξινόμηση</span>
+              </label>
+              <label class="flex items-center gap-2 p-2 border rounded-lg cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="set4_q1" value="correct" class="text-blue-600">
+                <span>Χρήση Φίλτρου</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 4.2 -->
+          <div class="p-3.5 bg-white rounded-xl border border-slate-200 space-y-2" id="q4_2_container">
+            <p class="text-xs md:text-sm font-medium text-slate-700">2. «Θέλω να κατατάξω όλες τις πόλεις από την πιο κρύα στην πιο ζεστή.» Ποιο εργαλείο ταιριάζει;</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <label class="flex items-center gap-2 p-2 border rounded-lg cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="set4_q2" value="correct" class="text-blue-600">
+                <span>Αύξουσα Ταξινόμηση</span>
+              </label>
+              <label class="flex items-center gap-2 p-2 border rounded-lg cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="set4_q2" value="w1" class="text-blue-600">
+                <span>Αυτόματο Φίλτρο</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="flex gap-2">
+            <button onclick="checkSet4()" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow transition-all">
+              Έλεγχος Σετ 4
+            </button>
+            <button onclick="resetSet4()" id="btn-reset-set4" class="hidden px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition-all">
+              Διόρθωση / Δοκίμασε ξανά
+            </button>
+          </div>
+          <div id="set4-feedback" class="text-xs font-bold"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="bg-slate-100 p-4 border-t border-slate-200 text-center text-xs text-slate-500">
+      Πληροφορική ΣΤ΄ Δημοτικού • Μάθημα 18: Συγκέντρωση, διαχείριση και ταξινόμηση δεδομένων στο υπολογιστικό φύλλο
+    </div>
+
+  </div>
+
+  <script>
+    // Αρχικά δεδομένα πόλεων (από σελ. 61-62)
+    const initialData = [
+      { city: "Δουβλίνο", time: "1/3/2024 17:30", temp: 4, windSpeed: 16, windDir: "16 Μποφόρ ΒΑ", press: "985mb", weather: "ΑΡΚΕΤΑ ΣΥΝΝΕΦΑ" },
+      { city: "Μασσαλία", time: "1/3/2024 17:30", temp: 15, windSpeed: 16, windDir: "16 Μποφόρ ΒΔ", press: "1006mb", weather: "ΚΑΘΑΡΟΣ" },
+      { city: "Άμστερνταμ", time: "1/3/2024 17:25", temp: 9, windSpeed: 5, windDir: "5 Μποφόρ Ν", press: "999mb", weather: "ΑΡΚΕΤΑ ΣΥΝΝΕΦΑ" },
+      { city: "Βαρκελώνη", time: "1/3/2024 17:00", temp: 18, windSpeed: 14, windDir: "14 Μποφόρ ΒΔ", press: "1009mb", weather: "ΛΙΓΑ ΣΥΝΝΕΦΑ" },
+      { city: "Βαρσοβία", time: "1/3/2024 17:00", temp: 10, windSpeed: 5, windDir: "5 Μποφόρ Α", press: "1012mb", weather: "ΚΑΘΑΡΟΣ" },
+      { city: "Βελιγράδι", time: "1/3/2024 17:00", temp: 16, windSpeed: 5, windDir: "5 Μποφόρ Α", press: "1008mb", weather: "ΚΑΘΑΡΟΣ" },
+      { city: "Γενεύη", time: "1/3/2024 17:20", temp: 12, windSpeed: 3, windDir: "3 Μποφόρ Ν", press: "1007mb", weather: "ΛΙΓΑ ΣΥΝΝΕΦΑ" }
+    ];
+
+    let currentData = [...initialData];
+    let completedMissions = { m1: true, m2: false, m3: false };
+
+    function renderTable() {
+      const tbody = document.getElementById('calc-table-body');
+      tbody.innerHTML = '';
+      currentData.forEach((row, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = "h-7 hover:bg-slate-50";
+        const isD3 = (idx === 1); // Row 3 in sheet
+        tr.innerHTML = `
+          <td class="calc-row-header font-mono">${idx + 2}</td>
+          <td class="px-2 font-semibold">${row.city}</td>
+          <td class="px-2">${row.time}</td>
+          <td class="px-2">${row.temp}°C</td>
+          <td class="px-2 font-bold ${row.windSpeed >= 14 ? 'text-blue-700 bg-blue-50/50' : 'text-slate-700'} ${isD3 ? 'cell-selected' : ''}" onclick="selectCell('D${idx+2}', '${row.windDir}')">
+            ${row.windDir}
+          </td>
+          <td class="px-2">${row.press}</td>
+          <td class="px-2 text-slate-600">${row.weather}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function selectCell(cellRef, val) {
+      document.getElementById('calc-active-cell').innerText = cellRef;
+      document.getElementById('calc-fx-val').value = val;
+    }
+
+    function updateMissionCounter() {
+      const count = Object.values(completedMissions).filter(Boolean).length;
+      document.getElementById('mission-progress').innerText = `${count} / 3 Ολοκληρώθηκαν`;
+    }
+
+    function toggleMenuData() {
+      document.getElementById('menu-data-dropdown').classList.toggle('hidden');
+    }
+
+    function applySort(type) {
+      document.getElementById('menu-data-dropdown').classList.add('hidden');
+      if (type === 'desc') {
+        currentData.sort((a, b) => b.windSpeed - a.windSpeed);
+        document.getElementById('calc-status-text').innerText = "Κατάσταση: Φθίνουσα ταξινόμηση (Πρώτα οι ισχυροί άνεμοι 16 Μποφόρ)";
+        if (!completedMissions.m2) {
+          completedMissions.m2 = true;
+          document.getElementById('badge-m2').className = "text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800";
+          document.getElementById('badge-m2').innerText = "✓ Επιτυχία";
+          updateMissionCounter();
+        }
+      } else if (type === 'asc') {
+        currentData.sort((a, b) => a.windSpeed - b.windSpeed);
+        document.getElementById('calc-status-text').innerText = "Κατάσταση: Αύξουσα ταξινόμηση (Πρώτα οι ασθενείς άνεμοι 3 Μποφόρ)";
+        if (!completedMissions.m3) {
+          completedMissions.m3 = true;
+          document.getElementById('badge-m3').className = "text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800";
+          document.getElementById('badge-m3').innerText = "✓ Επιτυχία";
+          updateMissionCounter();
+        }
+      }
+      renderTable();
+    }
+
+    function resetSortOrder() {
+      document.getElementById('menu-data-dropdown').classList.add('hidden');
+      currentData = [...initialData];
+      document.getElementById('calc-status-text').innerText = "Κατάσταση: Επαναφορά αρχικής σειράς";
+      renderTable();
+    }
+
+    // ==========================================
+    // ΣΕΤ 1: ΕΛΕΓΧΟΣ & ΔΙΟΡΘΩΣΗ (Πολλαπλής)
+    // ==========================================
+    function checkSet1() {
+      const q1 = document.querySelector('input[name="set1_q1"]:checked');
+      const q2 = document.querySelector('input[name="set1_q2"]:checked');
+      const q3 = document.querySelector('input[name="set1_q3"]:checked');
+      const fb = document.getElementById('set1-feedback');
+      const resetBtn = document.getElementById('btn-reset-set1');
+
+      if (!q1 || !q2 || !q3) {
+        fb.innerHTML = '<span class="text-rose-600">Παρακαλώ απάντησε και στις 3 ερωτήσεις του Σετ 1!</span>';
+        return;
+      }
+
+      const q1Ok = (q1.value === 'correct');
+      const q2Ok = (q2.value === 'correct');
+      const q3Ok = (q3.value === 'correct');
+
+      document.getElementById('q1_1_container').className = q1Ok ? "p-3.5 bg-white rounded-xl border border-emerald-400 space-y-2" : "p-3.5 bg-rose-50/50 rounded-xl border border-rose-300 space-y-2";
+      document.getElementById('q1_2_container').className = q2Ok ? "p-3.5 bg-white rounded-xl border border-emerald-400 space-y-2" : "p-3.5 bg-rose-50/50 rounded-xl border border-rose-300 space-y-2";
+      document.getElementById('q1_3_container').className = q3Ok ? "p-3.5 bg-white rounded-xl border border-emerald-400 space-y-2" : "p-3.5 bg-rose-50/50 rounded-xl border border-rose-300 space-y-2";
+
+      const totalOk = [q1Ok, q2Ok, q3Ok].filter(Boolean).length;
+
+      if (totalOk === 3) {
+        fb.innerHTML = '<span class="text-emerald-600">🎉 Μπράβο! Όλες οι απαντήσεις του Σετ 1 είναι σωστές (3/3)!</span>';
+        resetBtn.classList.add('hidden');
+      } else {
+        fb.innerHTML = `<span class="text-amber-600">Έχεις ${totalOk}/3 σωστές. Έλεγξε τα σημεία με κόκκινο περίγραμμα!</span>`;
+        resetBtn.classList.remove('hidden');
+      }
+    }
+
+    function resetSet1() {
+      document.querySelectorAll('input[name^="set1_"]').forEach(r => r.checked = false);
+      ['q1_1_container', 'q1_2_container', 'q1_3_container'].forEach(id => {
+        document.getElementById(id).className = "p-3.5 bg-white rounded-xl border border-slate-200 space-y-2";
+      });
+      document.getElementById('set1-feedback').innerHTML = "";
+      document.getElementById('btn-reset-set1').classList.add('hidden');
+    }
+
+    // ==========================================
+    // ΣΕΤ 2: ΕΛΕΓΧΟΣ & ΔΙΟΡΘΩΣΗ (Σωστό/Λάθος)
+    // ==========================================
+    function checkSet2() {
+      const q1 = document.querySelector('input[name="set2_q1"]:checked');
+      const q2 = document.querySelector('input[name="set2_q2"]:checked');
+      const q3 = document.querySelector('input[name="set2_q3"]:checked');
+      const q4 = document.querySelector('input[name="set2_q4"]:checked');
+      const fb = document.getElementById('set2-feedback');
+      const resetBtn = document.getElementById('btn-reset-set2');
+
+      if (!q1 || !q2 || !q3 || !q4) {
+        fb.innerHTML = '<span class="text-rose-600">Παρακαλώ απάντησε και στις 4 προτάσεις του Σετ 2!</span>';
+        return;
+      }
+
+      // 1->Σωστό(S), 2->Λάθος(L), 3->Σωστό(S), 4->Σωστό(S)
+      const q1Ok = (q1.value === 'S');
+      const q2Ok = (q2.value === 'L');
+      const q3Ok = (q3.value === 'S');
+      const q4Ok = (q4.value === 'S');
+
+      document.getElementById('q2_1_container').className = q1Ok ? "p-3 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-2" : "p-3 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-2";
+      document.getElementById('q2_2_container').className = q2Ok ? "p-3 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-2" : "p-3 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-2";
+      document.getElementById('q2_3_container').className = q3Ok ? "p-3 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-2" : "p-3 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-2";
+      document.getElementById('q2_4_container').className = q4Ok ? "p-3 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-2" : "p-3 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-2";
+
+      const totalOk = [q1Ok, q2Ok, q3Ok, q4Ok].filter(Boolean).length;
+
+      if (totalOk === 4) {
+        fb.innerHTML = '<span class="text-emerald-600">🎉 Άριστα! Και οι 4 κρίσεις του Σετ 2 είναι σωστές (4/4)!</span>';
+        resetBtn.classList.add('hidden');
+      } else {
+        fb.innerHTML = `<span class="text-amber-600">Έχεις ${totalOk}/4 σωστές κρίσεις. Μπορείς να αλλάξεις τις επιλογές σου!</span>`;
+        resetBtn.classList.remove('hidden');
+      }
+    }
+
+    function resetSet2() {
+      document.querySelectorAll('input[name^="set2_"]').forEach(r => r.checked = false);
+      ['q2_1_container', 'q2_2_container', 'q2_3_container', 'q2_4_container'].forEach(id => {
+        document.getElementById(id).className = "p-3 bg-white rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2";
+      });
+      document.getElementById('set2-feedback').innerHTML = "";
+      document.getElementById('btn-reset-set2').classList.add('hidden');
+    }
+
+    // ==========================================
+    // ΣΕΤ 3: ΕΛΕΓΧΟΣ & ΔΙΟΡΘΩΣΗ (Ανάλυση Πίνακα)
+    // ==========================================
+    function checkSet3() {
+      const q1 = document.getElementById('set3_q1').value;
+      const q2 = document.getElementById('set3_q2').value;
+      const q3 = document.getElementById('set3_q3').value;
+      const fb = document.getElementById('set3-feedback');
+      const resetBtn = document.getElementById('btn-reset-set3');
+
+      if (!q1 || !q2 || !q3) {
+        fb.innerHTML = '<span class="text-rose-600">Παρακαλώ επίλεξε απάντηση για όλα τα ερωτήματα του Σετ 3!</span>';
+        return;
+      }
+
+      const q1Ok = (q1 === 'dub_mas');
+      const q2Ok = (q2 === 'gen');
+      const q3Ok = (q3 === 'barc');
+
+      document.getElementById('q3_1_container').className = q1Ok ? "p-3 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-2" : "p-3 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-2";
+      document.getElementById('q3_2_container').className = q2Ok ? "p-3 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-2" : "p-3 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-2";
+      document.getElementById('q3_3_container').className = q3Ok ? "p-3 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-2" : "p-3 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-2";
+
+      const totalOk = [q1Ok, q2Ok, q3Ok].filter(Boolean).length;
+
+      if (totalOk === 3) {
+        fb.innerHTML = '<span class="text-emerald-600">🎉 Μπράβο! Ολοκλήρωσες επιτυχώς το Σετ 3 (3/3)!</span>';
+        resetBtn.classList.add('hidden');
+      } else {
+        fb.innerHTML = `<span class="text-amber-600">Έχεις ${totalOk}/3 σωστές επιλογές. Διόρθωσε τα κόκκινα σημεία!</span>`;
+        resetBtn.classList.remove('hidden');
+      }
+    }
+
+    function resetSet3() {
+      document.getElementById('set3_q1').value = "";
+      document.getElementById('set3_q2').value = "";
+      document.getElementById('set3_q3').value = "";
+      ['q3_1_container', 'q3_2_container', 'q3_3_container'].forEach(id => {
+        document.getElementById(id).className = "p-3 bg-white rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2";
+      });
+      document.getElementById('set3-feedback').innerHTML = "";
+      document.getElementById('btn-reset-set3').classList.add('hidden');
+    }
+
+    // ==========================================
+    // ΣΕΤ 4: ΕΛΕΓΧΟΣ & ΔΙΟΡΘΩΣΗ (Σενάρια Χρήσης)
+    // ==========================================
+    function checkSet4() {
+      const q1 = document.querySelector('input[name="set4_q1"]:checked');
+      const q2 = document.querySelector('input[name="set4_q2"]:checked');
+      const fb = document.getElementById('set4-feedback');
+      const resetBtn = document.getElementById('btn-reset-set4');
+
+      if (!q1 || !q2) {
+        fb.innerHTML = '<span class="text-rose-600">Παρακαλώ απάντησε και στα 2 σενάρια του Σετ 4!</span>';
+        return;
+      }
+
+      const q1Ok = (q1.value === 'correct');
+      const q2Ok = (q2.value === 'correct');
+
+      document.getElementById('q4_1_container').className = q1Ok ? "p-3.5 bg-white rounded-xl border border-emerald-400 space-y-2" : "p-3.5 bg-rose-50/50 rounded-xl border border-rose-300 space-y-2";
+      document.getElementById('q4_2_container').className = q2Ok ? "p-3.5 bg-white rounded-xl border border-emerald-400 space-y-2" : "p-3.5 bg-rose-50/50 rounded-xl border border-rose-300 space-y-2";
+
+      const totalOk = [q1Ok, q2Ok].filter(Boolean).length;
+
+      if (totalOk === 2) {
+        fb.innerHTML = '<span class="text-emerald-600">🎉 Εξαιρετικά! Και τα 2 σενάρια είναι απόλυτα σωστά (2/2)!</span>';
+        resetBtn.classList.add('hidden');
+      } else {
+        fb.innerHTML = `<span class="text-amber-600">Έχεις ${totalOk}/2 σωστές. Θυμήσου: όταν θέλουμε να κρύψουμε γραμμές χρησιμοποιούμε φίλτρο!</span>`;
+        resetBtn.classList.remove('hidden');
+      }
+    }
+
+    function resetSet4() {
+      document.querySelectorAll('input[name^="set4_"]').forEach(r => r.checked = false);
+      ['q4_1_container', 'q4_2_container'].forEach(id => {
+        document.getElementById(id).className = "p-3.5 bg-white rounded-xl border border-slate-200 space-y-2";
+      });
+      document.getElementById('set4-feedback').innerHTML = "";
+      document.getElementById('btn-reset-set4').classList.add('hidden');
+    }
+
+    // Αρχικοποίηση πίνακα κατά τη φόρτωση
+    window.onload = function() {
+      renderTable();
+      updateMissionCounter();
+    };
+  </script>
+</body>
+</html>
