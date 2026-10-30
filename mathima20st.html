@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Μάθημα 20: Ερωτήματα και Ανάλυση Δεδομένων</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .tab-btn.active {
+      background-color: #4f46e5;
+      color: #ffffff;
+      border-color: #4f46e5;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen p-3 sm:p-5 md:p-8 flex flex-col items-center text-base leading-relaxed">
+
+  <div class="max-w-4xl w-full bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-indigo-600 to-purple-700 p-5 sm:p-6 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl backdrop-blur-md shrink-0">
+          📊
+        </div>
+        <div>
+          <span class="bg-white/20 text-indigo-100 text-xs sm:text-sm font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+            Πληροφορική ΣΤ΄ Δημοτικού • Ενότητα 3
+          </span>
+          <h1 class="text-xl sm:text-2xl font-black mt-1">Μάθημα 20: Ερωτήματα & Ανάλυση Δεδομένων</h1>
+        </div>
+      </div>
+      <div class="bg-white/20 px-4 py-2 rounded-2xl text-center backdrop-blur-md shrink-0">
+        <div class="text-xs text-indigo-100 font-bold uppercase tracking-wider">Συνολικό Σκορ</div>
+        <div id="score-display" class="text-2xl font-black text-white">0 / 800</div>
+      </div>
+    </header>
+
+    <!-- Μπάρα Πλοήγησης (8 Επίπεδα) -->
+    <nav class="bg-slate-50 border-b border-slate-200 p-2.5 overflow-x-auto">
+      <div class="flex gap-2 min-w-max">
+        <button onclick="changeTab(1)" id="tbtn-1" class="tab-btn active px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
+          1. Ερωτήματα Έρευνας
+        </button>
+        <button onclick="changeTab(2)" id="tbtn-2" class="tab-btn px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
+          2. Ερωτήσεις Ναι/Όχι
+        </button>
+        <button onclick="changeTab(3)" id="tbtn-3" class="tab-btn px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
+          3. Ποσοτικές Ερωτήσεις
+        </button>
+        <button onclick="changeTab(4)" id="tbtn-4" class="tab-btn px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
+          4. Πολλαπλές Επιλογές
+        </button>
+        <button onclick="changeTab(5)" id="tbtn-5" class="tab-btn px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
+          5. Έτοιμα Δεδομένα
+        </button>
+        <button onclick="changeTab(6)" id="tbtn-6" class="tab-btn px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
+          6. Big Data & Προτάσεις
+        </button>
+        <button onclick="changeTab(7)" id="tbtn-7" class="tab-btn px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
+          7. Επιλογή Γραφήματος
+        </button>
+        <button onclick="changeTab(8)" id="tbtn-8" class="tab-btn px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
+          8. Λήψη Αποφάσεων
+        </button>
+      </div>
+    </nav>
+
+    <!-- Περιεχόμενο Δραστηριοτήτων -->
+    <main class="p-4 sm:p-6 md:p-8 flex-grow">
+
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 1: Ερωτήματα Έρευνας         -->
+      <!-- ========================================== -->
+      <section id="pane-1" class="tab-pane space-y-5">
+        <div class="border-b pb-3 flex items-center justify-between">
+          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold">1</span>
+            Κατάλληλα και Ακατάλληλα Ερωτήματα (σελ. 69)
+          </h2>
+          <span class="text-xs sm:text-sm font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">+100 Πόντοι</span>
+        </div>
+        <p class="text-slate-600 text-sm sm:text-base">Επίλεξε τη σωστή κρίση για τα ερωτήματα που τίθενται σε μια έρευνα:</p>
+
+        <div class="space-y-4">
+          <div id="box-1-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Ποια ερωτήματα είναι κατάλληλα για στατιστική ανάλυση δεδομένων;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g1_q1" value="0" class="w-4 h-4 text-indigo-600">
+                <span>Ερωτήματα που αφορούν ένα μεμονωμένο άτομο και έχουν μία μοναδική απάντηση.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g1_q1" value="1" class="w-4 h-4 text-indigo-600">
+                <span>Ερωτήματα που απευθύνονται σε ομάδα ανθρώπων και παρουσιάζουν ποικιλία απαντήσεων.</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="box-1-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Ποιο από τα παρακάτω ερωτήματα είναι ακατάλληλο για έρευνα στην τάξη;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g1_q2" value="1" class="w-4 h-4 text-indigo-600">
+                <span>«Ποιο είναι το αγαπημένο επιτραπέζιο παιχνίδι του Νίκου;»</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g1_q2" value="0" class="w-4 h-4 text-indigo-600">
+                <span>«Ποιο είναι το αγαπημένο επιτραπέζιο παιχνίδι των μαθητών της ΣΤ΄ τάξης;»</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="box-1-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Τι επιδιώκουμε όταν διατυπώνουμε ένα ερευνητικό ερώτημα;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g1_q3" value="0" class="w-4 h-4 text-indigo-600">
+                <span>Να επιβάλουμε τη δική μας προσωπική προτίμηση στους υπόλοιπους.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g1_q3" value="1" class="w-4 h-4 text-indigo-600">
+                <span>Να συλλέξουμε δεδομένα για να κατανοήσουμε τις συνήθειες ή απόψεις ενός συνόλου.</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-3">
+          <button onclick="checkGroup(1, ['g1_q1', 'g1_q2', 'g1_q3'])" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow transition-all">
+            Έλεγχος 1
+          </button>
+          <div id="fb-1" class="text-sm font-bold"></div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 2: Ερωτήσεις Ναι/Όχι          -->
+      <!-- ========================================== -->
+      <section id="pane-2" class="tab-pane space-y-5 hidden">
+        <div class="border-b pb-3 flex items-center justify-between">
+          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold">2</span>
+            Ερωτήσεις Κλειστού Τύπου «Ναι / Όχι» (σελ. 70)
+          </h2>
+          <span class="text-xs sm:text-sm font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">+100 Πόντοι</span>
+        </div>
+        <p class="text-slate-600 text-sm sm:text-base">Απάντησε στις ερωτήσεις για τη συλλογή δυαδικών δεδομένων:</p>
+
+        <div class="space-y-4">
+          <div id="box-2-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Ποια από τις παρακάτω ερωτήσεις ανήκει στην κατηγορία «Ναι / Όχι»;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g2_q1" value="0" class="w-4 h-4 text-indigo-600">
+                <span>«Πόσες ώρες διαβάζεις εξωσχολικά βιβλία την εβδομάδα;»</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g2_q1" value="1" class="w-4 h-4 text-indigo-600">
+                <span>«Έχεις κατοικίδιο ζώο στο σπίτι σου;»</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="box-2-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Πόσες πιθανές επιλογές προσφέρει στον χρήστη μια ερώτηση τύπου «Ναι / Όχι»;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g2_q2" value="1" class="w-4 h-4 text-indigo-600">
+                <span>Ακριβώς δύο καθορισμένες επιλογές.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g2_q2" value="0" class="w-4 h-4 text-indigo-600">
+                <span>Απεριόριστες επιλογές με ελεύθερη γραφή κειμένου.</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="box-2-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Ποιο διάγραμμα είναι ιδανικό για να δείξει την αναλογία του «Ναι» και του «Όχι» σε ένα σύνολο;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g2_q3" value="0" class="w-4 h-4 text-indigo-600">
+                <span>Χρονοδιάγραμμα γεγονότων.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g2_q3" value="1" class="w-4 h-4 text-indigo-600">
+                <span>Κυκλικό διάγραμμα (πίτα) χωρισμένο σε δύο μερίδια.</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-3">
+          <button onclick="checkGroup(2, ['g2_q1', 'g2_q2', 'g2_q3'])" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow transition-all">
+            Έλεγχος 2
+          </button>
+          <div id="fb-2" class="text-sm font-bold"></div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 3: Ποσοτικές Ερωτήσεις       -->
+      <!-- ========================================== -->
+      <section id="pane-3" class="tab-pane space-y-5 hidden">
+        <div class="border-b pb-3 flex items-center justify-between">
+          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold">3</span>
+            Ερωτήσεις με Αριθμητικές Τιμές (σελ. 70)
+          </h2>
+          <span class="text-xs sm:text-sm font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">+100 Πόντοι</span>
+        </div>
+        <p class="text-slate-600 text-sm sm:text-base">Διαχείριση δεδομένων που εκφράζονται με μετρήσιμα ποσά:</p>
+
+        <div class="space-y-4">
+          <div id="box-3-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Ποια ερώτηση παράγει ποσοτικά (αριθμητικά) δεδομένα;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g3_q1" value="1" class="w-4 h-4 text-indigo-600">
+                <span>«Πόσες ώρες την ημέρα ασχολείσαι με αθλητικές δραστηριότητες;»</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g3_q1" value="0" class="w-4 h-4 text-indigo-600">
+                <span>«Ποιο είναι το αγαπημένο σου χρώμα;»</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="box-3-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Ποιες αριθμητικές πράξεις μπορούμε να εφαρμόσουμε στα ποσοτικά δεδομένα;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g3_q2" value="0" class="w-4 h-4 text-indigo-600">
+                <span>Καμία πράξη, τα καταγράφουμε μόνο ως απλό κείμενο.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g3_q2" value="1" class="w-4 h-4 text-indigo-600">
+                <span>Υπολογισμό αθροίσματος, μέσου όρου, μέγιστης και ελάχιστης τιμής.</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="box-3-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Ποια είναι η καλύτερη μορφή καταγραφής αριθμητικών απαντήσεων σε φόρμα;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g3_q3" value="1" class="w-4 h-4 text-indigo-600">
+                <span>Καθορισμένες κλίμακες επιλογής (π.χ. 0 ώρες, 1 ώρα, 2 ώρες, πάνω από 3 ώρες).</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g3_q3" value="0" class="w-4 h-4 text-indigo-600">
+                <span>Πλήρης ελευθερία να γράφει ο καθένας μεγάλες περιγραφικές παραγράφους.</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-3">
+          <button onclick="checkGroup(3, ['g3_q1', 'g3_q2', 'g3_q3'])" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow transition-all">
+            Έλεγχος 3
+          </button>
+          <div id="fb-3" class="text-sm font-bold"></div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 4: Πολλαπλές Επιλογές         -->
+      <!-- ========================================== -->
+      <section id="pane-4" class="tab-pane space-y-5 hidden">
+        <div class="border-b pb-3 flex items-center justify-between">
+          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold">4</span>
+            Ερωτήσεις με Κατηγορίες Λέξεων (σελ. 70)
+          </h2>
+          <span class="text-xs sm:text-sm font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">+100 Πόντοι</span>
+        </div>
+        <p class="text-slate-600 text-sm sm:text-base">Οργάνωση ποιοτικών δεδομένων σε προκαθορισμένες κατηγορίες:</p>
+
+        <div class="space-y-4">
+          <div id="box-4-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Σε μια έρευνα για το αγαπημένο άθλημα, ποιες είναι κατάλληλες επιλογές απάντησης;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g4_q1" value="0" class="w-4 h-4 text-indigo-600">
+                <span>Ναι, Όχι, Ίσως.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g4_q1" value="1" class="w-4 h-4 text-indigo-600">
+                <span>Ποδόσφαιρο, Μπάσκετ, Βόλεϊ, Κολύμβηση, Άλλο.</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="box-4-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Γιατί προσθέτουμε συνήθως την επιλογή «Άλλο» σε τέτοιες ερωτήσεις;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g4_q2" value="1" class="w-4 h-4 text-indigo-600">
+                <span>Για να καλυφθούν απαντήσεις που δεν περιλαμβάνονται στις βασικές επιλογές.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g4_q2" value="0" class="w-4 h-4 text-indigo-600">
+                <span>Γιατί είναι υποχρεωτικό από το πρόγραμμα να υπάρχουν 10 επιλογές.</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="box-4-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Ποιο είναι το πλεονέκτημα των προκαθορισμένων κατηγοριών στην επεξεργασία;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g4_q3" value="1" class="w-4 h-4 text-indigo-600">
+                <span>Μπορούν να ομαδοποιηθούν αυτόματα σε πίνακα συχνοτήτων χωρίς χειρόγραφο μέτρημα.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g4_q3" value="0" class="w-4 h-4 text-indigo-600">
+                <span>Κανένα πλεονέκτημα, το ελεύθερο κείμενο είναι πάντα προτιμότερο.</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-3">
+          <button onclick="checkGroup(4, ['g4_q1', 'g4_q2', 'g4_q3'])" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow transition-all">
+            Έλεγχος 4
+          </button>
+          <div id="fb-4" class="text-sm font-bold"></div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 5: Έτοιμα Δεδομένα           -->
+      <!-- ========================================== -->
+      <section id="pane-5" class="tab-pane space-y-5 hidden">
+        <div class="border-b pb-3 flex items-center justify-between">
+          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold">5</span>
+            Έτοιμες Πηγές Δεδομένων (σελ. 70)
+          </h2>
+          <span class="text-xs sm:text-sm font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">+100 Πόντοι</span>
+        </div>
+        <p class="text-slate-600 text-sm sm:text-base">Αναζήτηση υπαρχόντων στοιχείων από επίσημους φορείς:</p>
+
+        <div class="space-y-4">
+          <div id="box-5-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Χρειάζεται να διεξάγουμε πάντα δική μας έρευνα για να βρούμε στατιστικά στοιχεία;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g5_q1" value="0" class="w-4 h-4 text-indigo-600">
+                <span>Ναι, είναι ο μόνος έγκυρος τρόπος πληροφόρησης.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g5_q1" value="1" class="w-4 h-4 text-indigo-600">
+                <span>Όχι, μπορούμε να αξιοποιήσουμε έτοιμα δεδομένα που δημοσιεύουν επίσημοι οργανισμοί.</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="box-5-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Ποιος δημόσιος φορέας στην Ελλάδα συλλέγει και δημοσιεύει επίσημα στατιστικά δεδομένα;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g5_q2" value="1" class="w-4 h-4 text-indigo-600">
+                <span>Η Ελληνική Στατιστική Αρχή (ΕΛΣΤΑΤ).</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g5_q2" value="0" class="w-4 h-4 text-indigo-600">
+                <span>Ένα ηλεκτρονικό κατάστημα πώλησης παιχνιδιών.</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="box-5-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Τι προσέχουμε όταν χρησιμοποιούμε έτοιμα δεδομένα από το διαδίκτυο;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g5_q3" value="1" class="w-4 h-4 text-indigo-600">
+                <span>Να προέρχονται από αξιόπιστη πηγή και να αναφέρουν την ημερομηνία συλλογής τους.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g5_q3" value="0" class="w-4 h-4 text-indigo-600">
+                <span>Να είναι γραμμένα υποχρεωτικά μόνο σε ξένη γλώσσα.</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-3">
+          <button onclick="checkGroup(5, ['g5_q1', 'g5_q2', 'g5_q3'])" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow transition-all">
+            Έλεγχος 5
+          </button>
+          <div id="fb-5" class="text-sm font-bold"></div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 6: Big Data & Προτάσεις      -->
+      <!-- ========================================== -->
+      <section id="pane-6" class="tab-pane space-y-5 hidden">
+        <div class="border-b pb-3 flex items-center justify-between">
+          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold">6</span>
+            Μεγάλα Δεδομένα και Αλγόριθμοι (σελ. 70)
+          </h2>
+          <span class="text-xs sm:text-sm font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">+100 Πόντοι</span>
+        </div>
+        <p class="text-slate-600 text-sm sm:text-base">Πώς οι σύγχρονες εφαρμογές αξιοποιούν τα δεδομένα των χρηστών:</p>
+
+        <div class="space-y-4">
+          <div id="box-6-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Πώς μια πλατφόρμα μουσικής καταλαβαίνει ποια τραγούδια μας αρέσουν;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g6_q1" value="1" class="w-4 h-4 text-indigo-600">
+                <span>Καταγράφει τις αναζητήσεις και τις ακροάσεις μας και αναλύει τις προτιμήσεις μας.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g6_q1" value="0" class="w-4 h-4 text-indigo-600">
+                <span>Επιλέγει πάντα στην τύχη χωρίς κανένα ιστορικό χρήσης.</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="box-6-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Τι σημαίνει ο όρος «Μηχανική Μάθηση» (Machine Learning);</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g6_q2" value="0" class="w-4 h-4 text-indigo-600">
+                <span>Η κατασκευή ενός φυσικού ρομπότ από πλαστικό.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g6_q2" value="1" class="w-4 h-4 text-indigo-600">
+                <span>Η ικανότητα των υπολογιστικών συστημάτων να μαθαίνουν και να βελτιώνονται μέσα από δεδομένα.</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="box-6-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Τι ονομάζουμε «Μεγάλα Δεδομένα» (Big Data);</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g6_q3" value="1" class="w-4 h-4 text-indigo-600">
+                <span>Τεράστιους όγκους πληροφοριών που συγκεντρώνονται με μεγάλη ταχύτητα από πολλές πηγές.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g6_q3" value="0" class="w-4 h-4 text-indigo-600">
+                <span>Ένα απλό αρχείο κειμένου που περιέχει μόνο 5 λέξεις.</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-3">
+          <button onclick="checkGroup(6, ['g6_q1', 'g6_q2', 'g6_q3'])" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow transition-all">
+            Έλεγχος 6
+          </button>
+          <div id="fb-6" class="text-sm font-bold"></div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 7: Επιλογή Γραφήματος        -->
+      <!-- ========================================== -->
+      <section id="pane-7" class="tab-pane space-y-5 hidden">
+        <div class="border-b pb-3 flex items-center justify-between">
+          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold">7</span>
+            Οπτικοποίηση Δεδομένων σε Διαγράμματα (σελ. 71)
+          </h2>
+          <span class="text-xs sm:text-sm font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">+100 Πόντοι</span>
+        </div>
+        <p class="text-slate-600 text-sm sm:text-base">Επίλεξε την καταλληλότερη μορφή παρουσίασης για κάθε περίπτωση:</p>
+
+        <div class="space-y-4">
+          <div id="box-7-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Ποιο διάγραμμα είναι ιδανικό για να συγκρίνουμε τις ποσότητες διαφορετικών κατηγοριών;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g7_q1" value="0" class="w-4 h-4 text-indigo-600">
+                <span>Ένα απλό σχέδιο ζωγραφικής.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g7_q1" value="1" class="w-4 h-4 text-indigo-600">
+                <span>Ένα ραβδόγραμμα (διάγραμμα στηλών).</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="box-7-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Πότε προτιμάμε το κυκλικό διάγραμμα (πίτα);</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g7_q2" value="1" class="w-4 h-4 text-indigo-600">
+                <span>Όταν θέλουμε να δείξουμε πώς μοιράζεται ένα σύνολο σε επιμέρους ποσοστά.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g7_q2" value="0" class="w-4 h-4 text-indigo-600">
+                <span>Όταν θέλουμε να καταγράψουμε μια ιστορία με παραγράφους.</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="box-7-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Τι πρέπει να έχουμε ετοιμάσει πριν εισαγάγουμε ένα διάγραμμα;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g7_q3" value="1" class="w-4 h-4 text-indigo-600">
+                <span>Έναν οργανωμένο πίνακα με δεδομένα σε γραμμές και στήλες στο υπολογιστικό φύλλο.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g7_q3" value="0" class="w-4 h-4 text-indigo-600">
+                <span>Μια ηχογράφηση φωνής.</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-3">
+          <button onclick="checkGroup(7, ['g7_q1', 'g7_q2', 'g7_q3'])" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow transition-all">
+            Έλεγχος 7
+          </button>
+          <div id="fb-7" class="text-sm font-bold"></div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 8: Λήψη Αποφάσεων            -->
+      <!-- ========================================== -->
+      <section id="pane-8" class="tab-pane space-y-5 hidden">
+        <div class="border-b pb-3 flex items-center justify-between">
+          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold">8</span>
+            Ανάλυση Δεδομένων & Λήψη Αποφάσεων (σελ. 70-71)
+          </h2>
+          <span class="text-xs sm:text-sm font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">+100 Πόντοι</span>
+        </div>
+        <p class="text-slate-600 text-sm sm:text-base">Πώς η ανάλυση στοιχείων οδηγεί σε σωστές αποφάσεις:</p>
+
+        <div class="space-y-4">
+          <div id="box-8-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Η τάξη οργανώνει εκδρομή και θέλει να επιλέξει προορισμό. Ποιο είναι το ορθό πρώτο βήμα;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g8_q1" value="0" class="w-4 h-4 text-indigo-600">
+                <span>Αποφασίζει ένας μαθητής στην τύχη χωρίς να ρωτήσει κανέναν.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g8_q1" value="1" class="w-4 h-4 text-indigo-600">
+                <span>Συλλέγονται οι προτιμήσεις όλων των μαθητών μέσω ενός ερωτηματολογίου.</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="box-8-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Πώς βοηθά ένα γράφημα στην παρουσίαση των αποτελεσμάτων μιας έρευνας;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g8_q2" value="1" class="w-4 h-4 text-indigo-600">
+                <span>Επιτρέπει την άμεση και κατανοητή σύγκριση των απαντήσεων με μια ματιά.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g8_q2" value="0" class="w-4 h-4 text-indigo-600">
+                <span>Κρύβει τα πραγματικά αποτελέσματα από τους υπόλοιπους.</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="box-8-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Ποιος είναι ο τελικός στόχος της συλλογής και επεξεργασίας δεδομένων;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g8_q3" value="0" class="w-4 h-4 text-indigo-600">
+                <span>Να γεμίζουμε τη μνήμη του υπολογιστή με αρχεία.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g8_q3" value="1" class="w-4 h-4 text-indigo-600">
+                <span>Να εξάγουμε συμπεράσματα και να λαμβάνουμε τεκμηριωμένες αποφάσεις.</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-3">
+          <button onclick="checkGroup(8, ['g8_q1', 'g8_q2', 'g8_q3'])" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow transition-all">
+            Έλεγχος 8
+          </button>
+          <div id="fb-8" class="text-sm font-bold"></div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Modal Ολοκλήρωσης -->
+    <div id="win-modal" class="hidden m-4 sm:m-6 p-6 sm:p-8 bg-indigo-50 border-2 border-indigo-400 rounded-3xl text-center space-y-4">
+      <div class="text-5xl">🏆</div>
+      <h3 class="text-2xl font-black text-indigo-900">Συγχαρητήρια! Είσαι Master Ανάλυσης Δεδομένων!</h3>
+      <p class="text-slate-600 max-w-md mx-auto">
+        Ολοκλήρωσες επιτυχώς και τις 8 δραστηριότητες του Μαθήματος 20. Τώρα γνωρίζεις πώς να διατυπώνεις σωστά ερωτήματα, να συλλέγεις δεδομένα και να τα αναλύεις με κατάλληλα γραφήματα!
+      </p>
+      <div class="text-3xl font-black text-indigo-600">800 / 800 Πόντοι</div>
+      <button onclick="location.reload()" class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow">Παίξε Ξανά</button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-100 p-4 border-t border-slate-200 text-center text-xs sm:text-sm text-slate-500">
+      Πληροφορική ΣΤ΄ Δημοτικού • Μάθημα 20: Ερωτήματα και ανάλυση δεδομένων
+    </footer>
+
+  </div>
+
+  <script>
+    let scores = { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0 };
+
+    function updateTotalScore() {
+      const sum = Object.values(scores).reduce((a, b) => a + b, 0);
+      document.getElementById('score-display').innerText = `${sum} / 800`;
+      if (sum === 800) {
+        document.getElementById('win-modal').classList.remove('hidden');
+      }
+    }
+
+    function changeTab(n) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+      const target = document.getElementById(`pane-${n}`);
+      if (target) target.classList.remove('hidden');
+
+      const btn = document.getElementById(`tbtn-${n}`);
+      if (btn) btn.classList.add('active');
+    }
+
+    function checkGroup(actNum, names) {
+      const fb = document.getElementById(`fb-${actNum}`);
+      let answeredCount = 0;
+      let correctCount = 0;
+
+      names.forEach((name, idx) => {
+        const box = document.getElementById(`box-${actNum}-${idx + 1}`);
+        const checked = document.querySelector(`input[name="${name}"]:checked`);
+
+        if (checked) {
+          answeredCount++;
+          if (checked.value === "1") {
+            correctCount++;
+            box.className = "p-4 bg-white border-2 border-emerald-400 rounded-2xl space-y-2";
+          } else {
+            box.className = "p-4 bg-rose-50 border-2 border-rose-300 rounded-2xl space-y-2";
+          }
+        } else {
+          box.className = "p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2";
+        }
+      });
+
+      if (answeredCount < names.length) {
+        fb.innerHTML = '<span class="text-rose-600">Απάντησε και στις 3 ερωτήσεις!</span>';
+        return;
+      }
+
+      if (correctCount === names.length) {
+        scores[actNum] = 100;
+        updateTotalScore();
+        fb.innerHTML = '<span class="text-emerald-600">🎉 Μπράβο! Όλες οι απαντήσεις είναι σωστές (3/3)!</span>';
+      } else {
+        scores[actNum] = 0;
+        updateTotalScore();
+        fb.innerHTML = '<span class="text-amber-600">Υπάρχει λάθος. Διόρθωσε τις κόκκινες κάρτες και ξαναπάτα έλεγχο!</span>';
+      }
+    }
+  </script>
+</body>
+</html>
