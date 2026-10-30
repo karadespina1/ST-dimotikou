@@ -7,596 +7,605 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    .game-tab.active {
-      background: linear-gradient(135deg, #0284c7, #0ea5e9);
-      color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
+    .tab-btn.active {
+      background-color: #0284c7;
+      color: #ffffff;
+      border-color: #0284c7;
     }
   </style>
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans min-h-screen p-3 sm:p-5 md:p-8 flex flex-col items-center selection:bg-sky-500 selection:text-white text-[17px] leading-relaxed">
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen p-3 sm:p-5 md:p-8 flex flex-col items-center text-base leading-relaxed">
 
-  <div class="max-w-5xl w-full bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
+  <div class="max-w-4xl w-full bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden flex flex-col">
 
     <!-- Header -->
-    <header class="bg-gradient-to-r from-sky-600 via-cyan-600 to-blue-700 p-5 sm:p-7 text-white flex flex-col md:flex-row items-center justify-between gap-4">
+    <header class="bg-gradient-to-r from-sky-600 via-cyan-600 to-blue-700 p-5 sm:p-6 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
       <div class="flex items-center gap-4">
-        <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-3xl backdrop-blur-md shadow-inner border border-white/30 shrink-0">
+        <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl backdrop-blur-md shrink-0">
           📷
         </div>
         <div>
           <span class="bg-white/20 text-sky-100 text-xs sm:text-sm font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-            Πληροφορική ΣΤ΄ Δημοτικού • Μάθημα 21
+            Πληροφορική ΣΤ΄ Δημοτικού • Ενότητα 4
           </span>
-          <h1 class="text-2xl sm:text-3xl font-black mt-1">Εναλλακτικοί Τρόποι Αναζήτησης</h1>
+          <h1 class="text-xl sm:text-2xl font-black mt-1">Μάθημα 21: Εναλλακτικοί Τρόποι Αναζήτησης</h1>
         </div>
       </div>
-      <div class="bg-white/20 px-5 py-2.5 rounded-2xl text-center backdrop-blur-md border border-white/20 shrink-0">
+      <div class="bg-white/20 px-4 py-2 rounded-2xl text-center backdrop-blur-md shrink-0">
         <div class="text-xs text-sky-100 font-bold uppercase tracking-wider">Συνολικό Σκορ</div>
-        <div id="total-score-val" class="text-2xl font-black text-white">0 / 800</div>
+        <div id="score-display" class="text-2xl font-black text-white">0 / 800</div>
       </div>
     </header>
 
-    <!-- Navigation Tabs -->
-    <nav class="bg-slate-50 border-b border-slate-200 p-3 overflow-x-auto">
-      <div class="flex gap-2.5 min-w-max">
-        <button onclick="goToAct(1)" id="tab-1" class="game-tab active px-4 py-2.5 rounded-xl text-sm md:text-base font-bold border border-slate-200 hover:bg-white transition-all">
-          1. Διαδραστικά Εικονίδια
+    <!-- Μπάρα Πλοήγησης (8 Επίπεδα) -->
+    <nav class="bg-slate-50 border-b border-slate-200 p-2.5 overflow-x-auto">
+      <div class="flex gap-2 min-w-max">
+        <button onclick="changeTab(1)" id="tbtn-1" class="tab-btn active px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
+          1. 3 Είδη Αναζήτησης
         </button>
-        <button onclick="goToAct(2)" id="tab-2" class="game-tab px-4 py-2.5 rounded-xl text-sm md:text-base font-bold border border-slate-200 hover:bg-white transition-all">
-          2. Dropzone Εικόνας
+        <button onclick="changeTab(2)" id="tbtn-2" class="tab-btn px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
+          2. Τρόποι Εικόνας
         </button>
-        <button onclick="goToAct(3)" id="tab-3" class="game-tab px-4 py-2.5 rounded-xl text-sm md:text-base font-bold border border-slate-200 hover:bg-white transition-all">
-          3. Voice Recorder
+        <button onclick="changeTab(3)" id="tbtn-3" class="tab-btn px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
+          3. Αντίστροφη Εικόνα
         </button>
-        <button onclick="goToAct(4)" id="tab-4" class="game-tab px-4 py-2.5 rounded-xl text-sm md:text-base font-bold border border-slate-200 hover:bg-white transition-all">
-          4. QR Code Scanner
+        <button onclick="changeTab(4)" id="tbtn-4" class="tab-btn px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
+          4. Φωνητική Αναζήτηση
         </button>
-        <button onclick="goToAct(5)" id="tab-5" class="game-tab px-4 py-2.5 rounded-xl text-sm md:text-base font-bold border border-slate-200 hover:bg-white transition-all">
-          5. Fact Checker
+        <button onclick="changeTab(5)" id="tbtn-5" class="tab-btn px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
+          5. Κώδικες QR
         </button>
-        <button onclick="goToAct(6)" id="tab-6" class="game-tab px-4 py-2.5 rounded-xl text-sm md:text-base font-bold border border-slate-200 hover:bg-white transition-all">
-          6. Step Shuffler
+        <button onclick="changeTab(6)" id="tbtn-6" class="tab-btn px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
+          6. Fact-Checking
         </button>
-        <button onclick="goToAct(7)" id="tab-7" class="game-tab px-4 py-2.5 rounded-xl text-sm md:text-base font-bold border border-slate-200 hover:bg-white transition-all">
-          7. Καλάθια Αναζήτησης
+        <button onclick="changeTab(7)" id="tbtn-7" class="tab-btn px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
+          7. Ποιο Εργαλείο;
         </button>
-        <button onclick="goToAct(8)" id="tab-8" class="game-tab px-4 py-2.5 rounded-xl text-sm md:text-base font-bold border border-slate-200 hover:bg-white transition-all">
-          8. Δημιουργία QR
+        <button onclick="changeTab(8)" id="tbtn-8" class="tab-btn px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
+          8. Τελικό Challenge
         </button>
       </div>
     </nav>
 
-    <main class="p-4 sm:p-6 md:p-8 space-y-8">
+    <!-- Περιεχόμενο Δραστηριοτήτων -->
+    <main class="p-4 sm:p-6 md:p-8 flex-grow">
 
-      <!-- ========================================================= -->
-      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 1: Διαδραστικά Εικονίδια                    -->
-      <!-- ========================================================= -->
-      <section id="act-1" class="act-panel space-y-5">
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 1: 3 Είδη Αναζήτησης         -->
+      <!-- ========================================== -->
+      <section id="pane-1" class="tab-pane space-y-5">
         <div class="border-b pb-3 flex items-center justify-between">
           <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
             <span class="w-8 h-8 rounded-full bg-sky-600 text-white flex items-center justify-center text-sm font-bold">1</span>
-            Διαδραστική Μπάρα Αναζήτησης[cite: 77, 78]
+            Τα 3 Εναλλακτικά Είδη Αναζήτησης (σελ. 73)
           </h2>
-          <span class="text-xs sm:text-sm text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200 font-bold">+100 Πόντοι</span>
+          <span class="text-xs sm:text-sm font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">+100 Πόντοι</span>
         </div>
-        <p class="text-base text-slate-600">
-          Κάνε κλικ στο κατάλληλο εικονίδιο μέσα στη μπάρα αναζήτησης για να εκτελέσεις καθεμία από τις <strong>3 αποστολές</strong>:
-        </p>
+        <p class="text-slate-600 text-sm sm:text-base">Επίλεξε τη σωστή λειτουργία για καθεμία από τις 3 εναλλακτικές μεθόδους:</p>
 
-        <!-- Search Bar UI -->
-        <div class="p-4 sm:p-6 bg-slate-50 border-2 border-slate-200 rounded-2xl space-y-4">
-          <div class="flex items-center gap-3 bg-white px-4 py-3 rounded-2xl border-2 border-sky-300 shadow-md">
-            <i class="fa-solid fa-magnifying-glass text-slate-400 text-xl"></i>
-            <span id="search-input-mock" class="text-sm sm:text-base text-slate-400 flex-grow font-medium truncate">Αναζήτηση ή πληκτρολόγηση διεύθυνσης URL...</span>
-            
-            <button onclick="clickIcon('keyboard')" id="btn-icon-key" class="p-2.5 hover:bg-slate-100 rounded-xl text-slate-600 transition-colors" title="Πληκτρολόγιο">
-              <i class="fa-solid fa-keyboard text-2xl"></i>
-            </button>
-            <button onclick="clickIcon('mic')" id="btn-icon-mic" class="p-2.5 hover:bg-sky-50 rounded-xl text-red-500 transition-colors" title="Φωνητική αναζήτηση">
-              <i class="fa-solid fa-microphone text-2xl"></i>
-            </button>
-            <button onclick="clickIcon('lens')" id="btn-icon-lens" class="p-2.5 hover:bg-sky-50 rounded-xl text-sky-600 transition-colors" title="Αναζήτηση με εικόνα">
-              <i class="fa-solid fa-camera text-2xl"></i>
-            </button>
+        <div class="space-y-4">
+          <div id="box-1-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Τι κάνουμε όταν χρησιμοποιούμε την «Αναζήτηση με εικόνα» (Google Lens);</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g1_q1" value="0" class="w-4 h-4 text-sky-600">
+                <span>Μιλάμε στο μικρόφωνο για να εκφωνήσουμε την ερώτησή μας.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g1_q1" value="1" class="w-4 h-4 text-sky-600">
+                <span>Δίνουμε μια φωτογραφία για να εντοπίσουμε την αρχική της πηγή ή πληροφορίες γι' αυτήν.</span>
+              </label>
+            </div>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div id="target-1" class="p-4 bg-white border border-slate-200 rounded-xl space-y-1">
-              <span class="font-bold text-slate-700 block text-base">Αποστολή A:</span>
-              <p class="text-slate-500 text-sm sm:text-base">Πάτησε το εικονίδιο για να μιλήσεις αντί να γράψεις[cite: 78].</p>
-              <div id="t1-state" class="text-xs sm:text-sm font-bold text-slate-400">Εκκρεμεί κλικ...</div>
+          <div id="box-1-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Πότε είναι ιδιαίτερα χρήσιμη η «Φωνητική αναζήτηση»;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g1_q2" value="1" class="w-4 h-4 text-sky-600">
+                <span>Όταν δεν μπορούμε ή δεν έχουμε χρόνο να πληκτρολογήσουμε σε κινητό ή τάμπλετ.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g1_q2" value="0" class="w-4 h-4 text-sky-600">
+                <span>Μόνο όταν θέλουμε να εκτυπώσουμε ένα έγγραφο στον εκτυπωτή.</span>
+              </label>
             </div>
-            <div id="target-2" class="p-4 bg-white border border-slate-200 rounded-xl space-y-1">
-              <span class="font-bold text-slate-700 block text-base">Αποστολή B:</span>
-              <p class="text-slate-500 text-sm sm:text-base">Πάτησε το εικονίδιο για αναζήτηση με φωτογραφία[cite: 77].</p>
-              <div id="t2-state" class="text-xs sm:text-sm font-bold text-slate-400">Εκκρεμεί κλικ...</div>
-            </div>
-            <div id="target-3" class="p-4 bg-white border border-slate-200 rounded-xl space-y-1">
-              <span class="font-bold text-slate-700 block text-base">Αποστολή Γ:</span>
-              <p class="text-slate-500 text-sm sm:text-base">Πάτησε το παραδοσιακό εικονίδιο κειμένου[cite: 76, 77].</p>
-              <div id="t3-state" class="text-xs sm:text-sm font-bold text-slate-400">Εκκρεμεί κλικ...</div>
+          </div>
+
+          <div id="box-1-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Τι επιτυγχάνουμε όταν σαρώνουμε έναν κωδικό QR (QR Code);</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g1_q3" value="0" class="w-4 h-4 text-sky-600">
+                <span>Σβήνουμε όλα τα δεδομένα της συσκευής μας.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g1_q3" value="1" class="w-4 h-4 text-sky-600">
+                <span>Μεταβαίνουμε άμεσα σε μια ιστοσελίδα, βίντεο ή αρχείο χωρίς να πληκτρολογήσουμε τη διεύθυνση URL.</span>
+              </label>
             </div>
           </div>
         </div>
 
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-          <div class="flex gap-2">
-            <button onclick="checkAct1()" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm sm:text-base rounded-xl shadow">Έλεγχος 1</button>
-            <button onclick="resetAct1()" id="btn-reset-a1" class="hidden px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-sm sm:text-base rounded-xl">Διόρθωση</button>
-          </div>
-          <div id="a1-fb" class="text-sm sm:text-base font-bold"></div>
+        <div class="flex items-center justify-between pt-3">
+          <button onclick="checkGroup(1, ['g1_q1', 'g1_q2', 'g1_q3'])" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow transition-all">
+            Έλεγχος 1
+          </button>
+          <div id="fb-1" class="text-sm font-bold"></div>
         </div>
       </section>
 
-      <!-- ========================================================= -->
-      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 2: Dropzone & Upload                        -->
-      <!-- ========================================================= -->
-      <section id="act-2" class="act-panel space-y-5 hidden">
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 2: Τρόποι Εικόνας            -->
+      <!-- ========================================== -->
+      <section id="pane-2" class="tab-pane space-y-5 hidden">
         <div class="border-b pb-3 flex items-center justify-between">
           <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
             <span class="w-8 h-8 rounded-full bg-sky-600 text-white flex items-center justify-center text-sm font-bold">2</span>
-            Εργαστήριο Μεταφόρτωσης Εικόνας[cite: 77]
+            Οι 3 Τρόποι Αναζήτησης με Εικόνα (σελ. 74)
           </h2>
-          <span class="text-xs sm:text-sm text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200 font-bold">+100 Πόντοι</span>
+          <span class="text-xs sm:text-sm font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">+100 Πόντοι</span>
         </div>
-        <p class="text-base text-slate-600">
-          Η σελίδα 74 αναφέρει 3 μεθόδους οπτικής αναζήτησης[cite: 77]. Δοκίμασε να επιλέξεις και να «ρίξεις» το αρχείο στον προσομοιωτή:
-        </p>
-
-        <!-- Dropzone Mockup -->
-        <div class="p-6 sm:p-8 bg-slate-50 border-2 border-dashed border-sky-300 rounded-3xl text-center space-y-3">
-          <div class="w-16 h-16 bg-sky-100 text-sky-600 rounded-full flex items-center justify-center text-3xl mx-auto">
-            <i class="fa-solid fa-cloud-arrow-up"></i>
-          </div>
-          <div class="font-bold text-base sm:text-lg text-slate-700">Σύρετε μια εικόνα εδώ ή ανεβάστε ένα αρχείο[cite: 77]</div>
-          
-          <div class="flex flex-wrap justify-center gap-2.5 pt-2">
-            <button onclick="pickDropFile('flower.jpg')" id="df-1" class="px-4 py-2 bg-white border border-slate-300 rounded-xl text-sm sm:text-base hover:border-sky-500 font-medium shadow-sm">🌸 flower.jpg</button>
-            <button onclick="pickDropFile('statue.png')" id="df-2" class="px-4 py-2 bg-white border border-slate-300 rounded-xl text-sm sm:text-base hover:border-sky-500 font-medium shadow-sm">🏛️ statue.png</button>
-            <button onclick="pickDropFile('song.mp3')" id="df-3" class="px-4 py-2 bg-white border border-slate-300 rounded-xl text-sm sm:text-base hover:border-sky-500 font-medium shadow-sm">🎵 song.mp3</button>
-          </div>
-
-          <div id="drop-status" class="text-sm sm:text-base font-bold text-slate-500 pt-2">
-            Κανένα αρχείο δεν έχει φορτωθεί ακόμα.
-          </div>
-        </div>
+        <p class="text-slate-600 text-sm sm:text-base">Απάντησε στις ερωτήσεις για τον τρόπο εισαγωγής μιας εικόνας στη μηχανή αναζήτησης:</p>
 
         <div class="space-y-4">
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3" id="a2_1_box">
-            <span class="font-medium text-sm sm:text-base">1. Ποια αρχεία δέχεται το εργαλείο «Αναζήτηση με εικόνα»[cite: 77];</span>
-            <select id="a2_1" class="p-2 border rounded-lg bg-white text-sm sm:text-base text-slate-700 font-medium">
-              <option value="">-- Επίλεξε τύπο --</option>
-              <option value="audio">Αρχεία ήχου και μουσικής (mp3)</option>
-              <option value="images">Μόνο αρχεία φωτογραφιών και εικόνων (jpg, png)[cite: 77]</option>
-            </select>
+          <div id="box-2-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Τι κάνουμε όταν επιλέγουμε «Μεταφόρτωση εικόνας» (Upload);</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g2_q1" value="1" class="w-4 h-4 text-sky-600">
+                <span>Ανεβάζουμε ένα αρχείο φωτογραφίας που έχουμε ήδη αποθηκευμένο στη συσκευή μας.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g2_q1" value="0" class="w-4 h-4 text-sky-600">
+                <span>Ζωγραφίζουμε με το ποντίκι ένα σκίτσο στην οθόνη.</span>
+              </label>
+            </div>
           </div>
 
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3" id="a2_2_box">
-            <span class="font-medium text-sm sm:text-base">2. Αν η εικόνα βρίσκεται ήδη σε μια ιστοσελίδα, τι επικολλάμε[cite: 77];</span>
-            <select id="a2_2" class="p-2 border rounded-lg bg-white text-sm sm:text-base text-slate-700 font-medium">
-              <option value="">-- Επίλεξε ενέργεια --</option>
-              <option value="url">Τη διαδικτυακή διεύθυνση URL της εικόνας[cite: 77]</option>
-              <option value="text">Όλο το κείμενο της σελίδας</option>
-            </select>
+          <div id="box-2-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Πώς λειτουργεί η μέθοδος «Μεταφορά και απόθεση» (Drag & Drop);</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g2_q2" value="0" class="w-4 h-4 text-sky-600">
+                <span>Πληκτρολογούμε το όνομα του αρχείου με κεφαλαία γράμματα.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g2_q2" value="1" class="w-4 h-4 text-sky-600">
+                <span>Σύρουμε την εικόνα κρατώντας πατημένο το ποντίκι και την αφήνουμε μέσα στο πλαίσιο αναζήτησης.</span>
+              </label>
+            </div>
           </div>
 
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3" id="a2_3_box">
-            <span class="font-medium text-sm sm:text-base">3. Πώς λέγεται η τεχνική όπου κρατάμε πατημένο το ποντίκι και ρίχνουμε το αρχείο[cite: 77];</span>
-            <select id="a2_3" class="p-2 border rounded-lg bg-white text-sm sm:text-base text-slate-700 font-medium">
-              <option value="">-- Επίλεξε τεχνική --</option>
-              <option value="copy">Απλή αντιγραφή κειμένου</option>
-              <option value="drag">Μεταφορά και απόθεση (Drag and Drop)[cite: 77]</option>
-            </select>
+          <div id="box-2-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Αν μια εικόνα βρίσκεται ήδη σε μια ιστοσελίδα, πώς την αναζητούμε χωρίς να την κατεβάσουμε;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g2_q3" value="1" class="w-4 h-4 text-sky-600">
+                <span>Αντιγράφουμε και επικολλούμε τη διαδικτυακή διεύθυνση URL της εικόνας.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g2_q3" value="0" class="w-4 h-4 text-sky-600">
+                <span>Πληκτρολογούμε τον αριθμό των χρωμάτων της εικόνας.</span>
+              </label>
+            </div>
           </div>
         </div>
 
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-          <div class="flex gap-2">
-            <button onclick="checkAct2()" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm sm:text-base rounded-xl shadow">Έλεγχος 2</button>
-            <button onclick="resetAct2()" id="btn-reset-a2" class="hidden px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-sm sm:text-base rounded-xl">Διόρθωση</button>
-          </div>
-          <div id="a2-fb" class="text-sm sm:text-base font-bold"></div>
+        <div class="flex items-center justify-between pt-3">
+          <button onclick="checkGroup(2, ['g2_q1', 'g2_q2', 'g2_q3'])" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow transition-all">
+            Έλεγχος 2
+          </button>
+          <div id="fb-2" class="text-sm font-bold"></div>
         </div>
       </section>
 
-      <!-- ========================================================= -->
-      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 3: Voice Recorder Simulator                 -->
-      <!-- ========================================================= -->
-      <section id="act-3" class="act-panel space-y-5 hidden">
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 3: Αντίστροφη Εικόνα         -->
+      <!-- ========================================== -->
+      <section id="pane-3" class="tab-pane space-y-5 hidden">
         <div class="border-b pb-3 flex items-center justify-between">
           <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
             <span class="w-8 h-8 rounded-full bg-sky-600 text-white flex items-center justify-center text-sm font-bold">3</span>
-            Προσομοιωτής Φωνητικής Αναζήτησης[cite: 78]
+            Αντίστροφη Αναζήτηση Εικόνας (σελ. 73-75)
           </h2>
-          <span class="text-xs sm:text-sm text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200 font-bold">+100 Πόντοι</span>
+          <span class="text-xs sm:text-sm font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">+100 Πόντοι</span>
         </div>
-        <p class="text-base text-slate-600">
-          Στη σελίδα 75, ο Ήρωνας ρωτάει: <em>«Σε ποια πόλη γεννήθηκε ο Μέγας Αλέξανδρος;»</em>[cite: 78]. Πάτησε το κουμπί μικροφώνου για να ξεκινήσει η προσομοίωση καταγραφής φωνής:
-        </p>
-
-        <!-- Voice Recorder UI -->
-        <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl text-center space-y-4">
-          <button onclick="triggerVoiceRecord()" id="voice-rec-btn" class="w-20 h-20 rounded-full bg-red-500 hover:bg-red-600 text-white text-3xl shadow-lg transition-transform active:scale-95 flex items-center justify-center mx-auto">
-            <i class="fa-solid fa-microphone"></i>
-          </button>
-          <div id="voice-wave" class="hidden flex items-center justify-center gap-1.5 h-8">
-            <span class="w-1.5 h-4 bg-red-400 animate-pulse"></span>
-            <span class="w-1.5 h-8 bg-red-500 animate-pulse"></span>
-            <span class="w-1.5 h-5 bg-red-400 animate-pulse"></span>
-            <span class="w-1.5 h-3 bg-red-300 animate-pulse"></span>
-          </div>
-          <div id="voice-transcript" class="text-sm sm:text-base font-medium text-slate-600">
-            Πάτησε το κόκκινο μικρόφωνο για να μιλήσεις...
-          </div>
-        </div>
+        <p class="text-slate-600 text-sm sm:text-base">Μάθε πώς ανακαλύπτουμε πληροφορίες για άγνωστες φωτογραφίες:</p>
 
         <div class="space-y-4">
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3" id="a3_1_box">
-            <span class="font-medium text-sm sm:text-base">1. Τι πρέπει να επιτρέψουμε στη συσκευή μας πριν μιλήσουμε[cite: 78];</span>
-            <select id="a3_1" class="p-2 border rounded-lg bg-white text-sm sm:text-base text-slate-700 font-medium">
-              <option value="">-- Επίλεξε άδεια --</option>
-              <option value="cam">Την πρόσβαση στην κάμερα</option>
-              <option value="mic">Την πρόσβαση στο μικρόφωνο[cite: 78]</option>
-            </select>
+          <div id="box-3-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Ποιον αθλητή ανακάλυψαν τα παιδιά στη φωτογραφία της σελίδας 73;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g3_q1" value="0" class="w-4 h-4 text-sky-600">
+                <span>Τον Σπύρο Λούη.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g3_q1" value="1" class="w-4 h-4 text-sky-600">
+                <span>Τον Κωστή Τσικλητήρα (Ολυμπιονίκη στο άλμα εις μήκος).</span>
+              </label>
+            </div>
           </div>
 
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3" id="a3_2_box">
-            <span class="font-medium text-sm sm:text-base">2. Πότε καταγράφεται το ερώτημά μας[cite: 78];</span>
-            <select id="a3_2" class="p-2 border rounded-lg bg-white text-sm sm:text-base text-slate-700 font-medium">
-              <option value="">-- Επίλεξε χρόνο --</option>
-              <option value="live">Τη στιγμή ακριβώς που μιλάμε[cite: 78]</option>
-              <option value="later">Μία ώρα αφού κλείσουμε τον υπολογιστή</option>
-            </select>
+          <div id="box-3-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Ποιο εικονίδιο πατάμε συνήθως στη μηχανή αναζήτησης για να βάλουμε εικόνα;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g3_q2" value="1" class="w-4 h-4 text-sky-600">
+                <span>Το εικονίδιο της φωτογραφικής μηχανής (Camera / Lens).</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g3_q2" value="0" class="w-4 h-4 text-sky-600">
+                <span>Το εικονίδιο του κάδου ανακύκλωσης.</span>
+              </label>
+            </div>
           </div>
 
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3" id="a3_3_box">
-            <span class="font-medium text-sm sm:text-base">3. Ποια απάντηση επέστρεψε η μηχανή στον Ήρωνα[cite: 78];</span>
-            <select id="a3_3" class="p-2 border rounded-lg bg-white text-sm sm:text-base text-slate-700 font-medium">
-              <option value="">-- Επίλεξε πόλη --</option>
-              <option value="sparta">Αρχαία Σπάρτη</option>
-              <option value="pella">Αρχαία Πέλλα[cite: 78]</option>
-            </select>
+          <div id="box-3-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Τι μας επιστρέφει ως αποτέλεσμα η αντίστροφη αναζήτηση εικόνας;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g3_q3" value="1" class="w-4 h-4 text-sky-600">
+                <span>Ιστοσελίδες που περιέχουν την ίδια εικόνα ή παρόμοιες οπτικά φωτογραφίες.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g3_q3" value="0" class="w-4 h-4 text-sky-600">
+                <span>Μια ηχογράφηση με μουσική.</span>
+              </label>
+            </div>
           </div>
         </div>
 
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-          <div class="flex gap-2">
-            <button onclick="checkAct3()" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm sm:text-base rounded-xl shadow">Έλεγχος 3</button>
-            <button onclick="resetAct3()" id="btn-reset-a3" class="hidden px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-sm sm:text-base rounded-xl">Διόρθωση</button>
-          </div>
-          <div id="a3-fb" class="text-sm sm:text-base font-bold"></div>
+        <div class="flex items-center justify-between pt-3">
+          <button onclick="checkGroup(3, ['g3_q1', 'g3_q2', 'g3_q3'])" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow transition-all">
+            Έλεγχος 3
+          </button>
+          <div id="fb-3" class="text-sm font-bold"></div>
         </div>
       </section>
 
-      <!-- ========================================================= -->
-      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 4: QR Code Scanner                          -->
-      <!-- ========================================================= -->
-      <section id="act-4" class="act-panel space-y-5 hidden">
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 4: Φωνητική Αναζήτηση        -->
+      <!-- ========================================== -->
+      <section id="pane-4" class="tab-pane space-y-5 hidden">
         <div class="border-b pb-3 flex items-center justify-between">
           <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
             <span class="w-8 h-8 rounded-full bg-sky-600 text-white flex items-center justify-center text-sm font-bold">4</span>
-            Σάρωση Κωδικού QR με Κινητό[cite: 79]
+            Φωνητική Αναζήτηση (σελ. 75)
           </h2>
-          <span class="text-xs sm:text-sm text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200 font-bold">+100 Πόντοι</span>
+          <span class="text-xs sm:text-sm font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">+100 Πόντοι</span>
         </div>
-        <p class="text-base text-slate-600">
-          Πάτησε το κουμπί <strong>«Σάρωση QR»</strong> για να ανοίξει η ψηφιακή γέφυρα του σχολικού βιβλίου[cite: 79]:
-        </p>
-
-        <!-- Viewfinder Mockup -->
-        <div class="p-6 bg-slate-50 border border-slate-200 rounded-3xl flex flex-col items-center gap-4">
-          <div class="relative w-44 h-44 bg-white border-4 border-slate-800 rounded-2xl flex items-center justify-center overflow-hidden shadow-md">
-            <i class="fa-solid fa-qrcode text-8xl text-slate-800"></i>
-            <div id="scan-line" class="hidden absolute top-0 left-0 w-full h-1.5 bg-emerald-500 shadow-[0_0_10px_#10b981] animate-bounce"></div>
-          </div>
-          <button onclick="simulateScanQR()" id="btn-scan-qr" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm sm:text-base rounded-xl shadow flex items-center gap-2">
-            <i class="fa-solid fa-camera"></i> <span>Σάρωση QR Code[cite: 79]</span>
-          </button>
-          <div id="scan-result" class="hidden text-sm sm:text-base font-bold text-emerald-700 bg-emerald-50 px-4 py-2 rounded-xl border border-emerald-200">
-            ✓ Άνοιξε ο σύνδεσμος: https://ebooks.edu.gr (Βιβλίο Πληροφορικής)
-          </div>
-        </div>
+        <p class="text-slate-600 text-sm sm:text-base">Βήματα και κανόνες όταν ρωτάμε προφορικά τη συσκευή μας:</p>
 
         <div class="space-y-4">
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3" id="a4_1_box">
-            <span class="font-medium text-sm sm:text-base">1. Ποια συσκευή χρησιμοποιούμε συνήθως για σάρωση QR[cite: 79];</span>
-            <select id="a4_1" class="p-2 border rounded-lg bg-white text-sm sm:text-base text-slate-700 font-medium">
-              <option value="">-- Επίλεξε συσκευή --</option>
-              <option value="smart">Έξυπνο κινητό ή tablet με κάμερα[cite: 79]</option>
-              <option value="printer">Εκτυπωτή χωρίς οθόνη</option>
-            </select>
+          <div id="box-4-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Ποια άδεια πρέπει να δώσουμε στον περιηγητή πριν μιλήσουμε;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g4_q1" value="0" class="w-4 h-4 text-sky-600">
+                <span>Άδεια πρόσβασης στις επαφές του τηλεφώνου.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g4_q1" value="1" class="w-4 h-4 text-sky-600">
+                <span>Άδεια χρήσης του μικροφώνου της συσκευής.</span>
+              </label>
+            </div>
           </div>
 
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3" id="a4_2_box">
-            <span class="font-medium text-sm sm:text-base">2. Τι μορφή έχουν τα σύμβολα ενός QR code[cite: 79];</span>
-            <select id="a4_2" class="p-2 border rounded-lg bg-white text-sm sm:text-base text-slate-700 font-medium">
-              <option value="">-- Επίλεξε σχήμα --</option>
-              <option value="squares">Τετράγωνο πλαίσιο με μαύρες κουκκίδες[cite: 79]</option>
-              <option value="circle">Μόνο ένας μεγάλος κύκλος</option>
-            </select>
+          <div id="box-4-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Πώς πρέπει να μιλάμε όταν εκφωνούμε ένα ερώτημα;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g4_q2" value="1" class="w-4 h-4 text-sky-600">
+                <span>Καθαρά, με κανονικό ρυθμό και κοντά στο μικρόφωνο.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g4_q2" value="0" class="w-4 h-4 text-sky-600">
+                <span>Πολύ γρήγορα και ψιθυριστά.</span>
+              </label>
+            </div>
           </div>
 
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3" id="a4_3_box">
-            <span class="font-medium text-sm sm:text-base">3. Ποιο είναι το μεγαλύτερο πλεονέκτημα του QR στο χαρτί[cite: 79];</span>
-            <select id="a4_3" class="p-2 border rounded-lg bg-white text-sm sm:text-base text-slate-700 font-medium">
-              <option value="">-- Επίλεξε πλεονέκτημα --</option>
-              <option value="heavy">Κάνει το βιβλίο πιο βαρύ</option>
-              <option value="link">Δίνει άμεση πρόσβαση σε βίντεο και ήχους που δεν χωράνε στο χαρτί[cite: 79]</option>
-            </select>
+          <div id="box-4-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Τι κάνει η μηχανή αναζήτησης μόλις ακούσει τη φωνή μας;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g4_q3" value="1" class="w-4 h-4 text-sky-600">
+                <span>Μετατρέπει τα λόγια μας σε κείμενο και εκτελεί αυτόματα την αναζήτηση.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g4_q3" value="0" class="w-4 h-4 text-sky-600">
+                <span>Κλείνει την οθόνη για εξοικονόμηση ενέργειας.</span>
+              </label>
+            </div>
           </div>
         </div>
 
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-          <div class="flex gap-2">
-            <button onclick="checkAct4()" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm sm:text-base rounded-xl shadow">Έλεγχος 4</button>
-            <button onclick="resetAct4()" id="btn-reset-a4" class="hidden px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-sm sm:text-base rounded-xl">Διόρθωση</button>
-          </div>
-          <div id="a4-fb" class="text-sm sm:text-base font-bold"></div>
+        <div class="flex items-center justify-between pt-3">
+          <button onclick="checkGroup(4, ['g4_q1', 'g4_q2', 'g4_q3'])" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow transition-all">
+            Έλεγχος 4
+          </button>
+          <div id="fb-4" class="text-sm font-bold"></div>
         </div>
       </section>
 
-      <!-- ========================================================= -->
-      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 5: Fact Checker                             -->
-      <!-- ========================================================= -->
-      <section id="act-5" class="act-panel space-y-5 hidden">
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 5: Κώδικες QR                 -->
+      <!-- ========================================== -->
+      <section id="pane-5" class="tab-pane space-y-5 hidden">
         <div class="border-b pb-3 flex items-center justify-between">
           <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
             <span class="w-8 h-8 rounded-full bg-sky-600 text-white flex items-center justify-center text-sm font-bold">5</span>
-            Ντετέκτιβ Εικόνων & Fact-Checking[cite: 78]
+            Κώδικες Γρήγορης Απόκρισης (QR Codes) (σελ. 76)
           </h2>
-          <span class="text-xs sm:text-sm text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200 font-bold">+100 Πόντοι</span>
+          <span class="text-xs sm:text-sm font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">+100 Πόντοι</span>
         </div>
-        <p class="text-base text-slate-600">
-          Στη σελίδα 75 τονίζεται ότι η αντίστροφη αναζήτηση εντοπίζει την αρχική πηγή μιας εικόνας[cite: 78]. Απάντησε στις <strong>3 υποθέσεις</strong>:
-        </p>
+        <p class="text-slate-600 text-sm sm:text-base">Απάντησε στις ερωτήσεις για τη λειτουργία και τη χρήση των QR codes:</p>
 
         <div class="space-y-4">
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2.5" id="a5_1_box">
-            <p class="font-medium text-slate-700 text-sm sm:text-base">Υπόθεση 1: Μια φωτογραφία δείχνει έναν καρχαρία να κολυμπάει σε πλημμυρισμένο δρόμο πόλης. Πώς ελέγχουμε αν είναι αληθινή[cite: 78];</p>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl cursor-pointer flex items-center gap-2 hover:bg-slate-50">
-                <input type="radio" name="fc_q1" value="correct" class="text-sky-600"> <span>Κάνουμε αντίστροφη αναζήτηση εικόνας για να δούμε πότε πρωτοδημοσιεύτηκε[cite: 78]</span>
+          <div id="box-5-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Τι σημαίνει η συντομογραφία QR Code;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g5_q1" value="0" class="w-4 h-4 text-sky-600">
+                <span>Question Robot (Ρομπότ Ερωτήσεων).</span>
               </label>
-              <label class="p-3 bg-white border rounded-xl cursor-pointer flex items-center gap-2 hover:bg-slate-50">
-                <input type="radio" name="fc_q1" value="w1" class="text-sky-600"> <span>Την πιστεύουμε αμέσως χωρίς κανέναν έλεγχο</span>
-              </label>
-            </div>
-          </div>
-
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2.5" id="a5_2_box">
-            <p class="font-medium text-slate-700 text-sm sm:text-base">Υπόθεση 2: Μπορεί μια φωτογραφία να έχει υποστεί ψηφιακή επεξεργασία (μοντάζ)[cite: 78];</p>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl cursor-pointer flex items-center gap-2 hover:bg-slate-50">
-                <input type="radio" name="fc_q2" value="w1" class="text-sky-600"> <span>Όχι, ό,τι υπάρχει στο διαδίκτυο είναι 100% αυθεντικό</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl cursor-pointer flex items-center gap-2 hover:bg-slate-50">
-                <input type="radio" name="fc_q2" value="correct" class="text-sky-600"> <span>Ναι, γι' αυτό εξετάζουμε την αξιοπιστία της αρχικής πηγής[cite: 78]</span>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g5_q1" value="1" class="w-4 h-4 text-sky-600">
+                <span>Quick Response Code (Κώδικας Γρήγορης Απόκρισης).</span>
               </label>
             </div>
           </div>
 
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2.5" id="a5_3_box">
-            <p class="font-medium text-slate-700 text-sm sm:text-base">Υπόθεση 3: Αν μια παλιά φωτογραφία παρουσιάζεται ψευδώς ως χθεσινό γεγονός, ποιο εργαλείο το αποκαλύπτει[cite: 78];</p>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl cursor-pointer flex items-center gap-2 hover:bg-slate-50">
-                <input type="radio" name="fc_q3" value="correct" class="text-sky-600"> <span>Η αντίστροφη αναζήτηση με εικόνα (Reverse Image Search)[cite: 78]</span>
+          <div id="box-5-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Γιατί τα QR codes χαρακτηρίζονται ως «ψηφιακή γέφυρα»;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g5_q2" value="1" class="w-4 h-4 text-sky-600">
+                <span>Επειδή συνδέουν τον έντυπο κόσμο (χαρτί, αφίσες) με το ψηφιακό υλικό στο διαδίκτυο.</span>
               </label>
-              <label class="p-3 bg-white border rounded-xl cursor-pointer flex items-center gap-2 hover:bg-slate-50">
-                <input type="radio" name="fc_q3" value="w1" class="text-sky-600"> <span>Η εκτύπωση σε ασπρόμαυρο χαρτί</span>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g5_q2" value="0" class="w-4 h-4 text-sky-600">
+                <span>Επειδή αντικαθιστούν τις γέφυρες στους δρόμους.</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="box-5-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Ποια είναι η διαφορά των QR codes από τα απλά barcodes προϊόντων;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g5_q3" value="1" class="w-4 h-4 text-sky-600">
+                <span>Είναι δισδιάστατα (τετράγωνα) και μπορούν να αποθηκεύσουν πολύ περισσότερες πληροφορίες.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g5_q3" value="0" class="w-4 h-4 text-sky-600">
+                <span>Δεν έχουν καμία απολύτως διαφορά, είναι ίδια.</span>
               </label>
             </div>
           </div>
         </div>
 
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-          <div class="flex gap-2">
-            <button onclick="checkAct5()" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm sm:text-base rounded-xl shadow">Έλεγχος 5</button>
-            <button onclick="resetAct5()" id="btn-reset-a5" class="hidden px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-sm sm:text-base rounded-xl">Διόρθωση</button>
-          </div>
-          <div id="a5-fb" class="text-sm sm:text-base font-bold"></div>
+        <div class="flex items-center justify-between pt-3">
+          <button onclick="checkGroup(5, ['g5_q1', 'g5_q2', 'g5_q3'])" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow transition-all">
+            Έλεγχος 5
+          </button>
+          <div id="fb-5" class="text-sm font-bold"></div>
         </div>
       </section>
 
-      <!-- ========================================================= -->
-      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 6: Step Shuffler                             -->
-      <!-- ========================================================= -->
-      <section id="act-6" class="act-panel space-y-5 hidden">
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 6: Fact-Checking             -->
+      <!-- ========================================== -->
+      <section id="pane-6" class="tab-pane space-y-5 hidden">
         <div class="border-b pb-3 flex items-center justify-between">
           <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
             <span class="w-8 h-8 rounded-full bg-sky-600 text-white flex items-center justify-center text-sm font-bold">6</span>
-            Τακτοποίησε τα Βήματα Αναζήτησης με URL[cite: 77]
+            Έλεγχος Εγκυρότητας & Fake News (σελ. 75)
           </h2>
-          <span class="text-xs sm:text-sm text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200 font-bold">+100 Πόντοι</span>
+          <span class="text-xs sm:text-sm font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">+100 Πόντοι</span>
         </div>
-        <p class="text-base text-slate-600">
-          Στη σελίδα 74 περιγράφεται η αναζήτηση μέσω URL[cite: 77]. Βάλε τα 3 βήματα στη σωστή λογική σειρά:
-        </p>
+        <p class="text-slate-600 text-sm sm:text-base">Πώς χρησιμοποιούμε την αντίστροφη αναζήτηση για να ελέγχουμε την αλήθεια:</p>
 
         <div class="space-y-4">
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3" id="a6_1_box">
-            <span class="font-medium text-sm sm:text-base">Βήμα 1ο:</span>
-            <select id="a6_1" class="p-2 border rounded-lg bg-white text-sm sm:text-base text-slate-700 font-medium">
-              <option value="">-- Επίλεξε ενέργεια --</option>
-              <option value="paste">Επικολλάμε το URL στο πλαίσιο της μηχανής αναζήτησης[cite: 77]</option>
-              <option value="copy">Κάνουμε δεξί κλικ στην εικόνα και επιλέγουμε «Αντιγραφή διεύθυνσης εικόνας»[cite: 77]</option>
-              <option value="search">Πατάμε το κουμπί «Αναζήτηση» για να δούμε αποτελέσματα[cite: 77]</option>
-            </select>
+          <div id="box-6-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Μια εντυπωσιακή φωτογραφία στα social media φαίνεται ύποπτη. Πώς ελέγχουμε αν είναι πραγματική;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g6_q1" value="0" class="w-4 h-4 text-sky-600">
+                <span>Την πιστεύουμε αμέσως και την κοινοποιούμε στους φίλους μας.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g6_q1" value="1" class="w-4 h-4 text-sky-600">
+                <span>Κάνουμε αντίστροφη αναζήτηση εικόνας για να δούμε πότε και πού πρωτοεμφανίστηκε.</span>
+              </label>
+            </div>
           </div>
 
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3" id="a6_2_box">
-            <span class="font-medium text-sm sm:text-base">Βήμα 2ο:</span>
-            <select id="a6_2" class="p-2 border rounded-lg bg-white text-sm sm:text-base text-slate-700 font-medium">
-              <option value="">-- Επίλεξε ενέργεια --</option>
-              <option value="copy">Κάνουμε δεξί κλικ στην εικόνα και επιλέγουμε «Αντιγραφή διεύθυνσης εικόνας»[cite: 77]</option>
-              <option value="paste">Επικολλάμε το URL στο πλαίσιο της μηχανής αναζήτησης[cite: 77]</option>
-              <option value="search">Πατάμε το κουμπί «Αναζήτηση» για να δούμε αποτελέσματα[cite: 77]</option>
-            </select>
+          <div id="box-6-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Μπορεί μια παλιά φωτογραφία από άλλη χώρα να παρουσιαστεί ψευδώς ως σημερινό γεγονός;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g6_q2" value="1" class="w-4 h-4 text-sky-600">
+                <span>Ναι, συμβαίνει συχνά και η αναζήτηση εικόνας αποκαλύπτει την αρχική της ημερομηνία.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g6_q2" value="0" class="w-4 h-4 text-sky-600">
+                <span>Όχι, είναι τεχνικά αδύνατο να δημοσιευτεί ψεύτικη είδηση στο διαδίκτυο.</span>
+              </label>
+            </div>
           </div>
 
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3" id="a6_3_box">
-            <span class="font-medium text-sm sm:text-base">Βήμα 3ο:</span>
-            <select id="a6_3" class="p-2 border rounded-lg bg-white text-sm sm:text-base text-slate-700 font-medium">
-              <option value="">-- Επίλεξε ενέργεια --</option>
-              <option value="search">Πατάμε το κουμπί «Αναζήτηση» για να δούμε αποτελέσματα[cite: 77]</option>
-              <option value="paste">Επικολλάμε το URL στο πλαίσιο της μηχανής αναζήτησης[cite: 77]</option>
-              <option value="copy">Κάνουμε δεξί κλικ στην εικόνα και επιλέγουμε «Αντιγραφή διεύθυνσης εικόνας»[cite: 77]</option>
-            </select>
+          <div id="box-6-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Τι ονομάζουμε «ψηφιακή παραποίηση» εικόνας;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g6_q3" value="1" class="w-4 h-4 text-sky-600">
+                <span>Την τροποποίηση ή αλλοίωση μιας φωτογραφίας (π.χ. μοντάζ, πρόσθεση αντικειμένων) με πρόγραμμα επεξεργασίας.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g6_q3" value="0" class="w-4 h-4 text-sky-600">
+                <span>Τη σμίκρυνση του παραθύρου στον περιηγητή.</span>
+              </label>
+            </div>
           </div>
         </div>
 
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-          <div class="flex gap-2">
-            <button onclick="checkAct6()" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm sm:text-base rounded-xl shadow">Έλεγχος 6</button>
-            <button onclick="resetAct6()" id="btn-reset-a6" class="hidden px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-sm sm:text-base rounded-xl">Διόρθωση</button>
-          </div>
-          <div id="a6-fb" class="text-sm sm:text-base font-bold"></div>
+        <div class="flex items-center justify-between pt-3">
+          <button onclick="checkGroup(6, ['g6_q1', 'g6_q2', 'g6_q3'])" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow transition-all">
+            Έλεγχος 6
+          </button>
+          <div id="fb-6" class="text-sm font-bold"></div>
         </div>
       </section>
 
-      <!-- ========================================================= -->
-      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 7: Καλάθια Αναζήτησης                       -->
-      <!-- ========================================================= -->
-      <section id="act-7" class="act-panel space-y-5 hidden">
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 7: Ποιο Εργαλείο;             -->
+      <!-- ========================================== -->
+      <section id="pane-7" class="tab-pane space-y-5 hidden">
         <div class="border-b pb-3 flex items-center justify-between">
           <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
             <span class="w-8 h-8 rounded-full bg-sky-600 text-white flex items-center justify-center text-sm font-bold">7</span>
-            Σε ποιο «Καλάθι» ανήκει η κάθε ανάγκη;
+            Επιλογή Κατάλληλου Εργαλείου στην Πράξη
           </h2>
-          <span class="text-xs sm:text-sm text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200 font-bold">+100 Πόντοι</span>
+          <span class="text-xs sm:text-sm font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">+100 Πόντοι</span>
         </div>
-        <p class="text-base text-slate-600">
-          Τοποθέτησε καθεμία από τις 3 ανάγκες στο κατάλληλο εργαλείο αναζήτησης:
-        </p>
+        <p class="text-slate-600 text-sm sm:text-base">Διάλεξε τον καταλληλότερο τρόπο αναζήτησης για κάθε σενάριο:</p>
 
         <div class="space-y-4">
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3" id="a7_1_box">
-            <span class="font-medium text-sm sm:text-base">1. Δεν ξέρω πώς γράφεται ορθογραφικά μια δύσκολη ξένη λέξη που άκουσα:</span>
-            <select id="a7_1" class="p-2 border rounded-lg bg-white text-sm sm:text-base text-slate-700 font-medium">
-              <option value="">-- Επίλεξε καλάθι --</option>
-              <option value="qr">Σάρωση QR Code[cite: 79]</option>
-              <option value="voice">Φωνητική Αναζήτηση (την προφέρω στο μικρόφωνο)[cite: 78]</option>
-              <option value="img">Αναζήτηση με εικόνα[cite: 77]</option>
-            </select>
+          <div id="box-7-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Είδες μια αφίσα στον πίνακα ανακοινώσεων που έχει ένα τετράγωνο κωδικό στη γωνία. Πώς μαθαίνεις άμεσα περισσότερα;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g7_q1" value="0" class="w-4 h-4 text-sky-600">
+                <span>Αντιγράφεις με το χέρι σε χαρτί όλο το κείμενο της αφίσας.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g7_q1" value="1" class="w-4 h-4 text-sky-600">
+                <span>Σαρώνεις τον κωδικό QR με την κάμερα του κινητού τηλεφώνου.</span>
+              </label>
+            </div>
           </div>
 
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3" id="a7_2_box">
-            <span class="font-medium text-sm sm:text-base">2. Βλέπω ένα πίνακα ζωγραφικής σε μουσείο και θέλω να μάθω τον καλλιτέχνη:</span>
-            <select id="a7_2" class="p-2 border rounded-lg bg-white text-sm sm:text-base text-slate-700 font-medium">
-              <option value="">-- Επίλεξε καλάθι --</option>
-              <option value="voice">Φωνητική Αναζήτηση[cite: 78]</option>
-              <option value="img">Αναζήτηση με Εικόνα (βγάζω φωτογραφία τον πίνακα)[cite: 77]</option>
-              <option value="qr">Αναζήτηση με QR[cite: 79]</option>
-            </select>
+          <div id="box-7-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Περπατάς στο δρόμο, κρατάς πράγματα στα χέρια και θες να μάθεις τι ώρα δύει ο ήλιος. Τι χρησιμοποιείς;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g7_q2" value="1" class="w-4 h-4 text-sky-600">
+                <span>Φωνητική αναζήτηση στο μικρόφωνο του κινητού.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g7_q2" value="0" class="w-4 h-4 text-sky-600">
+                <span>Αναζήτηση με URL εικόνας.</span>
+              </label>
+            </div>
           </div>
 
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3" id="a7_3_box">
-            <span class="font-medium text-sm sm:text-base">3. Θέλω να φτιάξω μια σχολική αφίσα που να οδηγεί τους γονείς στο βίντεο της γιορτής:</span>
-            <select id="a7_3" class="p-2 border rounded-lg bg-white text-sm sm:text-base text-slate-700 font-medium">
-              <option value="">-- Επίλεξε καλάθι --</option>
-              <option value="voice">Φωνητική Αναζήτηση[cite: 78]</option>
-              <option value="img">Αναζήτηση με Εικόνα[cite: 77]</option>
-              <option value="qr">Δημιουργία QR Code και τύπωμα στην αφίσα[cite: 79]</option>
-            </select>
+          <div id="box-7-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Βλέπεις ένα σπάνιο μνημείο σε μια εκδρομή και δεν ξέρεις πώς λέγεται. Πώς το αναγνωρίζεις;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g7_q3" value="1" class="w-4 h-4 text-sky-600">
+                <span>Το φωτογραφίζεις και κάνεις αναζήτηση με εικόνα (Google Lens).</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g7_q3" value="0" class="w-4 h-4 text-sky-600">
+                <span>Πληκτρολογείς τυχαία ονόματα μέχρι να το βρεις.</span>
+              </label>
+            </div>
           </div>
         </div>
 
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-          <div class="flex gap-2">
-            <button onclick="checkAct7()" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm sm:text-base rounded-xl shadow">Έλεγχος 7</button>
-            <button onclick="resetAct7()" id="btn-reset-a7" class="hidden px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-sm sm:text-base rounded-xl">Διόρθωση</button>
-          </div>
-          <div id="a7-fb" class="text-sm sm:text-base font-bold"></div>
+        <div class="flex items-center justify-between pt-3">
+          <button onclick="checkGroup(7, ['g7_q1', 'g7_q2', 'g7_q3'])" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow transition-all">
+            Έλεγχος 7
+          </button>
+          <div id="fb-7" class="text-sm font-bold"></div>
         </div>
       </section>
 
-      <!-- ========================================================= -->
-      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 8: Live QR Code Maker                       -->
-      <!-- ========================================================= -->
-      <section id="act-8" class="act-panel space-y-5 hidden">
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 8: Τελικό Challenge          -->
+      <!-- ========================================== -->
+      <section id="pane-8" class="tab-pane space-y-5 hidden">
         <div class="border-b pb-3 flex items-center justify-between">
           <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
             <span class="w-8 h-8 rounded-full bg-sky-600 text-white flex items-center justify-center text-sm font-bold">8</span>
-            Εργαστήριο Δημιουργίας QR Code[cite: 79]
+            Το Μεγάλο Τελικό Challenge (σελ. 76)
           </h2>
-          <span class="text-xs sm:text-sm text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200 font-bold">+100 Πόντοι</span>
+          <span class="text-xs sm:text-sm font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">+100 Πόντοι</span>
         </div>
-        <p class="text-base text-slate-600">
-          Στη σελίδα 76 αναφέρεται ο ιστότοπος <em>goqr.me</em>[cite: 79]. Δοκίμασε να γράψεις ένα μήνυμα και απάντησε στις 3 τελικές ερωτήσεις:
-        </p>
-
-        <!-- Live QR Simulator -->
-        <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row items-center justify-around gap-5">
-          <div class="space-y-3 w-full max-w-sm">
-            <label class="text-sm sm:text-base font-bold text-slate-700">Γράψε το μήνυμα για το QR σου:</label>
-            <input type="text" id="qr-input-text" placeholder="π.χ. Γεια σου ΣΤ Δημοτικού!" class="w-full p-2.5 border rounded-xl text-sm sm:text-base">
-            <button onclick="generateCustomQR()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm sm:text-base rounded-xl shadow">
-              Δημιουργία QR Τώρα[cite: 79]
-            </button>
-          </div>
-          <div class="p-4 bg-white border-2 border-slate-800 rounded-2xl text-center shadow-md">
-            <div id="qr-display" class="text-6xl font-mono text-slate-800 tracking-widest">
-              🏁
-            </div>
-            <span id="qr-status-label" class="text-xs text-slate-400 font-bold block mt-2">Έτοιμο για παραγωγή</span>
-          </div>
-        </div>
+        <p class="text-slate-600 text-sm sm:text-base">Ολοκλήρωσε και τις 3 τελευταίες ερωτήσεις για να κερδίσεις το τελικό σκορ:</p>
 
         <div class="space-y-4">
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3" id="a8_1_box">
-            <span class="font-medium text-sm sm:text-base">1. Μπορούμε να βάλουμε ένα βίντεο μέσα σε ένα QR code[cite: 79];</span>
-            <select id="a8_1" class="p-2 border rounded-lg bg-white text-sm sm:text-base text-slate-700 font-medium">
-              <option value="">-- Επίλεξε απάντηση --</option>
-              <option value="direct">Όχι, βάζουμε τον διαδικτυακό σύνδεσμο (link) που οδηγεί στο βίντεο[cite: 79]</option>
-              <option value="heavy">Ναι, αποθηκεύεται ολόκληρο το αρχείο του βίντεο πάνω στο χαρτί</option>
-            </select>
+          <div id="box-8-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Μπορούμε να φτιάξουμε δικό μας QR code δωρεάν για μια σχολική εργασία;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g8_q1" value="1" class="w-4 h-4 text-sky-600">
+                <span>Ναι, μέσα από δωρεάν ιστοσελίδες δημιουργίας QR (όπως το goqr.me).</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g8_q1" value="0" class="w-4 h-4 text-sky-600">
+                <span>Όχι, είναι επί πληρωμή υπηρεσία μόνο για μεγάλες εταιρείες.</span>
+              </label>
+            </div>
           </div>
 
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3" id="a8_2_box">
-            <span class="font-medium text-sm sm:text-base">2. Χρειάζεται να πληρώσουμε για να φτιάξουμε ένα απλό QR code[cite: 79];</span>
-            <select id="a8_2" class="p-2 border rounded-lg bg-white text-sm sm:text-base text-slate-700 font-medium">
-              <option value="">-- Επίλεξε απάντηση --</option>
-              <option value="pay">Ναι, είναι πάντα με πληρωμή</option>
-              <option value="free">Όχι, υπάρχουν δωρεάν ιστοσελίδες στο διαδίκτυο (όπως το goqr.me)[cite: 79]</option>
-            </select>
+          <div id="box-8-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Τι αποθηκεύεται συνήθως μέσα σε ένα QR code που οδηγεί σε βίντεο;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g8_q2" value="0" class="w-4 h-4 text-sky-600">
+                <span>Ολόκληρο το μεγάλο αρχείο του βίντεο τυπωμένο πάνω στο χαρτί.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g8_q2" value="1" class="w-4 h-4 text-sky-600">
+                <span>Ο διαδικτυακός σύνδεσμος (link / URL) που ανοίγει το βίντεο στον περιηγητή.</span>
+              </label>
+            </div>
           </div>
 
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3" id="a8_3_box">
-            <span class="font-medium text-sm sm:text-base">3. Ποια είναι η μεγαλύτερη χρησιμότητα όλων των εναλλακτικών τρόπων αναζήτησης[cite: 76];</span>
-            <select id="a8_3" class="p-2 border rounded-lg bg-white text-sm sm:text-base text-slate-700 font-medium">
-              <option value="">-- Επίλεξε όφελος --</option>
-              <option value="access">Μας δίνουν ευκολία, ταχύτητα και πρόσβαση όταν δεν μπορούμε να γράψουμε κείμενο[cite: 76]</option>
-              <option value="fun">Μόνο για να περνάμε την ώρα μας</option>
-            </select>
+          <div id="box-8-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Ποια είναι η μεγαλύτερη αξία των εναλλακτικών τρόπων αναζήτησης;</p>
+            <div class="space-y-2 text-sm sm:text-base">
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g8_q3" value="1" class="w-4 h-4 text-sky-600">
+                <span>Κάνουν την αναζήτηση ταχύτερη, πιο ευέλικτη και προσβάσιμη σε όλους χωρίς να περιοριζόμαστε μόνο στο πληκτρολόγιο.</span>
+              </label>
+              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="g8_q3" value="0" class="w-4 h-4 text-sky-600">
+                <span>Αντικαθιστούν πλήρως την ανάγκη να γνωρίζουμε γραφή και ανάγνωση.</span>
+              </label>
+            </div>
           </div>
         </div>
 
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-          <div class="flex gap-2">
-            <button onclick="checkAct8()" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm sm:text-base rounded-xl shadow">Έλεγχος 8</button>
-            <button onclick="resetAct8()" id="btn-reset-a8" class="hidden px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-sm sm:text-base rounded-xl">Διόρθωση</button>
-          </div>
-          <div id="a8-fb" class="text-sm sm:text-base font-bold"></div>
+        <div class="flex items-center justify-between pt-3">
+          <button onclick="checkGroup(8, ['g8_q1', 'g8_q2', 'g8_q3'])" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow transition-all">
+            Έλεγχος 8
+          </button>
+          <div id="fb-8" class="text-sm font-bold"></div>
         </div>
       </section>
 
     </main>
 
-    <!-- Win Modal -->
-    <div id="win-modal" class="hidden m-6 p-8 bg-sky-50 border-2 border-sky-400 rounded-3xl text-center space-y-4">
-      <div class="text-6xl">🏆</div>
+    <!-- Modal Ολοκλήρωσης -->
+    <div id="win-modal" class="hidden m-4 sm:m-6 p-6 sm:p-8 bg-sky-50 border-2 border-sky-400 rounded-3xl text-center space-y-4">
+      <div class="text-5xl">🏆</div>
       <h3 class="text-2xl font-black text-sky-900">Συγχαρητήρια! Είσαι Master Εναλλακτικής Αναζήτησης!</h3>
-      <p class="text-base text-slate-600 max-w-lg mx-auto">
-        Ολοκλήρωσες επιτυχώς και τις 8 αποστολές του Μαθήματος 21. Κατέκτησες όλα τα μυστικά της αναζήτησης με εικόνα, φωνή και QR Codes[cite: 76]!
+      <p class="text-slate-600 max-w-md mx-auto">
+        Ολοκλήρωσες επιτυχώς και τις 8 δραστηριότητες του Μαθήματος 21. Τώρα γνωρίζεις πώς να αναζητάς πληροφορίες με εικόνα, φωνή και κωδικούς QR!
       </p>
-      <div class="text-3xl font-black text-sky-600" id="final-score-display">800 / 800 Πόντοι</div>
-      <button onclick="location.reload()" class="px-8 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-base rounded-xl shadow">Παίξε Ξανά</button>
+      <div class="text-3xl font-black text-sky-600">800 / 800 Πόντοι</div>
+      <button onclick="location.reload()" class="px-8 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow">Παίξε Ξανά</button>
     </div>
 
     <!-- Footer -->
     <footer class="bg-slate-100 p-4 border-t border-slate-200 text-center text-xs sm:text-sm text-slate-500">
-      Πληροφορική ΣΤ΄ Δημοτικού • Μάθημα 21: Εντοπισμός περιεχομένου στο διαδίκτυο με εναλλακτικούς τρόπους[cite: 10, 76]
+      Πληροφορική ΣΤ΄ Δημοτικού • Μάθημα 21: Εντοπισμός περιεχομένου στο διαδίκτυο με εναλλακτικούς τρόπους
     </footer>
 
   </div>
@@ -604,437 +613,61 @@
   <script>
     let scores = { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0 };
 
-    function updateScore() {
+    function updateTotalScore() {
       const sum = Object.values(scores).reduce((a, b) => a + b, 0);
-      document.getElementById('total-score-val').innerText = `${sum} / 800`;
+      document.getElementById('score-display').innerText = `${sum} / 800`;
       if (sum === 800) {
         document.getElementById('win-modal').classList.remove('hidden');
       }
     }
 
-    function goToAct(n) {
-      document.querySelectorAll('.act-panel').forEach(p => p.classList.add('hidden'));
-      document.querySelectorAll('.game-tab').forEach(b => b.classList.remove('active'));
+    function changeTab(n) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
 
-      const target = document.getElementById(`act-${n}`);
-      if(target) target.classList.remove('hidden');
+      const target = document.getElementById(`pane-${n}`);
+      if (target) target.classList.remove('hidden');
 
-      const btn = document.getElementById(`tab-${n}`);
-      if(btn) btn.classList.add('active');
+      const btn = document.getElementById(`tbtn-${n}`);
+      if (btn) btn.classList.add('active');
     }
 
-    // ==========================================
-    // ΔΡΑΣΤΗΡΙΟΤΗΤΑ 1: Hotspots
-    // ==========================================
-    let act1Clicks = { mic: false, lens: false, key: false };
-    function clickIcon(type) {
-      if (type === 'mic') {
-        act1Clicks.mic = true;
-        document.getElementById('t1-state').innerHTML = '<span class="text-emerald-600 font-bold">✓ Εντοπίστηκε: Μικρόφωνο</span>';
-        document.getElementById('search-input-mock').innerText = "Πείτε κάτι στο μικρόφωνο...";
-      } else if (type === 'lens') {
-        act1Clicks.lens = true;
-        document.getElementById('t2-state').innerHTML = '<span class="text-emerald-600 font-bold">✓ Εντοπίστηκε: Κάμερα Lens</span>';
-        document.getElementById('search-input-mock').innerText = "Επιλέξτε ή σύρετε εικόνα...";
-      } else if (type === 'keyboard') {
-        act1Clicks.key = true;
-        document.getElementById('t3-state').innerHTML = '<span class="text-emerald-600 font-bold">✓ Εντοπίστηκε: Πληκτρολόγιο</span>';
-        document.getElementById('search-input-mock').innerText = "Πληκτρολόγηση κειμένου...";
-      }
-    }
+    function checkGroup(actNum, names) {
+      const fb = document.getElementById(`fb-${actNum}`);
+      let answeredCount = 0;
+      let correctCount = 0;
 
-    function checkAct1() {
-      const fb = document.getElementById('a1-fb');
-      const resetBtn = document.getElementById('btn-reset-a1');
-      const total = Object.values(act1Clicks).filter(Boolean).length;
+      names.forEach((name, idx) => {
+        const box = document.getElementById(`box-${actNum}-${idx + 1}`);
+        const checked = document.querySelector(`input[name="${name}"]:checked`);
 
-      if (total === 3) {
-        scores[1] = 100;
-        updateScore();
-        fb.innerHTML = '<span class="text-emerald-600">🎉 Μπράβο! Αναγνώρισες και τα 3 εργαλεία (3/3)!</span>';
-        resetBtn.classList.add('hidden');
-      } else {
-        fb.innerHTML = `<span class="text-amber-600">Έχεις πατήσει ${total}/3 εικονίδια. Πάτησε και τα υπόλοιπα!</span>`;
-        resetBtn.classList.remove('hidden');
-      }
-    }
+        if (checked) {
+          answeredCount++;
+          if (checked.value === "1") {
+            correctCount++;
+            box.className = "p-4 bg-white border-2 border-emerald-400 rounded-2xl space-y-2";
+          } else {
+            box.className = "p-4 bg-rose-50 border-2 border-rose-300 rounded-2xl space-y-2";
+          }
+        } else {
+          box.className = "p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2";
+        }
+      });
 
-    function resetAct1() {
-      act1Clicks = { mic: false, lens: false, key: false };
-      document.getElementById('t1-state').innerText = "Εκκρεμεί κλικ...";
-      document.getElementById('t2-state').innerText = "Εκκρεμεί κλικ...";
-      document.getElementById('t3-state').innerText = "Εκκρεμεί κλικ...";
-      document.getElementById('search-input-mock').innerText = "Αναζήτηση ή πληκτρολόγηση διεύθυνσης URL...";
-      document.getElementById('a1-fb').innerHTML = "";
-      document.getElementById('btn-reset-a1').classList.add('hidden');
-    }
-
-    // ==========================================
-    // ΔΡΑΣΤΗΡΙΟΤΗΤΑ 2: Dropzone & Upload
-    // ==========================================
-    let droppedFile = "";
-    function pickDropFile(fname) {
-      droppedFile = fname;
-      const status = document.getElementById('drop-status');
-      if (fname === 'song.mp3') {
-        status.innerHTML = '<span class="text-rose-500 font-bold">⚠️ Σφάλμα: Το song.mp3 δεν είναι εικόνα!</span>';
-      } else {
-        status.innerHTML = `<span class="text-emerald-600 font-bold">✓ Φορτώθηκε επιτυχώς: ${fname}</span>`;
-      }
-    }
-
-    function checkAct2() {
-      const q1 = document.getElementById('a2_1').value;
-      const q2 = document.getElementById('a2_2').value;
-      const q3 = document.getElementById('a2_3').value;
-      const fb = document.getElementById('a2-fb');
-      const resetBtn = document.getElementById('btn-reset-a2');
-
-      if (!q1 || !q2 || !q3 || !droppedFile) {
-        fb.innerHTML = '<span class="text-rose-600">Διάλεξε ένα αρχείο και απάντησε στις 3 ερωτήσεις!</span>';
+      if (answeredCount < names.length) {
+        fb.innerHTML = '<span class="text-rose-600">Απάντησε και στις 3 ερωτήσεις!</span>';
         return;
       }
 
-      const ok1 = (q1 === 'images');
-      const ok2 = (q2 === 'url');
-      const ok3 = (q3 === 'drag');
-      const okDrop = (droppedFile !== 'song.mp3');
-
-      document.getElementById('a2_1_box').className = ok1 ? "p-4 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-      document.getElementById('a2_2_box').className = ok2 ? "p-4 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-      document.getElementById('a2_3_box').className = ok3 ? "p-4 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-
-      if (ok1 && ok2 && ok3 && okDrop) {
-        scores[2] = 100;
-        updateScore();
-        fb.innerHTML = '<span class="text-emerald-600">🎉 Άριστα! Όλες οι επιλογές μεταφόρτωσης είναι σωστές (3/3)!</span>';
-        resetBtn.classList.add('hidden');
+      if (correctCount === names.length) {
+        scores[actNum] = 100;
+        updateTotalScore();
+        fb.innerHTML = '<span class="text-emerald-600">🎉 Μπράβο! Όλες οι απαντήσεις είναι σωστές (3/3)!</span>';
       } else {
-        fb.innerHTML = '<span class="text-amber-600">Έχεις κάποιο λάθος. Βεβαιώσου ότι φόρτωσες σωστή εικόνα!</span>';
-        resetBtn.classList.remove('hidden');
+        scores[actNum] = 0;
+        updateTotalScore();
+        fb.innerHTML = '<span class="text-amber-600">Υπάρχει λάθος. Διόρθωσε τις κόκκινες κάρτες και ξαναπάτα έλεγχο!</span>';
       }
-    }
-
-    function resetAct2() {
-      droppedFile = "";
-      document.getElementById('drop-status').innerText = "Κανένα αρχείο δεν έχει φορτωθεί ακόμα.";
-      document.getElementById('a2_1').value = "";
-      document.getElementById('a2_2').value = "";
-      document.getElementById('a2_3').value = "";
-      ['a2_1_box', 'a2_2_box', 'a2_3_box'].forEach(id => {
-        document.getElementById(id).className = "p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-      });
-      document.getElementById('a2-fb').innerHTML = "";
-      document.getElementById('btn-reset-a2').classList.add('hidden');
-    }
-
-    // ==========================================
-    // ΔΡΑΣΤΗΡΙΟΤΗΤΑ 3: Voice Recorder
-    // ==========================================
-    let voiceTriggered = false;
-    function triggerVoiceRecord() {
-      voiceTriggered = true;
-      document.getElementById('voice-wave').classList.remove('hidden');
-      document.getElementById('voice-transcript').innerText = "Ακούω... «Σε ποια πόλη γεννήθηκε ο Μέγας Αλέξανδρος;»";
-    }
-
-    function checkAct3() {
-      const q1 = document.getElementById('a3_1').value;
-      const q2 = document.getElementById('a3_2').value;
-      const q3 = document.getElementById('a3_3').value;
-      const fb = document.getElementById('a3-fb');
-      const resetBtn = document.getElementById('btn-reset-a3');
-
-      if (!q1 || !q2 || !q3 || !voiceTriggered) {
-        fb.innerHTML = '<span class="text-rose-600">Πάτησε το μικρόφωνο και απάντησε στις 3 ερωτήσεις!</span>';
-        return;
-      }
-
-      const ok1 = (q1 === 'mic');
-      const ok2 = (q2 === 'live');
-      const ok3 = (q3 === 'pella');
-
-      document.getElementById('a3_1_box').className = ok1 ? "p-4 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-      document.getElementById('a3_2_box').className = ok2 ? "p-4 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-      document.getElementById('a3_3_box').className = ok3 ? "p-4 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-
-      const totalOk = [ok1, ok2, ok3].filter(Boolean).length;
-      if (totalOk === 3) {
-        scores[3] = 100;
-        updateScore();
-        fb.innerHTML = '<span class="text-emerald-600">🎉 Μπράβο! Άψογη κατανόηση της φωνητικής αναζήτησης (3/3)!</span>';
-        resetBtn.classList.add('hidden');
-      } else {
-        fb.innerHTML = `<span class="text-amber-600">Έχεις ${totalOk}/3 σωστές επιλογές. Διόρθωσε τα λάθη!</span>`;
-        resetBtn.classList.remove('hidden');
-      }
-    }
-
-    function resetAct3() {
-      voiceTriggered = false;
-      document.getElementById('voice-wave').classList.add('hidden');
-      document.getElementById('voice-transcript').innerText = "Πάτησε το κόκκινο μικρόφωνο για να μιλήσεις...";
-      document.getElementById('a3_1').value = "";
-      document.getElementById('a3_2').value = "";
-      document.getElementById('a3_3').value = "";
-      ['a3_1_box', 'a3_2_box', 'a3_3_box'].forEach(id => {
-        document.getElementById(id).className = "p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-      });
-      document.getElementById('a3-fb').innerHTML = "";
-      document.getElementById('btn-reset-a3').classList.add('hidden');
-    }
-
-    // ==========================================
-    // ΔΡΑΣΤΗΡΙΟΤΗΤΑ 4: QR Scanner
-    // ==========================================
-    let qrScanned = false;
-    function simulateScanQR() {
-      qrScanned = true;
-      document.getElementById('scan-line').classList.remove('hidden');
-      setTimeout(() => {
-        document.getElementById('scan-result').classList.remove('hidden');
-      }, 500);
-    }
-
-    function checkAct4() {
-      const q1 = document.getElementById('a4_1').value;
-      const q2 = document.getElementById('a4_2').value;
-      const q3 = document.getElementById('a4_3').value;
-      const fb = document.getElementById('a4-fb');
-      const resetBtn = document.getElementById('btn-reset-a4');
-
-      if (!q1 || !q2 || !q3 || !qrScanned) {
-        fb.innerHTML = '<span class="text-rose-600">Κάνε σάρωση και απάντησε στις 3 ερωτήσεις!</span>';
-        return;
-      }
-
-      const ok1 = (q1 === 'smart');
-      const ok2 = (q2 === 'squares');
-      const ok3 = (q3 === 'link');
-
-      document.getElementById('a4_1_box').className = ok1 ? "p-4 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-      document.getElementById('a4_2_box').className = ok2 ? "p-4 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-      document.getElementById('a4_3_box').className = ok3 ? "p-4 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-
-      const totalOk = [ok1, ok2, ok3].filter(Boolean).length;
-      if (totalOk === 3) {
-        scores[4] = 100;
-        updateScore();
-        fb.innerHTML = '<span class="text-emerald-600">🎉 Εξαιρετικά! Κατανόησες πλήρως τη λειτουργία των QR (3/3)!</span>';
-        resetBtn.classList.add('hidden');
-      } else {
-        fb.innerHTML = `<span class="text-amber-600">Έχεις ${totalOk}/3 σωστά. Δοκίμασε ξανά!</span>`;
-        resetBtn.classList.remove('hidden');
-      }
-    }
-
-    function resetAct4() {
-      qrScanned = false;
-      document.getElementById('scan-line').classList.add('hidden');
-      document.getElementById('scan-result').classList.add('hidden');
-      document.getElementById('a4_1').value = "";
-      document.getElementById('a4_2').value = "";
-      document.getElementById('a4_3').value = "";
-      ['a4_1_box', 'a4_2_box', 'a4_3_box'].forEach(id => {
-        document.getElementById(id).className = "p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-      });
-      document.getElementById('a4-fb').innerHTML = "";
-      document.getElementById('btn-reset-a4').classList.add('hidden');
-    }
-
-    // ==========================================
-    // ΔΡΑΣΤΗΡΙΟΤΗΤΑ 5: Fact Checker
-    // ==========================================
-    function checkAct5() {
-      const q1 = document.querySelector('input[name="fc_q1"]:checked');
-      const q2 = document.querySelector('input[name="fc_q2"]:checked');
-      const q3 = document.querySelector('input[name="fc_q3"]:checked');
-      const fb = document.getElementById('a5-fb');
-      const resetBtn = document.getElementById('btn-reset-a5');
-
-      if (!q1 || !q2 || !q3) {
-        fb.innerHTML = '<span class="text-rose-600">Απάντησε και στις 3 υποθέσεις!</span>';
-        return;
-      }
-
-      const ok1 = (q1.value === 'correct');
-      const ok2 = (q2.value === 'correct');
-      const ok3 = (q3.value === 'correct');
-
-      document.getElementById('a5_1_box').className = ok1 ? "p-4 bg-white rounded-xl border border-emerald-400 space-y-2.5" : "p-4 bg-rose-50/50 rounded-xl border border-rose-300 space-y-2.5";
-      document.getElementById('a5_2_box').className = ok2 ? "p-4 bg-white rounded-xl border border-emerald-400 space-y-2.5" : "p-4 bg-rose-50/50 rounded-xl border border-rose-300 space-y-2.5";
-      document.getElementById('a5_3_box').className = ok3 ? "p-4 bg-white rounded-xl border border-emerald-400 space-y-2.5" : "p-4 bg-rose-50/50 rounded-xl border border-rose-300 space-y-2.5";
-
-      const totalOk = [ok1, ok2, ok3].filter(Boolean).length;
-      if (totalOk === 3) {
-        scores[5] = 100;
-        updateScore();
-        fb.innerHTML = '<span class="text-emerald-600">🎉 Άριστα Ντετέκτιβ! Ξέρεις πώς να ξεχωρίζεις τις αληθινές ειδήσεις (3/3)!</span>';
-        resetBtn.classList.add('hidden');
-      } else {
-        fb.innerHTML = `<span class="text-amber-600">Έχεις ${totalOk}/3 σωστές κρίσεις. Έλεγξε τα κόκκινα σημεία!</span>`;
-        resetBtn.classList.remove('hidden');
-      }
-    }
-
-    function resetAct5() {
-      document.querySelectorAll('input[name^="fc_q"]').forEach(r => r.checked = false);
-      ['a5_1_box', 'a5_2_box', 'a5_3_box'].forEach(id => {
-        document.getElementById(id).className = "p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2.5";
-      });
-      document.getElementById('a5-fb').innerHTML = "";
-      document.getElementById('btn-reset-a5').classList.add('hidden');
-    }
-
-    // ==========================================
-    // ΔΡΑΣΤΗΡΙΟΤΗΤΑ 6: Step Shuffler
-    // ==========================================
-    function checkAct6() {
-      const v1 = document.getElementById('a6_1').value;
-      const v2 = document.getElementById('a6_2').value;
-      const v3 = document.getElementById('a6_3').value;
-      const fb = document.getElementById('a6-fb');
-      const resetBtn = document.getElementById('btn-reset-a6');
-
-      if (!v1 || !v2 || !v3) {
-        fb.innerHTML = '<span class="text-rose-600">Όρισε σειρά για όλα τα βήματα!</span>';
-        return;
-      }
-
-      const ok1 = (v1 === 'copy');
-      const ok2 = (v2 === 'paste');
-      const ok3 = (v3 === 'search');
-
-      document.getElementById('a6_1_box').className = ok1 ? "p-4 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-      document.getElementById('a6_2_box').className = ok2 ? "p-4 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-      document.getElementById('a6_3_box').className = ok3 ? "p-4 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-
-      const totalOk = [ok1, ok2, ok3].filter(Boolean).length;
-      if (totalOk === 3) {
-        scores[6] = 100;
-        updateScore();
-        fb.innerHTML = '<span class="text-emerald-600">🎉 Μπράβο! 1. Αντιγραφή URL ➔ 2. Επικόλληση ➔ 3. Αναζήτηση (3/3)!</span>';
-        resetBtn.classList.add('hidden');
-      } else {
-        fb.innerHTML = `<span class="text-amber-600">Έχεις ${totalOk}/3 σωστά βήματα. Δοκίμασε ξανά!</span>`;
-        resetBtn.classList.remove('hidden');
-      }
-    }
-
-    function resetAct6() {
-      document.getElementById('a6_1').value = "";
-      document.getElementById('a6_2').value = "";
-      document.getElementById('a6_3').value = "";
-      ['a6_1_box', 'a6_2_box', 'a6_3_box'].forEach(id => {
-        document.getElementById(id).className = "p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-      });
-      document.getElementById('a6-fb').innerHTML = "";
-      document.getElementById('btn-reset-a6').classList.add('hidden');
-    }
-
-    // ==========================================
-    // ΔΡΑΣΤΗΡΙΟΤΗΤΑ 7: Καλάθια
-    // ==========================================
-    function checkAct7() {
-      const v1 = document.getElementById('a7_1').value;
-      const v2 = document.getElementById('a7_2').value;
-      const v3 = document.getElementById('a7_3').value;
-      const fb = document.getElementById('a7-fb');
-      const resetBtn = document.getElementById('btn-reset-a7');
-
-      if (!v1 || !v2 || !v3) {
-        fb.innerHTML = '<span class="text-rose-600">Επίλεξε καλάθι και για τις 3 περιπτώσεις!</span>';
-        return;
-      }
-
-      const ok1 = (v1 === 'voice');
-      const ok2 = (v2 === 'img');
-      const ok3 = (v3 === 'qr');
-
-      document.getElementById('a7_1_box').className = ok1 ? "p-4 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-      document.getElementById('a7_2_box').className = ok2 ? "p-4 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-      document.getElementById('a7_3_box').className = ok3 ? "p-4 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-
-      const totalOk = [ok1, ok2, ok3].filter(Boolean).length;
-      if (totalOk === 3) {
-        scores[7] = 100;
-        updateScore();
-        fb.innerHTML = '<span class="text-emerald-600">🎉 Τέλεια επιλογή εργαλείων για κάθε περίπτωση (3/3)!</span>';
-        resetBtn.classList.add('hidden');
-      } else {
-        fb.innerHTML = `<span class="text-amber-600">Έχεις ${totalOk}/3 σωστά. Έλεγξε τα κόκκινα πλαίσια!</span>`;
-        resetBtn.classList.remove('hidden');
-      }
-    }
-
-    function resetAct7() {
-      document.getElementById('a7_1').value = "";
-      document.getElementById('a7_2').value = "";
-      document.getElementById('a7_3').value = "";
-      ['a7_1_box', 'a7_2_box', 'a7_3_box'].forEach(id => {
-        document.getElementById(id).className = "p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-      });
-      document.getElementById('a7-fb').innerHTML = "";
-      document.getElementById('btn-reset-a7').classList.add('hidden');
-    }
-
-    // ==========================================
-    // ΔΡΑΣΤΗΡΙΟΤΗΤΑ 8: Live QR Generator
-    // ==========================================
-    let customQrGenerated = false;
-    function generateCustomQR() {
-      const val = document.getElementById('qr-input-text').value.trim();
-      if (!val) return;
-      customQrGenerated = true;
-      document.getElementById('qr-display').innerHTML = '<i class="fa-solid fa-qrcode text-indigo-700 animate-pulse"></i>';
-      document.getElementById('qr-status-label').innerText = `Κωδικοποιήθηκε: "${val.substring(0, 15)}..."`;
-    }
-
-    function checkAct8() {
-      const q1 = document.getElementById('a8_1').value;
-      const q2 = document.getElementById('a8_2').value;
-      const q3 = document.getElementById('a8_3').value;
-      const fb = document.getElementById('a8-fb');
-      const resetBtn = document.getElementById('btn-reset-a8');
-
-      if (!q1 || !q2 || !q3 || !customQrGenerated) {
-        fb.innerHTML = '<span class="text-rose-600">Φτιάξε πρώτα ένα QR και απάντησε στις 3 ερωτήσεις!</span>';
-        return;
-      }
-
-      const ok1 = (q1 === 'direct');
-      const ok2 = (q2 === 'free');
-      const ok3 = (q3 === 'access');
-
-      document.getElementById('a8_1_box').className = ok1 ? "p-4 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-      document.getElementById('a8_2_box').className = ok2 ? "p-4 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-      document.getElementById('a8_3_box').className = ok3 ? "p-4 bg-white rounded-xl border border-emerald-400 flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50/50 rounded-xl border border-rose-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-
-      const totalOk = [ok1, ok2, ok3].filter(Boolean).length;
-      if (totalOk === 3) {
-        scores[8] = 100;
-        updateScore();
-        fb.innerHTML = '<span class="text-emerald-600">🎉 Συγχαρητήρια! Ολοκλήρωσες επιτυχώς το Μάθημα 21 (3/3)!</span>';
-        resetBtn.classList.add('hidden');
-      } else {
-        fb.innerHTML = `<span class="text-amber-600">Έχεις ${totalOk}/3 σωστές απαντήσεις. Δοκίμασε ξανά!</span>`;
-        resetBtn.classList.remove('hidden');
-      }
-    }
-
-    function resetAct8() {
-      customQrGenerated = false;
-      document.getElementById('qr-input-text').value = "";
-      document.getElementById('qr-display').innerText = "🏁";
-      document.getElementById('qr-status-label').innerText = "Έτοιμο για παραγωγή";
-      document.getElementById('a8_1').value = "";
-      document.getElementById('a8_2').value = "";
-      document.getElementById('a8_3').value = "";
-      ['a8_1_box', 'a8_2_box', 'a8_3_box'].forEach(id => {
-        document.getElementById(id).className = "p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3";
-      });
-      document.getElementById('a8-fb').innerHTML = "";
-      document.getElementById('btn-reset-a8').classList.add('hidden');
     }
   </script>
 </body>
