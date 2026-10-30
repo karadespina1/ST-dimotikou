@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Μάθημα 2: Algorithm Arcade - Μοντελοποίηση & Αλγόριθμοι</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .arcade-tab.active {
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      color: #ffffff;
+      border-color: #f97316;
+      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.35);
+      transform: translateY(-2px);
+    }
+    .grid-cell {
+      transition: all 0.25s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen p-3 sm:p-5 md:p-8 flex flex-col items-center text-base leading-relaxed selection:bg-amber-500 selection:text-white">
+
+  <div class="max-w-4xl w-full bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden flex flex-col">
+
+    <!-- Header με ζεστό Arcade στυλ -->
+    <header class="bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 p-5 sm:p-7 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-md">
+      <div class="flex items-center gap-4">
+        <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-3xl backdrop-blur-md shadow-inner border border-white/30 shrink-0">
+          ⚙️
+        </div>
+        <div>
+          <span class="bg-white/25 text-amber-100 text-xs sm:text-sm font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+            Πληροφορική ΣΤ΄ Δημοτικού • Μάθημα 2
+          </span>
+          <h1 class="text-xl sm:text-2xl md:text-3xl font-black mt-1">Algorithm Arcade: Αλγόριθμοι & Μοντελοποίηση</h1>
+        </div>
+      </div>
+      <div class="bg-white/20 px-5 py-2.5 rounded-2xl text-center backdrop-blur-md border border-white/20 shrink-0">
+        <div class="text-xs text-amber-100 font-bold uppercase tracking-wider">Συνολικό Σκορ</div>
+        <div id="score-display" class="text-2xl sm:text-3xl font-black text-white">0 / 800</div>
+      </div>
+    </header>
+
+    <!-- Μπάρα Πλοήγησης 8 Επίπεδων -->
+    <nav class="bg-amber-50/50 border-b border-amber-200/60 p-3 overflow-x-auto">
+      <div class="flex gap-2.5 min-w-max">
+        <button onclick="goToAct(1)" id="tab-1" class="arcade-tab active px-4 py-2 rounded-xl text-sm md:text-base font-bold border border-amber-200 text-slate-700 hover:bg-white transition-all">
+          1. 🍳 Ρομποτικός Σεφ
+        </button>
+        <button onclick="goToAct(2)" id="tab-2" class="arcade-tab px-4 py-2 rounded-xl text-sm md:text-base font-bold border border-amber-200 text-slate-700 hover:bg-white transition-all">
+          2. 🤖 Grid Navigator
+        </button>
+        <button onclick="goToAct(3)" id="tab-3" class="arcade-tab px-4 py-2 rounded-xl text-sm md:text-base font-bold border border-amber-200 text-slate-700 hover:bg-white transition-all">
+          3. 🎛️ Ιδιότητες Αλγορίθμου
+        </button>
+        <button onclick="goToAct(4)" id="tab-4" class="arcade-tab px-4 py-2 rounded-xl text-sm md:text-base font-bold border border-amber-200 text-slate-700 hover:bg-white transition-all">
+          4. 🗺️ Εννοιολογικός Χάρτης
+        </button>
+        <button onclick="goToAct(5)" id="tab-5" class="arcade-tab px-4 py-2 rounded-xl text-sm md:text-base font-bold border border-amber-200 text-slate-700 hover:bg-white transition-all">
+          5. 🐛 Debug the Glitch
+        </button>
+        <button onclick="goToAct(6)" id="tab-6" class="arcade-tab px-4 py-2 rounded-xl text-sm md:text-base font-bold border border-amber-200 text-slate-700 hover:bg-white transition-all">
+          6. 📊 Διάγραμμα Ροής
+        </button>
+        <button onclick="goToAct(7)" id="tab-7" class="arcade-tab px-4 py-2 rounded-xl text-sm md:text-base font-bold border border-amber-200 text-slate-700 hover:bg-white transition-all">
+          7. 🎒 Αλγόριθμοι Ζωής
+        </button>
+        <button onclick="goToAct(8)" id="tab-8" class="arcade-tab px-4 py-2 rounded-xl text-sm md:text-base font-bold border border-amber-200 text-slate-700 hover:bg-white transition-all">
+          8. 🔐 Escape Room
+        </button>
+      </div>
+    </nav>
+
+    <!-- Κύριο Περιεχόμενο -->
+    <main class="p-4 sm:p-6 md:p-8 flex-grow">
+
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 1: Ρομποτικός Σεφ            -->
+      <!-- ========================================== -->
+      <section id="act-1" class="act-pane space-y-5">
+        <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
+          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center text-sm font-bold">1</span>
+            Ο Ρομποτικός Σεφ: Αλγόριθμος για Τοστ
+          </h2>
+          <span class="text-xs sm:text-sm font-bold text-orange-700 bg-orange-50 px-3 py-1 rounded-full border border-orange-200">+100 Πόντοι</span>
+        </div>
+        <p class="text-slate-600 text-sm sm:text-base">
+          Ένας αλγόριθμος είναι μια <strong>πεπερασμένη σειρά σαφών εντολών με συγκεκριμένη σειρά</strong>. Χρησιμοποίησε τα βελάκια <i class="fa-solid fa-arrow-up text-xs text-orange-500"></i> και <i class="fa-solid fa-arrow-down text-xs text-orange-500"></i> για να βάλεις τα 4 βήματα στη σωστή λογική σειρά εκτέλεσης:
+        </p>
+
+        <!-- Διαδραστική Λίστα με κουμπιά μετακίνησης -->
+        <div id="chef-steps-list" class="space-y-2.5">
+          <!-- Τα βήματα παράγονται δυναμικά μέσω JS -->
+        </div>
+
+        <div class="p-4 bg-amber-50/70 border border-amber-200 rounded-2xl flex items-center gap-3 text-sm sm:text-base text-amber-900">
+          <i class="fa-solid fa-lightbulb text-amber-500 text-xl shrink-0"></i>
+          <span>Σκέψου: Μπορούμε να ψήσουμε το τοστ πριν βάλουμε τα υλικά ανάμεσα στις φέτες; Η σειρά έχει απόλυτη σημασία!</span>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+          <div class="flex gap-2 w-full sm:w-auto">
+            <button onclick="checkAct1()" class="w-full sm:w-auto px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm sm:text-base rounded-xl shadow transition-all">
+              Έλεγχος Σειράς
+            </button>
+            <button onclick="resetAct1()" id="reset-btn-1" class="hidden w-full sm:w-auto px-4 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-sm sm:text-base rounded-xl">
+              Επαναφορά
+            </button>
+          </div>
+          <div id="fb-1" class="text-sm sm:text-base font-bold"></div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 2: Grid Navigator (Πλέγμα)   -->
+      <!-- ========================================== -->
+      <section id="act-2" class="act-pane space-y-5 hidden">
+        <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
+          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center text-sm font-bold">2</span>
+            Grid Navigator: Οδήγησε το Ρομπότ στο Κλειδί
+          </h2>
+          <span class="text-xs sm:text-sm font-bold text-teal-700 bg-teal-50 px-3 py-1 rounded-full border border-teal-200">+100 Πόντοι</span>
+        </div>
+        <p class="text-slate-600 text-sm sm:text-base">
+          Δώσε εντολές στο ρομπότ (<strong>Βήμα Μπροστά</strong>, <strong>Στροφή Δεξιά</strong>, <strong>Στροφή Αριστερά</strong>) για να φτάσει στο κλειδί 🔑 αποφεύγοντας τις λάβες 🌋:
+        </p>
+
+        <!-- Πλέγμα 4x4 & Controls -->
+        <div class="flex flex-col md:flex-row items-center justify-around gap-6 p-4 sm:p-6 bg-slate-50 border-2 border-slate-200 rounded-3xl">
+          
+          <!-- Το 4x4 Grid -->
+          <div id="grid-board" class="grid grid-cols-4 gap-2 bg-slate-200 p-2.5 rounded-2xl shadow-inner shrink-0">
+            <!-- 16 κελιά παράγονται δυναμικά -->
+          </div>
+
+          <!-- Χειριστήριο Εντολών -->
+          <div class="space-y-4 w-full max-w-xs text-center">
+            <div class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-500">Κονσόλα Προγραμματισμού</div>
+            
+            <div class="grid grid-cols-3 gap-2">
+              <div></div>
+              <button onclick="robotMoveForward()" class="p-3 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl shadow active:scale-95 transition-all text-sm">
+                <i class="fa-solid fa-arrow-up block text-lg mb-0.5"></i> Μπροστά
+              </button>
+              <div></div>
+
+              <button onclick="robotTurnLeft()" class="p-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow active:scale-95 transition-all text-sm">
+                <i class="fa-solid fa-rotate-left block text-lg mb-0.5"></i> Στρίψε ↶
+              </button>
+              <button onclick="robotResetGrid()" class="p-3 bg-slate-300 hover:bg-slate-400 text-slate-800 font-bold rounded-xl shadow active:scale-95 transition-all text-sm">
+                <i class="fa-solid fa-arrows-rotate block text-lg mb-0.5"></i> Reset
+              </button>
+              <button onclick="robotTurnRight()" class="p-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow active:scale-95 transition-all text-sm">
+                <i class="fa-solid fa-rotate-right block text-lg mb-0.5"></i> Στρίψε ↷
+              </button>
+            </div>
+
+            <div class="bg-white p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium text-slate-600">
+              Κατεύθυνση: <span id="robot-dir-text" class="font-bold text-teal-700">Ανατολικά ➔</span><br>
+              Ενέργειες: <span id="robot-steps-count" class="font-bold text-slate-800">0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-2">
+          <div id="fb-2" class="text-sm sm:text-base font-bold">Οδήγησε το ρομπότ 🤖 στο κλειδί 🔑!</div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 3: Ιδιότητες Αλγορίθμου       -->
+      <!-- ========================================== -->
+      <section id="act-3" class="act-pane space-y-5 hidden">
+        <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
+          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-amber-600 text-white flex items-center justify-center text-sm font-bold">3</span>
+            Οι 3 Βασικές Ιδιότητες ενός Αλγορίθμου (σελ. 13-14)
+          </h2>
+          <span class="text-xs sm:text-sm font-bold text-amber-700 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">+100 Πόντοι</span>
+        </div>
+        <p class="text-slate-600 text-sm sm:text-base">
+          Για να θεωρείται μια διαδικασία αλγόριθμος, πρέπει να τηρεί συγκεκριμένες ιδιότητες. Ενεργοποίησε τον διακόπτη <i class="fa-solid fa-toggle-on text-emerald-600"></i> στις <strong>3 σωστές ιδιότητες</strong> και άφησε κλειστό τον διακόπτη στις εσφαλμένες:
+        </p>
+
+        <!-- Διαδραστικά Toggles Switcher -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5" id="toggles-container">
+          <!-- Toggle 1 -->
+          <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between gap-3">
+            <div>
+              <div class="font-bold text-slate-800 text-base">1. Σαφήνεια (Καθοριστικότητα)</div>
+              <div class="text-xs sm:text-sm text-slate-500">Κάθε εντολή είναι ξεκάθαρη, χωρίς καμία αμφιβολία.</div>
+            </div>
+            <button onclick="toggleSwitch(this)" data-correct="true" class="switch-btn w-14 h-8 bg-slate-300 rounded-full p-1 transition-colors relative shrink-0">
+              <div class="switch-dot w-6 h-6 bg-white rounded-full shadow-md transition-transform"></div>
+            </button>
+          </div>
+
+          <!-- Toggle 2 -->
+          <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between gap-3">
+            <div>
+              <div class="font-bold text-slate-800 text-base">2. Απεριόριστη Διάρκεια (Απειρία)</div>
+              <div class="text-xs sm:text-sm text-slate-500">Ο αλγόριθμος τρέχει ασταμάτητα για πάντα χωρίς τέλος.</div>
+            </div>
+            <button onclick="toggleSwitch(this)" data-correct="false" class="switch-btn w-14 h-8 bg-slate-300 rounded-full p-1 transition-colors relative shrink-0">
+              <div class="switch-dot w-6 h-6 bg-white rounded-full shadow-md transition-transform"></div>
+            </button>
+          </div>
+
+          <!-- Toggle 3 -->
+          <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between gap-3">
+            <div>
+              <div class="font-bold text-slate-800 text-base">3. Πεπερασμένο (Τερματισμός)</div>
+              <div class="text-xs sm:text-sm text-slate-500">Ολοκληρώνεται υποχρεωτικά μετά από συγκεκριμένα βήματα.</div>
+            </div>
+            <button onclick="toggleSwitch(this)" data-correct="true" class="switch-btn w-14 h-8 bg-slate-300 rounded-full p-1 transition-colors relative shrink-0">
+              <div class="switch-dot w-6 h-6 bg-white rounded-full shadow-md transition-transform"></div>
+            </button>
+          </div>
+
+          <!-- Toggle 4 -->
+          <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between gap-3">
+            <div>
+              <div class="font-bold text-slate-800 text-base">4. Αποτελεσματικότητα</div>
+              <div class="text-xs sm:text-sm text-slate-500">Κάθε βήμα είναι απλό, εκτελέσιμο και οδηγεί στο ζητούμενο.</div>
+            </div>
+            <button onclick="toggleSwitch(this)" data-correct="true" class="switch-btn w-14 h-8 bg-slate-300 rounded-full p-1 transition-colors relative shrink-0">
+              <div class="switch-dot w-6 h-6 bg-white rounded-full shadow-md transition-transform"></div>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+          <button onclick="checkAct3()" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold text-sm sm:text-base rounded-xl shadow transition-all">
+            Έλεγχος Διακοπτών
+          </button>
+          <div id="fb-3" class="text-sm sm:text-base font-bold"></div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 4: Εννοιολογικός Χάρτης      -->
+      <!-- ========================================== -->
+      <section id="act-4" class="act-pane space-y-5 hidden">
+        <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
+          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-rose-600 text-white flex items-center justify-center text-sm font-bold">4</span>
+            Μοντελοποίηση: Ο Εννοιολογικός Χάρτης (σελ. 12-13)
+          </h2>
+          <span class="text-xs sm:text-sm font-bold text-rose-700 bg-rose-50 px-3 py-1 rounded-full border border-rose-200">+100 Πόντοι</span>
+        </div>
+        <p class="text-slate-600 text-sm sm:text-base">
+          Η μοντελοποίηση είναι η αναπαράσταση ενός προβλήματος με απλοποιημένο τρόπο. Σύνδεσε κάθε έννοια του κεντρικού προβλήματος <strong>«Δημιουργία Επιτραπέζιου Παιχνιδιού»</strong> με το σωστό υπο-τμήμα:
+        </p>
+
+        <!-- Διαδραστικές Κάρτες Σύνδεσης -->
+        <div class="space-y-3">
+          <div id="map-box-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <span class="font-medium text-sm sm:text-base">1. «Πόσα τετράγωνα θα έχει το ταμπλό και τι σχέδιο θα έχει;»</span>
+            <select id="map-sel-1" class="p-2 border rounded-xl bg-white text-sm sm:text-base text-slate-700 font-medium">
+              <option value="">-- Διάλεξε ενότητα --</option>
+              <option value="rules">Κανόνες Παιχνιδιού</option>
+              <option value="board">Σχεδιασμός Ταμπλό</option>
+              <option value="pieces">Πιόνια & Ζάρια</option>
+            </select>
+          </div>
+
+          <div id="map-box-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <span class="font-medium text-sm sm:text-base">2. «Ποιος παίζει πρώτος και πότε νικάει ένας παίκτης;»</span>
+            <select id="map-sel-2" class="p-2 border rounded-xl bg-white text-sm sm:text-base text-slate-700 font-medium">
+              <option value="">-- Διάλεξε ενότητα --</option>
+              <option value="board">Σχεδιασμός Ταμπλό</option>
+              <option value="rules">Κανόνες Παιχνιδιού</option>
+              <option value="pieces">Πιόνια & Ζάρια</option>
+            </select>
+          </div>
+
+          <div id="map-box-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <span class="font-medium text-sm sm:text-base">3. «Από τι υλικό θα φτιάξουμε τα πιόνια των παικτών;»</span>
+            <select id="map-sel-3" class="p-2 border rounded-xl bg-white text-sm sm:text-base text-slate-700 font-medium">
+              <option value="">-- Διάλεξε ενότητα --</option>
+              <option value="pieces">Πιόνια & Ζάρια</option>
+              <option value="rules">Κανόνες Παιχνιδιού</option>
+              <option value="board">Σχεδιασμός Ταμπλό</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+          <button onclick="checkAct4()" class="px-6 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm sm:text-base rounded-xl shadow transition-all">
+            Έλεγχος Χάρτη
+          </button>
+          <div id="fb-4" class="text-sm sm:text-base font-bold"></div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 5: Debug the Glitch          -->
+      <!-- ========================================== -->
+      <section id="act-5" class="act-pane space-y-5 hidden">
+        <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
+          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-sm font-bold">5</span>
+            Debug the Glitch: Εντόπισε το Λάθος Βήμα!
+          </h2>
+          <span class="text-xs sm:text-sm font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">+100 Πόντοι</span>
+        </div>
+        <p class="text-slate-600 text-sm sm:text-base">
+          Ο παρακάτω αλγόριθμος για <strong>«Διάσχιση ενός δρόμου με φωτεινό σηματοδότη»</strong> περιέχει ένα επικίνδυνο λογικό σφάλμα (glitch). Πάτησε «Επόμενο Βήμα» για να εκτελέσεις τον αλγόριθμο και κάνε κλικ στο βήμα που είναι λάθος:
+        </p>
+
+        <!-- Step-by-Step Simulator Panel -->
+        <div class="p-5 bg-slate-900 text-white rounded-3xl space-y-4 font-mono text-sm sm:text-base">
+          <div class="flex justify-between items-center text-xs text-slate-400 border-b border-slate-800 pb-2">
+            <span>ALGORITHM_EXECUTION_TRACE</span>
+            <span id="debugger-status">Εν αναμονή...</span>
+          </div>
+
+          <div class="space-y-2">
+            <div id="dbg-step-1" onclick="selectBugStep(1)" class="p-3 rounded-xl bg-slate-800 border border-slate-700 hover:border-amber-400 cursor-pointer transition-all flex items-center justify-between">
+              <span>1. Πλησιάζω στο πεζοδρόμιο της διάβασης.</span>
+              <span class="step-indicator text-xs text-slate-500 font-bold">Βήμα 1</span>
+            </div>
+            <div id="dbg-step-2" onclick="selectBugStep(2)" class="p-3 rounded-xl bg-slate-800 border border-slate-700 hover:border-amber-400 cursor-pointer transition-all flex items-center justify-between">
+              <span>2. Κοιτάζω τον φωτεινό σηματοδότη πεζών.</span>
+              <span class="step-indicator text-xs text-slate-500 font-bold">Βήμα 2</span>
+            </div>
+            <div id="dbg-step-3" onclick="selectBugStep(3)" class="p-3 rounded-xl bg-slate-800 border border-slate-700 hover:border-amber-400 cursor-pointer transition-all flex items-center justify-between">
+              <span>3. Αν το φανάρι είναι ΚΟΚΚΙΝΟ, ξεκινάω αμέσως να τρέχω απέναντι.</span>
+              <span class="step-indicator text-xs text-slate-500 font-bold">Βήμα 3</span>
+            </div>
+            <div id="dbg-step-4" onclick="selectBugStep(4)" class="p-3 rounded-xl bg-slate-800 border border-slate-700 hover:border-amber-400 cursor-pointer transition-all flex items-center justify-between">
+              <span>4. Φτάνω ασφαλής στο απέναντι πεζοδρόμιο.</span>
+              <span class="step-indicator text-xs text-slate-500 font-bold">Βήμα 4</span>
+            </div>
+          </div>
+
+          <div class="flex gap-2 pt-2">
+            <button onclick="runNextDebugStep()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm rounded-xl transition-all">
+              ▶ Εκτέλεση Βήμα-Βήμα
+            </button>
+            <button onclick="resetDebugger()" class="px-3 py-2 bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs sm:text-sm rounded-xl transition-all">
+              Επαναφορά
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-2">
+          <div id="fb-5" class="text-sm sm:text-base font-bold">Κάνε κλικ στο βήμα που περιέχει το λάθος!</div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 6: Flowchart Builder         -->
+      <!-- ========================================== -->
+      <section id="act-6" class="act-pane space-y-5 hidden">
+        <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
+          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold">6</span>
+            Τα Σχήματα του Διαγράμματος Ροής (σελ. 14-15)
+          </h2>
+          <span class="text-xs sm:text-sm font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">+100 Πόντοι</span>
+        </div>
+        <p class="text-slate-600 text-sm sm:text-base">
+          Ένα διάγραμμα ροής αναπαριστά γραφικά έναν αλγόριθμο με τυποποιημένα γεωμετρικά σχήματα. Ταίριαξε το κάθε σχήμα με τη λειτουργία του:
+        </p>
+
+        <div class="space-y-3.5">
+          <!-- Σχήμα 1: Έλλειψη -->
+          <div id="flow-box-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-8 rounded-full border-2 border-indigo-600 bg-indigo-100 flex items-center justify-center text-xs font-bold text-indigo-800 shrink-0">
+                ⬭
+              </div>
+              <div>
+                <div class="font-bold text-slate-800 text-sm sm:text-base">Έλλειψη (Οβάλ)</div>
+                <div class="text-xs sm:text-sm text-slate-500">Ποια λειτουργία δηλώνει πάντα;</div>
+              </div>
+            </div>
+            <select id="flow-sel-1" class="p-2 border rounded-xl bg-white text-sm sm:text-base text-slate-700 font-medium">
+              <option value="">-- Επίλεξε λειτουργία --</option>
+              <option value="decision">Λήψη απόφασης (Συνθήκη Αν...)</option>
+              <option value="start_end">Αρχή και Τέλος του αλγορίθμου</option>
+              <option value="process">Εκτέλεση πράξης / επεξεργασίας</option>
+            </select>
+          </div>
+
+          <!-- Σχήμα 2: Ορθογώνιο -->
+          <div id="flow-box-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-8 border-2 border-indigo-600 bg-indigo-100 flex items-center justify-center text-xs font-bold text-indigo-800 shrink-0">
+                ▭
+              </div>
+              <div>
+                <div class="font-bold text-slate-800 text-sm sm:text-base">Ορθογώνιο</div>
+                <div class="text-xs sm:text-sm text-slate-500">Ποια λειτουργία δηλώνει;</div>
+              </div>
+            </div>
+            <select id="flow-sel-2" class="p-2 border rounded-xl bg-white text-sm sm:text-base text-slate-700 font-medium">
+              <option value="">-- Επίλεξε λειτουργία --</option>
+              <option value="start_end">Αρχή και Τέλος</option>
+              <option value="process">Εκτέλεση ενέργειας ή υπολογισμού</option>
+              <option value="io">Είσοδος ή Έξοδος δεδομένων</option>
+            </select>
+          </div>
+
+          <!-- Σχήμα 3: Ρόμβος -->
+          <div id="flow-box-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 border-2 border-indigo-600 bg-indigo-100 rotate-45 flex items-center justify-center text-xs font-bold text-indigo-800 shrink-0">
+                <span class="-rotate-45">◇</span>
+              </div>
+              <div>
+                <div class="font-bold text-slate-800 text-sm sm:text-base">Ρόμβος</div>
+                <div class="text-xs sm:text-sm text-slate-500">Πότε τον χρησιμοποιούμε;</div>
+              </div>
+            </div>
+            <select id="flow-sel-3" class="p-2 border rounded-xl bg-white text-sm sm:text-base text-slate-700 font-medium">
+              <option value="">-- Επίλεξε λειτουργία --</option>
+              <option value="process">Απλή πράξη πρόσθεσης</option>
+              <option value="start_end">Αρχή αλγορίθμου</option>
+              <option value="decision">Λήψη απόφασης / Έλεγχος συνθήκης (Ναι / Όχι)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+          <button onclick="checkAct6()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm sm:text-base rounded-xl shadow transition-all">
+            Έλεγχος Σχημάτων
+          </button>
+          <div id="fb-6" class="text-sm sm:text-base font-bold"></div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 7: Αλγόριθμοι Ζωής           -->
+      <!-- ========================================== -->
+      <section id="act-7" class="act-pane space-y-5 hidden">
+        <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
+          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-cyan-600 text-white flex items-center justify-center text-sm font-bold">7</span>
+            Αλγόριθμοι στην Καθημερινή Ζωή (σελ. 11-12)
+          </h2>
+          <span class="text-xs sm:text-sm font-bold text-cyan-700 bg-cyan-50 px-3 py-1 rounded-full border border-cyan-200">+100 Πόντοι</span>
+        </div>
+        <p class="text-slate-600 text-sm sm:text-base">
+          Ακόμη και χωρίς υπολογιστή, εκτελούμε αλγορίθμους καθημερινά. Σύνδεσε κάθε πρόβλημα με την κατάλληλη πρώτη ενέργεια επίλυσης:
+        </p>
+
+        <div class="space-y-3.5">
+          <div id="life-box-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <span class="font-medium text-sm sm:text-base">1. Πρόβλημα: «Πλύσιμο των δοντιών το πρωί»</span>
+            <select id="life-sel-1" class="p-2 border rounded-xl bg-white text-sm sm:text-base text-slate-700 font-medium">
+              <option value="">-- Πρώτη ενέργεια --</option>
+              <option value="pack">Κλείνω το φερμουάρ της τσάντας</option>
+              <option value="brush">Βάζω οδοντόκρεμα πάνω στην οδοντόβουρτσα</option>
+              <option value="shoes">Δένω τα κορδόνια των παπουτσιών</option>
+            </select>
+          </div>
+
+          <div id="life-box-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <span class="font-medium text-sm sm:text-base">2. Πρόβλημα: «Προετοιμασία σχολικής τσάντας»</span>
+            <select id="life-sel-2" class="p-2 border rounded-xl bg-white text-sm sm:text-base text-slate-700 font-medium">
+              <option value="">-- Πρώτη ενέργεια --</option>
+              <option value="timetable">Συμβουλεύομαι το ωρολόγιο πρόγραμμα της επόμενης ημέρας</option>
+              <option value="brush">Ξεπλένω με νερό</option>
+              <option value="shoes">Βγαίνω από την εξώπορτα</option>
+            </select>
+          </div>
+
+          <div id="life-box-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <span class="font-medium text-sm sm:text-base">3. Πρόβλημα: «Τηλεφώνημα σε φίλο από κινητό»</span>
+            <select id="life-sel-3" class="p-2 border rounded-xl bg-white text-sm sm:text-base text-slate-700 font-medium">
+              <option value="">-- Πρώτη ενέργεια --</option>
+              <option value="call">Ξεκλειδώνω την οθόνη και ανοίγω τις Επαφές</option>
+              <option value="timetable">Βάζω τα βιβλία στην τσάντα</option>
+              <option value="brush">Βουρτσίζω κυκλικά</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+          <button onclick="checkAct7()" class="px-6 py-2.5 bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-sm sm:text-base rounded-xl shadow transition-all">
+            Έλεγχος Αλγορίθμων Ζωής
+          </button>
+          <div id="fb-7" class="text-sm sm:text-base font-bold"></div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 8: Escape Room Challenge     -->
+      <!-- ========================================== -->
+      <section id="act-8" class="act-pane space-y-5 hidden">
+        <div class="border-b border-slate-200 pb-3 flex items-center justify-between">
+          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-violet-600 text-white flex items-center justify-center text-sm font-bold">8</span>
+            Το Μεγάλο Escape Room των Αλγορίθμων
+          </h2>
+          <span class="text-xs sm:text-sm font-bold text-violet-700 bg-violet-50 px-3 py-1 rounded-full border border-violet-200">+100 Πόντοι</span>
+        </div>
+        <p class="text-slate-600 text-sm sm:text-base">
+          Για να ξεκλειδώσεις το ψηφιακό χρηματοκιβώτιο, εκτέλεσε τον μίνι αλγόριθμο υπολογισμού 3 σταδίων:
+        </p>
+
+        <!-- Escape Safe Mini Game -->
+        <div class="p-6 bg-slate-900 text-white rounded-3xl space-y-5 border-2 border-violet-500 shadow-xl">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div class="flex items-center gap-3">
+              <span class="text-3xl">🔐</span>
+              <div>
+                <div class="font-bold text-base text-violet-400">CRYPTIC_SAFE_v2.0</div>
+                <div class="text-xs text-slate-400">Εκτέλεση αλγορίθμου αποκωδικοποίησης</div>
+              </div>
+            </div>
+            <div id="safe-display" class="font-mono text-xl sm:text-2xl font-black bg-black px-4 py-1.5 rounded-xl border border-violet-400 text-amber-400 tracking-widest">
+              _ _ _
+            </div>
+          </div>
+
+          <!-- 3 Υπολογιστικά Στάδια Αλγορίθμου -->
+          <div class="space-y-4 text-xs sm:text-sm font-mono">
+            <div class="p-3 bg-slate-800 rounded-xl border border-slate-700 space-y-2">
+              <span class="text-violet-300 font-bold block">ΒΗΜΑ 1: «Ορισμός αρχικής μεταβλητής X = 5. Αν προσθέσουμε 3, ποια είναι η νέα τιμή;»</span>
+              <div class="flex gap-2">
+                <button onclick="setSafeCode(0, '8')" class="code-btn-0 px-4 py-1.5 bg-slate-700 hover:bg-violet-600 rounded-lg text-white font-bold">X = 8</button>
+                <button onclick="setSafeCode(0, '2')" class="code-btn-0 px-4 py-1.5 bg-slate-700 hover:bg-violet-600 rounded-lg text-white font-bold">X = 2</button>
+              </div>
+            </div>
+
+            <div class="p-3 bg-slate-800 rounded-xl border border-slate-700 space-y-2">
+              <span class="text-violet-300 font-bold block">ΒΗΜΑ 2: «Συνθήκη: Αν το X είναι μεγαλύτερο του 6, τότε Y = 4, αλλιώς Y = 1. Ποια είναι η τιμή του Y;»</span>
+              <div class="flex gap-2">
+                <button onclick="setSafeCode(1, '1')" class="code-btn-1 px-4 py-1.5 bg-slate-700 hover:bg-violet-600 rounded-lg text-white font-bold">Y = 1</button>
+                <button onclick="setSafeCode(1, '4')" class="code-btn-1 px-4 py-1.5 bg-slate-700 hover:bg-violet-600 rounded-lg text-white font-bold">Y = 4</button>
+              </div>
+            </div>
+
+            <div class="p-3 bg-slate-800 rounded-xl border border-slate-700 space-y-2">
+              <span class="text-violet-300 font-bold block">ΒΗΜΑ 3: «Υπολογισμός τελικού κωδικού Z = X - Y. Ποιο είναι το Z;»</span>
+              <div class="flex gap-2">
+                <button onclick="setSafeCode(2, '4')" class="code-btn-2 px-4 py-1.5 bg-slate-700 hover:bg-violet-600 rounded-lg text-white font-bold">Z = 4</button>
+                <button onclick="setSafeCode(2, '9')" class="code-btn-2 px-4 py-1.5 bg-slate-700 hover:bg-violet-600 rounded-lg text-white font-bold">Z = 9</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+          <button onclick="checkAct8()" class="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-bold text-sm sm:text-base rounded-xl shadow transition-all">
+            Άνοιγμα Χρηματοκιβωτίου
+          </button>
+          <div id="fb-8" class="text-sm sm:text-base font-bold"></div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Modal Ολοκλήρωσης & Επιβράβευσης -->
+    <div id="win-modal" class="hidden m-4 sm:m-6 p-6 sm:p-8 bg-amber-50 border-2 border-amber-400 rounded-3xl text-center space-y-4">
+      <div class="text-6xl animate-bounce">🏆</div>
+      <h3 class="text-2xl sm:text-3xl font-black text-amber-900">Συγχαρητήρια! Είσαι Master των Αλγορίθμων!</h3>
+      <p class="text-slate-600 max-w-md mx-auto text-sm sm:text-base">
+        Ολοκλήρωσες επιτυχώς και τις 8 βιωματικές αποστολές του Μαθήματος 2. Έμαθες να σχεδιάζεις, να ελέγχεις και να υλοποιείς αλγορίθμους όπως ένας πραγματικός επιστήμονας υπολογιστών!
+      </p>
+      <div class="text-3xl font-black text-amber-600">800 / 800 Πόντοι</div>
+      <button onclick="location.reload()" class="px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold text-base rounded-xl shadow transition-all">
+        Παίξε Ξανά από την Αρχή
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-100 p-4 border-t border-slate-200 text-center text-xs sm:text-sm text-slate-500">
+      Πληροφορική ΣΤ΄ Δημοτικού • Μάθημα 2: Μοντελοποίηση προβλήματος - Αλγόριθμοι
+    </footer>
+
+  </div>
+
+  <script>
+    let scores = { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0 };
+
+    function updateScoreDisplay() {
+      const sum = Object.values(scores).reduce((a, b) => a + b, 0);
+      document.getElementById('score-display').innerText = `${sum} / 800`;
+      if (sum === 800) {
+        document.getElementById('win-modal').classList.remove('hidden');
+      }
+    }
+
+    function goToAct(n) {
+      document.querySelectorAll('.act-pane').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.arcade-tab').forEach(b => b.classList.remove('active'));
+
+      const target = document.getElementById(`act-${n}`);
+      if (target) target.classList.remove('hidden');
+
+      const btn = document.getElementById(`tab-${n}`);
+      if (btn) btn.classList.add('active');
+    }
+
+    // ==========================================
+    // ΔΡΑΣΤΗΡΙΟΤΗΤΑ 1: Ρομποτικός Σεφ (Shuffler)
+    // ==========================================
+    const initialChefSteps = [
+      { id: 3, text: "3. Βάζω το τοστ στην τοστιέρα και ψήνω για 3 λεπτά." },
+      { id: 1, text: "1. Παίρνω δύο φέτες ψωμί του τοστ." },
+      { id: 4, text: "4. Βγάζω προσεκτικά το ψημένο τοστ στο πιάτο." },
+      { id: 2, text: "2. Τοποθετώ το τυρί και τη γαλοπούλα ανάμεσα στις φέτες." }
+    ];
+    let currentChefSteps = [...initialChefSteps];
+
+    function renderChefSteps() {
+      const list = document.getElementById('chef-steps-list');
+      list.innerHTML = '';
+      currentChefSteps.forEach((step, idx) => {
+        const item = document.createElement('div');
+        item.className = "p-3.5 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between gap-3 shadow-sm";
+        item.innerHTML = `
+          <div class="flex items-center gap-3">
+            <span class="w-7 h-7 rounded-full bg-orange-100 text-orange-700 font-bold text-xs flex items-center justify-center shrink-0">${idx + 1}</span>
+            <span class="font-medium text-sm sm:text-base text-slate-800">${step.text}</span>
+          </div>
+          <div class="flex gap-1.5 shrink-0">
+            <button onclick="moveChefStep(${idx}, -1)" class="w-8 h-8 rounded-lg bg-white border hover:bg-orange-50 text-slate-600 flex items-center justify-center text-xs shadow-sm" ${idx === 0 ? 'disabled style="opacity:0.3"' : ''}>
+              <i class="fa-solid fa-arrow-up"></i>
+            </button>
+            <button onclick="moveChefStep(${idx}, 1)" class="w-8 h-8 rounded-lg bg-white border hover:bg-orange-50 text-slate-600 flex items-center justify-center text-xs shadow-sm" ${idx === currentChefSteps.length - 1 ? 'disabled style="opacity:0.3"' : ''}>
+              <i class="fa-solid fa-arrow-down"></i>
+            </button>
+          </div>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    function moveChefStep(idx, dir) {
+      const targetIdx = idx + dir;
+      if (targetIdx < 0 || targetIdx >= currentChefSteps.length) return;
+      const temp = currentChefSteps[idx];
+      currentChefSteps[idx] = currentChefSteps[targetIdx];
+      currentChefSteps[targetIdx] = temp;
+      renderChefSteps();
+    }
+
+    function checkAct1() {
+      const isCorrect = currentChefSteps[0].id === 1 &&
+                        currentChefSteps[1].id === 2 &&
+                        currentChefSteps[2].id === 3 &&
+                        currentChefSteps[3].id === 4;
+      const fb = document.getElementById('fb-1');
+      const resetBtn = document.getElementById('reset-btn-1');
+
+      if (isCorrect) {
+        scores[1] = 100;
+        updateScoreDisplay();
+        fb.innerHTML = '<span class="text-emerald-600 font-bold">🎉 Μπράβο! Ο αλγόριθμος είναι απόλυτα σωστός!</span>';
+        resetBtn.classList.add('hidden');
+      } else {
+        scores[1] = 0;
+        updateScoreDisplay();
+        fb.innerHTML = '<span class="text-amber-600 font-bold">Η σειρά δεν είναι σωστή. Δοκίμασε ξανά με τα βελάκια!</span>';
+        resetBtn.classList.remove('hidden');
+      }
+    }
+
+    function resetAct1() {
+      currentChefSteps = [...initialChefSteps];
+      renderChefSteps();
+      document.getElementById('fb-1').innerHTML = '';
+      document.getElementById('reset-btn-1').classList.add('hidden');
+    }
+
+    // ==========================================
+    // ΔΡΑΣΤΗΡΙΟΤΗΤΑ 2: Grid Navigator
+    // ==========================================
+    let robotPos = { r: 0, c: 0 };
+    let robotDir = 0; // 0: East, 1: South, 2: West, 3: North
+    const targetPos = { r: 3, c: 3 };
+    const lavaPositions = [{ r: 1, c: 1 }, { r: 2, c: 2 }];
+    let robotMoveCount = 0;
+
+    function renderGridBoard() {
+      const board = document.getElementById('grid-board');
+      board.innerHTML = '';
+      for (let r = 0; r < 4; r++) {
+        for (let c = 0; c < 4; c++) {
+          const cell = document.createElement('div');
+          cell.className = "w-14 h-14 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center text-2xl font-bold bg-white border border-slate-300 shadow-sm relative";
+          
+          const isLava = lavaPositions.some(p => p.r === r && p.c === c);
+          const isTarget = (targetPos.r === r && targetPos.c === c);
+          const isRobot = (robotPos.r === r && robotPos.c === c);
+
+          if (isLava) {
+            cell.className += " bg-rose-100 border-rose-300";
+            cell.innerHTML = '🌋';
+          } else if (isTarget) {
+            cell.className += " bg-amber-100 border-amber-300";
+            cell.innerHTML = '🔑';
+          }
+
+          if (isRobot) {
+            cell.innerHTML = `<span class="transform transition-transform text-3xl" style="transform: rotate(${robotDir * 90}deg)">🤖</span>`;
+          }
+
+          board.appendChild(cell);
+        }
+      }
+
+      const dirNames = ["Ανατολικά ➔", "Νότια ⬇", "Δυτικά ⬅", "Βόρεια ⬆"];
+      document.getElementById('robot-dir-text').innerText = dirNames[robotDir];
+      document.getElementById('robot-steps-count').innerText = robotMoveCount;
+    }
+
+    function robotTurnRight() {
+      robotDir = (robotDir + 1) % 4;
+      renderGridBoard();
+    }
+
+    function robotTurnLeft() {
+      robotDir = (robotDir + 3) % 4;
+      renderGridBoard();
+    }
+
+    function robotMoveForward() {
+      let nextR = robotPos.r;
+      let nextC = robotPos.c;
+
+      if (robotDir === 0) nextC++; // East
+      else if (robotDir === 1) nextR++; // South
+      else if (robotDir === 2) nextC--; // West
+      else if (robotDir === 3) nextR--; // North
+
+      // Έλεγχος ορίων πλέγματος
+      if (nextR < 0 || nextR > 3 || nextC < 0 || nextC > 3) {
+        document.getElementById('fb-2').innerHTML = '<span class="text-rose-600 font-bold">⚠️ Εμπόδιο: Βγήκες έξω από το πλέγμα!</span>';
+        return;
+      }
+
+      // Έλεγχος λάβας
+      const hitLava = lavaPositions.some(p => p.r === nextR && p.c === nextC);
+      if (hitLava) {
+        document.getElementById('fb-2').innerHTML = '<span class="text-rose-600 font-bold">💥 Ωχ! Έπεσες στη λάβα! Πάτα Reset.</span>';
+        return;
+      }
+
+      robotPos.r = nextR;
+      robotPos.c = nextC;
+      robotMoveCount++;
+      renderGridBoard();
+
+      // Έλεγχος νίκης
+      if (robotPos.r === targetPos.r && robotPos.c === targetPos.c) {
+        scores[2] = 100;
+        updateScoreDisplay();
+        document.getElementById('fb-2').innerHTML = '<span class="text-emerald-600 font-bold">🎉 Μπράβο! Το ρομπότ πήρε το κλειδί 🔑 (+100)!</span>';
+      }
+    }
+
+    function robotResetGrid() {
+      robotPos = { r: 0, c: 0 };
+      robotDir = 0;
+      robotMoveCount = 0;
+      document.getElementById('fb-2').innerHTML = 'Οδήγησε το ρομπότ 🤖 στο κλειδί 🔑!';
+      renderGridBoard();
+    }
+
+    // ==========================================
+    // ΔΡΑΣΤΗΡΙΟΤΗΤΑ 3: Ιδιότητες Αλγορίθμου (Toggles)
+    // ==========================================
+    function toggleSwitch(btn) {
+      btn.classList.toggle('active');
+      const dot = btn.querySelector('.switch-dot');
+      if (btn.classList.contains('active')) {
+        btn.classList.remove('bg-slate-300');
+        btn.classList.add('bg-emerald-500');
+        dot.style.transform = 'translateX(24px)';
+      } else {
+        btn.classList.remove('bg-emerald-500');
+        btn.classList.add('bg-slate-300');
+        dot.style.transform = 'translateX(0px)';
+      }
+    }
+
+    function checkAct3() {
+      const switches = document.querySelectorAll('#toggles-container .switch-btn');
+      let allCorrect = true;
+
+      switches.forEach(btn => {
+        const shouldBeOn = (btn.getAttribute('data-correct') === 'true');
+        const isOn = btn.classList.contains('active');
+        if (shouldBeOn !== isOn) {
+          allCorrect = false;
+        }
+      });
+
+      const fb = document.getElementById('fb-3');
+      if (allCorrect) {
+        scores[3] = 100;
+        updateScoreDisplay();
+        fb.innerHTML = '<span class="text-emerald-600 font-bold">🎉 Άριστα! Σαφήνεια, Πεπερασμένο & Αποτελεσματικότητα (+100)!</span>';
+      } else {
+        scores[3] = 0;
+        updateScoreDisplay();
+        fb.innerHTML = '<span class="text-amber-600 font-bold">Κάποιος διακόπτης είναι λάθος. Θυμήσου: ο αλγόριθμος δεν είναι άπειρος!</span>';
+      }
+    }
+
+    // ==========================================
+    // ΔΡΑΣΤΗΡΙΟΤΗΤΑ 4: Εννοιολογικός Χάρτης
+    // ==========================================
+    function checkAct4() {
+      const s1 = document.getElementById('map-sel-1').value;
+      const s2 = document.getElementById('map-sel-2').value;
+      const s3 = document.getElementById('map-sel-3').value;
+      const fb = document.getElementById('fb-4');
+
+      if (!s1 || !s2 || !s3) {
+        fb.innerHTML = '<span class="text-rose-600 font-bold">Συμπλήρωσε και τις 3 επιλογές!</span>';
+        return;
+      }
+
+      const ok1 = (s1 === 'board');
+      const ok2 = (s2 === 'rules');
+      const ok3 = (s3 === 'pieces');
+
+      document.getElementById('map-box-1').className = ok1 ? "p-4 bg-white border-2 border-emerald-400 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50 border-2 border-rose-300 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3";
+      document.getElementById('map-box-2').className = ok2 ? "p-4 bg-white border-2 border-emerald-400 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50 border-2 border-rose-300 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3";
+      document.getElementById('map-box-3').className = ok3 ? "p-4 bg-white border-2 border-emerald-400 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50 border-2 border-rose-300 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3";
+
+      if (ok1 && ok2 && ok3) {
+        scores[4] = 100;
+        updateScoreDisplay();
+        fb.innerHTML = '<span class="text-emerald-600 font-bold">🎉 Μπράβο! Σωστή μοντελοποίηση εννοιών (+100)!</span>';
+      } else {
+        scores[4] = 0;
+        updateScoreDisplay();
+        fb.innerHTML = '<span class="text-amber-600 font-bold">Υπάρχει λάθος στις κόκκινες κάρτες. Διόρθωσέ το!</span>';
+      }
+    }
+
+    // ==========================================
+    // ΔΡΑΣΤΗΡΙΟΤΗΤΑ 5: Debug the Glitch
+    // ==========================================
+    let currentDbgStep = 0;
+
+    function runNextDebugStep() {
+      currentDbgStep++;
+      if (currentDbgStep > 4) currentDbgStep = 1;
+
+      for (let i = 1; i <= 4; i++) {
+        const el = document.getElementById(`dbg-step-${i}`);
+        if (i === currentDbgStep) {
+          el.className = "p-3 rounded-xl bg-amber-900/60 border-2 border-amber-400 cursor-pointer transition-all flex items-center justify-between";
+          el.querySelector('.step-indicator').innerText = "ΕΚΤΕΛΕΣΗ ▶";
+          el.querySelector('.step-indicator').className = "step-indicator text-xs text-amber-300 font-bold";
+        } else {
+          el.className = "p-3 rounded-xl bg-slate-800 border border-slate-700 hover:border-amber-400 cursor-pointer transition-all flex items-center justify-between";
+          el.querySelector('.step-indicator').innerText = `Βήμα ${i}`;
+          el.querySelector('.step-indicator').className = "step-indicator text-xs text-slate-500 font-bold";
+        }
+      }
+
+      document.getElementById('debugger-status').innerText = `Εκτελείται το Βήμα ${currentDbgStep}...`;
+    }
+
+    function selectBugStep(stepNum) {
+      const fb = document.getElementById('fb-5');
+      if (stepNum === 3) {
+        scores[5] = 100;
+        updateScoreDisplay();
+        document.getElementById(`dbg-step-3`).className = "p-3 rounded-xl bg-emerald-900/80 border-2 border-emerald-400 cursor-pointer flex items-center justify-between";
+        fb.innerHTML = '<span class="text-emerald-600 font-bold">🎉 Εξαιρετικά! Το Βήμα 3 έχει το σφάλμα (με κόκκινο περιμένουμε, δεν τρέχουμε)! (+100)</span>';
+      } else {
+        document.getElementById(`dbg-step-${stepNum}`).className = "p-3 rounded-xl bg-rose-900/80 border-2 border-rose-400 cursor-pointer flex items-center justify-between";
+        fb.innerHTML = '<span class="text-rose-600 font-bold">Όχι, αυτό το βήμα είναι σωστό. Ψάξε το βήμα που προκαλεί ατύχημα!</span>';
+      }
+    }
+
+    function resetDebugger() {
+      currentDbgStep = 0;
+      for (let i = 1; i <= 4; i++) {
+        const el = document.getElementById(`dbg-step-${i}`);
+        el.className = "p-3 rounded-xl bg-slate-800 border border-slate-700 hover:border-amber-400 cursor-pointer transition-all flex items-center justify-between";
+        el.querySelector('.step-indicator').innerText = `Βήμα ${i}`;
+        el.querySelector('.step-indicator').className = "step-indicator text-xs text-slate-500 font-bold";
+      }
+      document.getElementById('debugger-status').innerText = 'Εν αναμονή...';
+      document.getElementById('fb-5').innerText = 'Κάνε κλικ στο βήμα που περιέχει το λάθος!';
+    }
+
+    // ==========================================
+    // ΔΡΑΣΤΗΡΙΟΤΗΤΑ 6: Flowchart Builder
+    // ==========================================
+    function checkAct6() {
+      const f1 = document.getElementById('flow-sel-1').value;
+      const f2 = document.getElementById('flow-sel-2').value;
+      const f3 = document.getElementById('flow-sel-3').value;
+      const fb = document.getElementById('fb-6');
+
+      if (!f1 || !f2 || !f3) {
+        fb.innerHTML = '<span class="text-rose-600 font-bold">Συμπλήρωσε και τα 3 σχήματα!</span>';
+        return;
+      }
+
+      const ok1 = (f1 === 'start_end');
+      const ok2 = (f2 === 'process');
+      const ok3 = (f3 === 'decision');
+
+      document.getElementById('flow-box-1').className = ok1 ? "p-4 bg-white border-2 border-emerald-400 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50 border-2 border-rose-300 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3";
+      document.getElementById('flow-box-2').className = ok2 ? "p-4 bg-white border-2 border-emerald-400 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50 border-2 border-rose-300 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3";
+      document.getElementById('flow-box-3').className = ok3 ? "p-4 bg-white border-2 border-emerald-400 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50 border-2 border-rose-300 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3";
+
+      if (ok1 && ok2 && ok3) {
+        scores[6] = 100;
+        updateScoreDisplay();
+        fb.innerHTML = '<span class="text-emerald-600 font-bold">🎉 Μπράβο! Γνωρίζεις άψογα τα σύμβολα του διαγράμματος ροής (+100)!</span>';
+      } else {
+        scores[6] = 0;
+        updateScoreDisplay();
+        fb.innerHTML = '<span class="text-amber-600 font-bold">Έλεγξε τα σύμβολα με κόκκινο περίγραμμα!</span>';
+      }
+    }
+
+    // ==========================================
+    // ΔΡΑΣΤΗΡΙΟΤΗΤΑ 7: Αλγόριθμοι Ζωής
+    // ==========================================
+    function checkAct7() {
+      const l1 = document.getElementById('life-sel-1').value;
+      const l2 = document.getElementById('life-sel-2').value;
+      const l3 = document.getElementById('life-sel-3').value;
+      const fb = document.getElementById('fb-7');
+
+      if (!l1 || !l2 || !l3) {
+        fb.innerHTML = '<span class="text-rose-600 font-bold">Συμπλήρωσε και τα 3 καθημερινά προβλήματα!</span>';
+        return;
+      }
+
+      const ok1 = (l1 === 'brush');
+      const ok2 = (l2 === 'timetable');
+      const ok3 = (l3 === 'call');
+
+      document.getElementById('life-box-1').className = ok1 ? "p-4 bg-white border-2 border-emerald-400 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50 border-2 border-rose-300 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3";
+      document.getElementById('life-box-2').className = ok2 ? "p-4 bg-white border-2 border-emerald-400 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50 border-2 border-rose-300 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3";
+      document.getElementById('life-box-3').className = ok3 ? "p-4 bg-white border-2 border-emerald-400 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3" : "p-4 bg-rose-50 border-2 border-rose-300 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3";
+
+      if (ok1 && ok2 && ok3) {
+        scores[7] = 100;
+        updateScoreDisplay();
+        fb.innerHTML = '<span class="text-emerald-600 font-bold">🎉 Τέλεια! Όλοι οι καθημερινοί αλγόριθμοι έχουν σωστή αρχή (+100)!</span>';
+      } else {
+        scores[7] = 0;
+        updateScoreDisplay();
+        fb.innerHTML = '<span class="text-amber-600 font-bold">Υπάρχει λάθος. Σκέψου τι κάνεις πρώτο σε κάθε περίπτωση!</span>';
+      }
+    }
+
+    // ==========================================
+    // ΔΡΑΣΤΗΡΙΟΤΗΤΑ 8: Escape Room (Safe Solver)
+    // ==========================================
+    let safeCode = ["_", "_", "_"];
+
+    function setSafeCode(pos, val) {
+      safeCode[pos] = val;
+      document.getElementById('safe-display').innerText = safeCode.join(' ');
+      
+      const buttons = document.querySelectorAll(`.code-btn-${pos}`);
+      buttons.forEach(b => b.className = `code-btn-${pos} px-4 py-1.5 bg-slate-700 hover:bg-violet-600 rounded-lg text-white font-bold`);
+      event.target.className = `code-btn-${pos} px-4 py-1.5 bg-violet-600 border border-violet-300 rounded-lg text-white font-bold shadow-md`;
+    }
+
+    function checkAct8() {
+      const fb = document.getElementById('fb-8');
+      if (safeCode.includes("_")) {
+        fb.innerHTML = '<span class="text-rose-600 font-bold">Υπολόγισε και τα 3 βήματα του αλγορίθμου!</span>';
+        return;
+      }
+
+      // Σωστά: Βήμα 1: X=8, Βήμα 2: Y=4 (γιατί X=8 > 6), Βήμα 3: Z=4 (8 - 4 = 4)
+      const isCorrect = (safeCode[0] === '8' && safeCode[1] === '4' && safeCode[2] === '4');
+
+      if (isCorrect) {
+        scores[8] = 100;
+        updateScoreDisplay();
+        document.getElementById('safe-display').innerText = "UNLOCKED 🔓";
+        document.getElementById('safe-display').className = "font-mono text-xl sm:text-2xl font-black bg-emerald-950 px-4 py-1.5 rounded-xl border border-emerald-400 text-emerald-400 tracking-widest";
+        fb.innerHTML = '<span class="text-emerald-600 font-bold">🎉 ΣΥΓΧΑΡΗΤΗΡΙΑ! Ο κωδικός 8-4-4 άνοιξε το χρηματοκιβώτιο (+100)!</span>';
+      } else {
+        scores[8] = 0;
+        updateScoreDisplay();
+        fb.innerHTML = '<span class="text-amber-600 font-bold">Λάθος υπολογισμός! Έλεγξε τα μαθηματικά βήμα-βήμα: X=5+3=8, άρα Y=4, άρα Z=8-4!</span>';
+      }
+    }
+
+    // Αρχικοποίηση
+    window.onload = function() {
+      renderChefSteps();
+      renderGridBoard();
+    };
+  </script>
+</body>
+</html>
