@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μάθημα 6 – Μάντεψε τον αριθμό | Φωτεινό Εργαστήριο</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap');
+  
+  :root {
+    --sun: #FFB347;
+    --sky: #7EC8E3;
+    --mint: #98D8C8;
+    --pink: #F7A8C4;
+    --lilac: #C9B1FF;
+    --cream: #FFF8F0;
+    --ink: #3D3A4A;
+    --good: #3CB371;
+    --bad: #E85A71;
+  }
+  
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: 'Fredoka', sans-serif;
+    background: linear-gradient(180deg, #E8F6FF 0%, #FFF5E6 45%, #FFE8F0 100%);
+    min-height: 100vh;
+    color: var(--ink);
+    padding: 18px;
+  }
+  
+  .hero {
+    text-align: center;
+    background: white;
+    border-radius: 28px;
+    padding: 22px 20px;
+    box-shadow: 0 8px 0 #FFD6A5, 0 12px 30px rgba(0,0,0,0.06);
+    margin-bottom: 22px;
+    border: 3px solid #FFE0B2;
+  }
+  
+  .hero h1 {
+    font-size: 1.85rem;
+    color: #E67E22;
+    margin-bottom: 6px;
+  }
+  
+  .hero p { color: #7A7568; font-size: 1.05rem; }
+  
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 22px;
+  }
+  
+  .tab {
+    background: white;
+    border: 3px solid #FFE0B2;
+    border-radius: 999px;
+    padding: 10px 18px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--ink);
+    box-shadow: 0 4px 0 #FFD6A5;
+    transition: transform 0.12s;
+  }
+  
+  .tab:hover { transform: translateY(-2px); }
+  .tab.active {
+    background: linear-gradient(135deg, #FFB347, #FFCC80);
+    border-color: #E67E22;
+    box-shadow: 0 4px 0 #E67E22;
+    color: #5D4037;
+  }
+  
+  .panel {
+    display: none;
+    background: white;
+    border-radius: 24px;
+    padding: 24px;
+    max-width: 780px;
+    margin: 0 auto 28px;
+    border: 3px solid #FFE0B2;
+    box-shadow: 0 8px 0 #FFD6A5, 0 14px 28px rgba(0,0,0,0.05);
+    animation: pop 0.3s ease;
+  }
+  
+  .panel.active { display: block; }
+  
+  @keyframes pop {
+    from { opacity: 0; transform: scale(0.97); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  
+  h2 {
+    font-size: 1.35rem;
+    color: #E67E22;
+    margin-bottom: 8px;
+  }
+  
+  .desc {
+    color: #7A7568;
+    margin-bottom: 18px;
+    font-size: 1.02rem;
+    line-height: 1.45;
+  }
+  
+  /* ===== GAME ===== */
+  .game-card {
+    background: linear-gradient(160deg, #E3F2FD, #FFF3E0);
+    border-radius: 20px;
+    padding: 22px;
+    border: 3px dashed #7EC8E3;
+    text-align: center;
+  }
+  
+  .robot {
+    font-size: 3.5rem;
+    margin-bottom: 8px;
+  }
+  
+  .bubble {
+    background: white;
+    border-radius: 18px;
+    padding: 14px 18px;
+    display: inline-block;
+    margin-bottom: 16px;
+    border: 2px solid #B3E5FC;
+    font-size: 1.15rem;
+    font-weight: 600;
+    min-width: 220px;
+  }
+  
+  .guess-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 14px 0;
+  }
+  
+  input[type="number"] {
+    width: 100px;
+    padding: 12px;
+    border: 3px solid #FFCC80;
+    border-radius: 14px;
+    font-size: 1.3rem;
+    font-family: inherit;
+    font-weight: 700;
+    text-align: center;
+    color: var(--ink);
+  }
+  
+  input:focus { outline: none; border-color: #E67E22; }
+  
+  .btn {
+    background: linear-gradient(135deg, #FFB347, #FFCC80);
+    border: none;
+    border-radius: 14px;
+    padding: 12px 22px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 1.05rem;
+    cursor: pointer;
+    color: #5D4037;
+    box-shadow: 0 4px 0 #E67E22;
+    transition: transform 0.1s;
+  }
+  
+  .btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #E67E22; }
+  .btn.mint { background: linear-gradient(135deg, #98D8C8, #B2EBF2); box-shadow: 0 4px 0 #4DB6AC; color: #00695C; }
+  .btn.pink { background: linear-gradient(135deg, #F7A8C4, #F8BBD0); box-shadow: 0 4px 0 #EC407A; color: #880E4F; }
+  .btn.lilac { background: linear-gradient(135deg, #C9B1FF, #D1C4E9); box-shadow: 0 4px 0 #7E57C2; color: #4527A0; }
+  
+  .stats {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+  
+  .stat {
+    background: white;
+    border-radius: 14px;
+    padding: 10px 18px;
+    border: 2px solid #FFE0B2;
+    font-weight: 600;
+  }
+  
+  .stat span { color: #E67E22; font-size: 1.2rem; }
+  
+  /* ===== FILL ===== */
+  .algo-box {
+    background: #FFF8E7;
+    border-radius: 16px;
+    padding: 18px;
+    border: 2px solid #FFE0B2;
+    line-height: 2;
+    font-size: 1.05rem;
+  }
+  
+  .blank {
+    display: inline-block;
+    min-width: 90px;
+    border-bottom: 3px dashed #E67E22;
+    text-align: center;
+    color: #E67E22;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0 6px;
+  }
+  
+  .blank.filled { border-bottom-style: solid; color: #3CB371; }
+  
+  .chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  
+  .chip {
+    background: white;
+    border: 2px solid #FFCC80;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  
+  .chip:hover { background: #FFF3E0; }
+  .chip.used { opacity: 0.35; pointer-events: none; }
+  
+  /* ===== STRATEGY ===== */
+  .strat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  
+  @media (max-width: 560px) {
+    .strat-grid { grid-template-columns: 1fr; }
+  }
+  
+  .strat-card {
+    background: #F3E5F5;
+    border-radius: 16px;
+    padding: 16px;
+    border: 2px solid #E1BEE7;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    font-weight: 600;
+  }
+  
+  .strat-card:hover { transform: scale(1.03); }
+  .strat-card.good { background: #E8F5E9; border-color: #81C784; }
+  .strat-card.bad { background: #FFEBEE; border-color: #E57373; opacity: 0.7; }
+  
+  /* ===== TABLE ===== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+  }
+  
+  th, td {
+    border: 2px solid #FFE0B2;
+    padding: 10px 8px;
+    text-align: center;
+  }
+  
+  th { background: #FFF3E0; }
+  
+  td input {
+    width: 60px;
+    padding: 6px;
+    border: 2px solid #FFCC80;
+    border-radius: 8px;
+    text-align: center;
+    font-family: inherit;
+    font-weight: 600;
+  }
+  
+  /* ===== QUIZ light ===== */
+  .q {
+    background: #E3F2FD;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 14px;
+    border: 2px solid #90CAF9;
+  }
+  
+  .q p { font-weight: 600; margin-bottom: 10px; }
+  
+  .opt {
+    display: block;
+    background: white;
+    border: 2px solid #BBDEFB;
+    border-radius: 12px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  
+  .opt:hover:not(.off) { border-color: #42A5F5; background: #E3F2FD; }
+  .opt.yes { border-color: #66BB6A; background: #E8F5E9; color: #2E7D32; }
+  .opt.no { border-color: #EF5350; background: #FFEBEE; color: #C62828; }
+  .opt.off { pointer-events: none; }
+  
+  .tf-btns { display: flex; gap: 10px; }
+  
+  .tf {
+    flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    border: 2px solid #CE93D8;
+    background: white;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 1.05rem;
+    cursor: pointer;
+  }
+  
+  .tf.yes { background: #E8F5E9; border-color: #66BB6A; color: #2E7D32; }
+  .tf.no { background: #FFEBEE; border-color: #EF5350; color: #C62828; }
+  .tf.off { pointer-events: none; }
+  
+  .msg {
+    margin-top: 14px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-weight: 600;
+    display: none;
+  }
+  
+  .msg.show { display: block; }
+  .msg.ok { background: #E8F5E9; color: #2E7D32; }
+  .msg.err { background: #FFEBEE; color: #C62828; }
+  
+  .score-line {
+    text-align: center;
+    font-weight: 700;
+    margin-top: 10px;
+    color: #E67E22;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🎲 Μάθημα 6 – Μάντεψε τον αριθμό</h1>
+  <p>Μετατρέπουμε τον αλγόριθμο σε πρόγραμμα Scratch • Φωτεινό εργαστήριο</p>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="go(1)">🎮 Παίξε τώρα</button>
+  <button class="tab" onclick="go(2)">📝 Συμπλήρωσε τον αλγόριθμο</button>
+  <button class="tab" onclick="go(3)">🧠 Στρατηγική</button>
+  <button class="tab" onclick="go(4)">📊 Πίνακας προσπαθειών</button>
+  <button class="tab" onclick="go(5)">❓ Ερωτήσεις</button>
+  <button class="tab" onclick="go(6)">✓ Σ / Λ</button>
+  <button class="tab" onclick="go(7)">🔧 Μεταβλητές</button>
+  <button class="tab" onclick="go(8)">🌟 Πρόκληση</button>
+</div>
+
+<!-- 1 PLAY -->
+<div class="panel active" id="p1">
+  <h2>🎮 Παίξε το παιχνίδι!</h2>
+  <p class="desc">Ο υπολογιστής διάλεξε έναν μυστικό αριθμό από το 1 μέχρι το 10. Μάντεψέ τον!</p>
+  
+  <div class="game-card">
+    <div class="robot">🤖</div>
+    <div class="bubble" id="speech">Σκέφτηκα έναν αριθμό από 1 έως 10. Ποιος είναι;</div>
+    
+    <div class="guess-row">
+      <input type="number" id="guess" min="1" max="10" placeholder=";">
+      <button class="btn" onclick="tryGuess()">Μάντεψε!</button>
+      <button class="btn mint" onclick="newGame()">Νέο παιχνίδι</button>
+    </div>
+    
+    <div class="stats">
+      <div class="stat">Προσπάθειες: <span id="tries">0</span></div>
+      <div class="stat">Κατάσταση: <span id="status">Παίζεις</span></div>
+    </div>
+  </div>
+  <div class="msg" id="m1"></div>
+</div>
+
+<!-- 2 FILL ALGORITHM -->
+<div class="panel" id="p2">
+  <h2>📝 Συμπλήρωσε τον αλγόριθμο</h2>
+  <p class="desc">Πάτα ένα κενό και μετά διάλεξε τη σωστή λέξη από τις κάρτες κάτω.</p>
+  
+  <div class="algo-box" id="algo">
+    Διάλεξε έναν <span class="blank" data-i="0" onclick="pickBlank(0)">_____</span> αριθμό από το 1 μέχρι το 10<br>
+    και ονόμασέ τον <span class="blank" data-i="1" onclick="pickBlank(1)">_____</span><br>
+    Ζήτα από τον παίκτη να μαντέψει τον αριθμό<br>
+    <span class="blank" data-i="2" onclick="pickBlank(2)">_____</span> ώσπου ο αριθμός του παίκτη = Μυστικός_Αριθμός<br>
+    &nbsp;&nbsp;Αν είναι μικρότερος, πες «είναι <span class="blank" data-i="3" onclick="pickBlank(3)">_____</span>»<br>
+    &nbsp;&nbsp;Αν είναι μεγαλύτερος, πες «είναι <span class="blank" data-i="4" onclick="pickBlank(4)">_____</span>»<br>
+    &nbsp;&nbsp;Ζήτα άλλον αριθμό<br>
+    Πες: «<span class="blank" data-i="5" onclick="pickBlank(5)">_____</span>! Βρήκες τον αριθμό»
+  </div>
+  
+  <div class="chip-row" id="chips">
+    <button class="chip" data-v="τυχαίο" onclick="useChip(this)">τυχαίο</button>
+    <button class="chip" data-v="Μυστικός_Αριθμός" onclick="useChip(this)">Μυστικός_Αριθμός</button>
+    <button class="chip" data-v="Επανάλαβε" onclick="useChip(this)">Επανάλαβε</button>
+    <button class="chip" data-v="μεγαλύτερος" onclick="useChip(this)">μεγαλύτερος</button>
+    <button class="chip" data-v="μικρότερος" onclick="useChip(this)">μικρότερος</button>
+    <button class="chip" data-v="Μπράβο" onclick="useChip(this)">Μπράβο</button>
+  </div>
+  
+  <div style="margin-top:14px;">
+    <button class="btn" onclick="checkAlgo()">✓ Έλεγχος</button>
+    <button class="btn pink" onclick="resetAlgo()">↺ Καθαρισμός</button>
+  </div>
+  <div class="msg" id="m2"></div>
+</div>
+
+<!-- 3 STRATEGY -->
+<div class="panel" id="p3">
+  <h2>🧠 Ποια στρατηγική είναι καλύτερη;</h2>
+  <p class="desc">Αν ο αριθμός είναι από 1 έως 10, ποιοι τρόποι σε βοηθούν να τον βρεις πιο γρήγορα; Πάτα αυτούς που είναι έξυπνοι.</p>
+  
+  <div class="strat-grid">
+    <div class="strat-card" data-good="true" onclick="markStrat(this)">Ξεκινώ από τη μέση (π.χ. 5) και μετά μισεύω το διάστημα</div>
+    <div class="strat-card" data-good="false" onclick="markStrat(this)">Δοκιμάζω πάντα 1, μετά 2, μετά 3… μέχρι να τον βρω</div>
+    <div class="strat-card" data-good="true" onclick="markStrat(this)">Ακούω τα «μεγαλύτερος / μικρότερος» και στενεύω το εύρος</div>
+    <div class="strat-card" data-good="false" onclick="markStrat(this)">Διαλέγω τυχαίους αριθμούς χωρίς να σκέφτομαι</div>
+    <div class="strat-card" data-good="true" onclick="markStrat(this)">Θυμάμαι ποιους αριθμούς έχω ήδη δοκιμάσει</div>
+    <div class="strat-card" data-good="false" onclick="markStrat(this)">Δοκιμάζω μόνο ζυγούς αριθμούς</div>
+  </div>
+  
+  <div style="margin-top:14px;">
+    <button class="btn mint" onclick="checkStrat()">✓ Έλεγχος στρατηγικών</button>
+  </div>
+  <div class="msg" id="m3"></div>
+</div>
+
+<!-- 4 TABLE -->
+<div class="panel" id="p4">
+  <h2>📊 Πίνακας προσπαθειών (όπως στο βιβλίο)</h2>
+  <p class="desc">Παίζεις 5 παρτίδες. Γράψε πόσες προσπάθειες έκανες σε καθεμία. Υπολογίζεται αυτόματα ο μέσος όρος.</p>
+  
+  <table>
+    <thead>
+      <tr>
+        <th>Παρτίδα</th>
+        <th>1η</th><th>2η</th><th>3η</th><th>4η</th><th>5η</th>
+        <th>Μέσος όρος</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Προσπάθειές</td>
+        <td><input type="number" id="t1" min="1" oninput="calcAvg()"></td>
+        <td><input type="number" id="t2" min="1" oninput="calcAvg()"></td>
+        <td><input type="number" id="t3" min="1" oninput="calcAvg()"></td>
+        <td><input type="number" id="t4" min="1" oninput="calcAvg()"></td>
+        <td><input type="number" id="t5" min="1" oninput="calcAvg()"></td>
+        <td id="avgCell" style="font-weight:700;color:#E67E22;">—</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <p style="color:#7A7568;margin-top:8px;">💡 Στο βιβλίο κερδίζει όποιος έχει τον μικρότερο μέσο όρο προσπαθειών.</p>
+  <div class="msg" id="m4"></div>
+</div>
+
+<!-- 5 MC -->
+<div class="panel" id="p5">
+  <h2>❓ Ερωτήσεις πολλαπλής επιλογής</h2>
+  <p class="desc">Με βάση το Μάθημα 6 του βιβλίου.</p>
+  
+  <div class="q" data-q="1">
+    <p>1. Ποια εντολή του Scratch διαλέγει τυχαίο αριθμό από 1 έως 10;</p>
+    <div class="opt" data-c="false" onclick="mc(this)">«ρώτησε… και περίμενε»</div>
+    <div class="opt" data-c="true" onclick="mc(this)">«επίλεξε τυχαίο από 1 έως 10»</div>
+    <div class="opt" data-c="false" onclick="mc(this)">«όρισε μεταβλητή σε 10»</div>
+  </div>
+  
+  <div class="q" data-q="2">
+    <p>2. Η μεταβλητή του μυστικού αριθμού πρέπει:</p>
+    <div class="opt" data-c="false" onclick="mc(this)">Να φαίνεται πάντα στη σκηνή</div>
+    <div class="opt" data-c="true" onclick="mc(this)">Να ΜΗΝ εμφανίζεται στη σκηνή (να είναι κρυφή)</div>
+    <div class="opt" data-c="false" onclick="mc(this)">Να λέγεται πάντα «απάντηση»</div>
+  </div>
+  
+  <div class="q" data-q="3">
+    <p>3. Τι μαθαίνουμε κυρίως σε αυτό το μάθημα;</p>
+    <div class="opt" data-c="true" onclick="mc(this)">Να μετατρέπουμε έναν αλγόριθμο σε πρόγραμμα Scratch</div>
+    <div class="opt" data-c="false" onclick="mc(this)">Να σχεδιάζουμε νέους χαρακτήρες</div>
+    <div class="opt" data-c="false" onclick="mc(this)">Να συνδέουμε τον υπολογιστή στο διαδίκτυο</div>
+  </div>
+  
+  <div class="q" data-q="4">
+    <p>4. Γιατί κάθε φορά που τρέχουμε το πρόγραμμα ο μυστικός αριθμός είναι διαφορετικός;</p>
+    <div class="opt" data-c="false" onclick="mc(this)">Γιατί αλλάζει μόνος του κάθε δευτερόλεπτο</div>
+    <div class="opt" data-c="true" onclick="mc(this)">Γιατί χρησιμοποιούμε την εντολή τυχαίας επιλογής</div>
+    <div class="opt" data-c="false" onclick="mc(this)">Γιατί το διαγράφει ο παίκτης</div>
+  </div>
+  
+  <div class="score-line" id="mcScore">Σωστές: 0 / 4</div>
+  <div class="msg" id="m5"></div>
+</div>
+
+<!-- 6 TF -->
+<div class="panel" id="p6">
+  <h2>✓ Σωστό ή Λάθος</h2>
+  <p class="desc">Διάλεξε για κάθε πρόταση.</p>
+  
+  <div class="q" data-q="tf1">
+    <p>1. Στο Scratch μπορούμε να υλοποιήσουμε τον αλγόριθμο «Μάντεψε τον αριθμό» με πραγματικές εντολές.</p>
+    <div class="tf-btns">
+      <button class="tf" data-c="true" onclick="tf(this)">Σωστό</button>
+      <button class="tf" data-c="false" onclick="tf(this)">Λάθος</button>
+    </div>
+  </div>
+  
+  <div class="q" data-q="tf2">
+    <p>2. Η μεταβλητή με τον μυστικό αριθμό πρέπει να φαίνεται στη σκηνή για να παίξει ο μαθητής.</p>
+    <div class="tf-btns">
+      <button class="tf" data-c="false" onclick="tf(this)">Σωστό</button>
+      <button class="tf" data-c="true" onclick="tf(this)">Λάθος</button>
+    </div>
+  </div>
+  
+  <div class="q" data-q="tf3">
+    <p>3. Χρησιμοποιούμε επανάληψη «επανάλαβε ώσπου» μέχρι ο παίκτης να βρει τον αριθμό.</p>
+    <div class="tf-btns">
+      <button class="tf" data-c="true" onclick="tf(this)">Σωστό</button>
+      <button class="tf" data-c="false" onclick="tf(this)">Λάθος</button>
+    </div>
+  </div>
+  
+  <div class="q" data-q="tf4">
+    <p>4. Δεν χρειάζεται μεταβλητή για τις προσπάθειες· μόνο για τον μυστικό αριθμό.</p>
+    <div class="tf-btns">
+      <button class="tf" data-c="false" onclick="tf(this)">Σωστό</button>
+      <button class="tf" data-c="true" onclick="tf(this)">Λάθος</button>
+    </div>
+  </div>
+  
+  <div class="q" data-q="tf5">
+    <p>5. Το βιβλίο προτείνει να παίξουμε 5 φορές και να καταγράψουμε τις προσπάθειες.</p>
+    <div class="tf-btns">
+      <button class="tf" data-c="true" onclick="tf(this)">Σωστό</button>
+      <button class="tf" data-c="false" onclick="tf(this)">Λάθος</button>
+    </div>
+  </div>
+  
+  <div class="score-line" id="tfScore">Σωστές: 0 / 5</div>
+  <div class="msg" id="m6"></div>
+</div>
+
+<!-- 7 VARIABLES -->
+<div class="panel" id="p7">
+  <h2>🔧 Μεταβλητές του παιχνιδιού</h2>
+  <p class="desc">Σύρε νοερά: πάτα πρώτα τη μεταβλητή και μετά σε τι χρησιμεύει.</p>
+  
+  <div class="strat-grid" id="varMatch">
+    <div class="strat-card" data-pair="a" data-side="L" onclick="vMatch(this)">Μυστικός_Αριθμός</div>
+    <div class="strat-card" data-pair="a" data-side="R" onclick="vMatch(this)">Αποθηκεύει τον τυχαίο αριθμό που διάλεξε ο υπολογιστής (κρυφός)</div>
+    <div class="strat-card" data-pair="b" data-side="L" onclick="vMatch(this)">προσπάθειες</div>
+    <div class="strat-card" data-pair="b" data-side="R" onclick="vMatch(this)">Μετράει πόσες φορές μάντεψε ο παίκτης</div>
+    <div class="strat-card" data-pair="c" data-side="L" onclick="vMatch(this)">απάντηση (στο Scratch)</div>
+    <div class="strat-card" data-pair="c" data-side="R" onclick="vMatch(this)">Αυτό που πληκτρολογεί ο παίκτης στην εντολή «ρώτησε»</div>
+  </div>
+  
+  <div class="score-line" id="varScore">Ταιριάσματα: 0 / 3</div>
+  <div class="msg" id="m7"></div>
+</div>
+
+<!-- 8 CHALLENGE -->
+<div class="panel" id="p8">
+  <h2>🌟 Πρόκληση: Διάστημα 1–20</h2>
+  <p class="desc">Στο επόμενο μάθημα μεγαλώνει το διάστημα. Δοκίμασε τώρα με αριθμούς από 1 έως 20!</p>
+  
+  <div class="game-card">
+    <div class="robot">🤖</div>
+    <div class="bubble" id="speech2">Σκέφτηκα αριθμό από 1 έως 20. Ποιος είναι;</div>
+    
+    <div class="guess-row">
+      <input type="number" id="guess2" min="1" max="20" placeholder=";">
+      <button class="btn lilac" onclick="tryGuess2()">Μάντεψε!</button>
+      <button class="btn mint" onclick="newGame2()">Νέο</button>
+    </div>
+    
+    <div class="stats">
+      <div class="stat">Προσπάθειες: <span id="tries2">0</span></div>
+      <div class="stat">Κατάσταση: <span id="status2">Παίζεις</span></div>
+    </div>
+  </div>
+  <div class="msg" id="m8"></div>
+</div>
+
+<script>
+  // nav
+  function go(n) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('p' + n).classList.add('active');
+    document.querySelectorAll('.tab')[n - 1].classList.add('active');
+  }
+  
+  function showMsg(id, text, ok) {
+    const el = document.getElementById(id);
+    el.textContent = text;
+    el.className = 'msg show ' + (ok ? 'ok' : 'err');
+  }
+  
+  // ===== GAME 1-10 =====
+  let secret = 0, tries = 0, playing = true;
+  
+  function newGame() {
+    secret = Math.floor(Math.random() * 10) + 1;
+    tries = 0;
+    playing = true;
+    document.getElementById('tries').textContent = '0';
+    document.getElementById('status').textContent = 'Παίζεις';
+    document.getElementById('speech').textContent = 'Σκέφτηκα έναν αριθμό από 1 έως 10. Ποιος είναι;';
+    document.getElementById('guess').value = '';
+    document.getElementById('m1').className = 'msg';
+  }
+  
+  function tryGuess() {
+    if (!playing) return;
+    const g = parseInt(document.getElementById('guess').value);
+    if (isNaN(g) || g < 1 || g > 10) {
+      showMsg('m1', 'Γράψε αριθμό από 1 έως 10!', false);
+      return;
+    }
+    tries++;
+    document.getElementById('tries').textContent = tries;
+    
+    if (g === secret) {
+      document.getElementById('speech').textContent = 'Μπράβο! Βρήκες τον αριθμό ' + secret + '!';
+      document.getElementById('status').textContent = 'Νίκη 🎉';
+      playing = false;
+      showMsg('m1', 'Το βρήκες σε ' + tries + ' προσπάθειες!', true);
+    } else if (g < secret) {
+      document.getElementById('speech').textContent = 'Ο μυστικός αριθμός είναι μεγαλύτερος!';
+      showMsg('m1', 'Δοκίμασε μεγαλύτερο…', false);
+    } else {
+      document.getElementById('speech').textContent = 'Ο μυστικός αριθμός είναι μικρότερος!';
+      showMsg('m1', 'Δοκίμασε μικρότερο…', false);
+    }
+  }
+  
+  newGame();
+  
+  // ===== GAME 1-20 =====
+  let secret2 = 0, tries2 = 0, playing2 = true;
+  
+  function newGame2() {
+    secret2 = Math.floor(Math.random() * 20) + 1;
+    tries2 = 0;
+    playing2 = true;
+    document.getElementById('tries2').textContent = '0';
+    document.getElementById('status2').textContent = 'Παίζεις';
+    document.getElementById('speech2').textContent = 'Σκέφτηκα αριθμό από 1 έως 20. Ποιος είναι;';
+    document.getElementById('guess2').value = '';
+    document.getElementById('m8').className = 'msg';
+  }
+  
+  function tryGuess2() {
+    if (!playing2) return;
+    const g = parseInt(document.getElementById('guess2').value);
+    if (isNaN(g) || g < 1 || g > 20) {
+      showMsg('m8', 'Γράψε αριθμό από 1 έως 20!', false);
+      return;
+    }
+    tries2++;
+    document.getElementById('tries2').textContent = tries2;
+    
+    if (g === secret2) {
+      document.getElementById('speech2').textContent = 'Μπράβο! Ήταν ο ' + secret2 + '!';
+      document.getElementById('status2').textContent = 'Νίκη 🎉';
+      playing2 = false;
+      showMsg('m8', 'Το βρήκες σε ' + tries2 + ' προσπάθειες! (Διάστημα 1–20)', true);
+    } else if (g < secret2) {
+      document.getElementById('speech2').textContent = 'Είναι μεγαλύτερος!';
+    } else {
+      document.getElementById('speech2').textContent = 'Είναι μικρότερος!';
+    }
+  }
+  
+  newGame2();
+  
+  // ===== FILL ALGO =====
+  const correctAlgo = ['τυχαίο', 'Μυστικός_Αριθμός', 'Επανάλαβε', 'μεγαλύτερος', 'μικρότερος', 'Μπράβο'];
+  let filled = [null, null, null, null, null, null];
+  let activeBlank = null;
+  
+  function pickBlank(i) {
+    activeBlank = i;
+    document.querySelectorAll('.blank').forEach(b => b.style.background = '');
+    document.querySelector(`.blank[data-i="${i}"]`).style.background = '#FFE0B2';
+  }
+  
+  function useChip(btn) {
+    if (activeBlank === null) {
+      alert('Πάτα πρώτα ένα κενό!');
+      return;
+    }
+    const v = btn.dataset.v;
+    filled[activeBlank] = v;
+    const blank = document.querySelector(`.blank[data-i="${activeBlank}"]`);
+    blank.textContent = v;
+    blank.classList.add('filled');
+    blank.style.background = '';
+    activeBlank = null;
+  }
+  
+  function checkAlgo() {
+    let ok = true;
+    for (let i = 0; i < 6; i++) {
+      const blank = document.querySelector(`.blank[data-i="${i}"]`);
+      if (filled[i] !== correctAlgo[i]) {
+        ok = false;
+        blank.textContent = correctAlgo[i];
+        blank.classList.add('filled');
+        blank.style.color = '#E85A71';
+        blank.style.borderBottomColor = '#E85A71';
+      } else {
+        blank.style.color = '#3CB371';
+        blank.style.borderBottomColor = '#3CB371';
+      }
+    }
+    if (ok) showMsg('m2', '🎉 Τέλεια! Ο αλγόριθμος είναι σωστός!', true);
+    else showMsg('m2', 'Κάποια ήταν λάθος – εμφανίστηκαν με κόκκινο οι σωστές απαντήσεις.', false);
+  }
+  
+  function resetAlgo() {
+    filled = [null, null, null, null, null, null];
+    document.querySelectorAll('.blank').forEach(b => {
+      b.textContent = '_____';
+      b.classList.remove('filled');
+      b.style.background = '';
+    });
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('used'));
+    activeBlank = null;
+    document.getElementById('m2').className = 'msg';
+  }
+  
+  // ===== STRATEGY =====
+  function markStrat(card) {
+    card.classList.toggle('picked');
+    if (card.classList.contains('picked')) {
+      card.style.outline = '3px solid #E67E22';
+    } else {
+      card.style.outline = '';
+    }
+  }
+  
+  function checkStrat() {
+    document.querySelectorAll('.strat-card[data-good]').forEach(c => {
+      const picked = c.classList.contains('picked');
+      const good = c.dataset.good === 'true';
+      c.classList.remove('good', 'bad');
+      c.style.outline = '';
+      if (good) {
+        c.classList.add('good');
+        if (!picked) c.innerHTML += ' <small style="color:#2E7D32">(σωστή – δεν την είχες επιλέξει)</small>';
+      } else if (picked) {
+        c.classList.add('bad');
+        c.innerHTML += ' <small style="color:#C62828">(λάθος επιλογή)</small>';
+      }
+    });
+    showMsg('m3', 'Πράσινα = καλές στρατηγικές. Κόκκινα = λάθος επιλογές που πάτησες. Οι σωστές που δεν διάλεξες σημειώνονται.', true);
+  }
+  
+  // ===== TABLE =====
+  function calcAvg() {
+    let sum = 0, n = 0;
+    for (let i = 1; i <= 5; i++) {
+      const v = parseFloat(document.getElementById('t' + i).value);
+      if (!isNaN(v) && v > 0) { sum += v; n++; }
+    }
+    const cell = document.getElementById('avgCell');
+    if (n === 0) cell.textContent = '—';
+    else {
+      cell.textContent = (sum / n).toFixed(1);
+      if (n === 5) showMsg('m4', 'Μέσος όρος υπολογίστηκε! Όσο μικρότερος, τόσο καλύτερα.', true);
+    }
+  }
+  
+  // ===== MC =====
+  let mcOk = 0;
+  const mcDone = new Set();
+  
+  function mc(el) {
+    const q = el.closest('.q');
+    const id = q.dataset.q;
+    if (mcDone.has(id)) return;
+    mcDone.add(id);
+    q.querySelectorAll('.opt').forEach(o => {
+      o.classList.add('off');
+      if (o.dataset.c === 'true') {
+        o.classList.add('yes');
+        if (o !== el) o.innerHTML += ' ✓ <small>(σωστή απάντηση)</small>';
+      }
+    });
+    if (el.dataset.c === 'true') { el.classList.add('yes'); mcOk++; }
+    else {
+      el.classList.add('no');
+      el.innerHTML += ' ✗';
+    }
+    document.getElementById('mcScore').textContent = `Σωστές: ${mcOk} / 4`;
+    if (mcDone.size === 4) {
+      showMsg('m5', mcOk === 4 ? '🏆 Άριστα! Όλες σωστές!' : 'Οι σωστές απαντήσεις εμφανίστηκαν με πράσινο.', mcOk >= 3);
+    }
+  }
+  
+  // ===== TF =====
+  let tfOk = 0;
+  const tfDone = new Set();
+  
+  function tf(el) {
+    const q = el.closest('.q');
+    const id = q.dataset.q;
+    if (tfDone.has(id)) return;
+    tfDone.add(id);
+    q.querySelectorAll('.tf').forEach(b => {
+      b.classList.add('off');
+      if (b.dataset.c === 'true') {
+        b.classList.add('yes');
+        if (b !== el) b.textContent = b.textContent + ' ✓';
+      }
+    });
+    if (el.dataset.c === 'true') { el.classList.add('yes'); tfOk++; }
+    else {
+      el.classList.add('no');
+      el.textContent = el.textContent + ' ✗';
+    }
+    document.getElementById('tfScore').textContent = `Σωστές: ${tfOk} / 5`;
+    if (tfDone.size === 5) {
+      showMsg('m6', tfOk === 5 ? '🏆 Τέλεια! Όλα σωστά!' : 'Οι σωστές απαντήσεις είναι με πράσινο ✓', tfOk >= 3);
+    }
+  }
+  
+  // ===== VAR MATCH =====
+  let vLeft = null, vCount = 0;
+  
+  function vMatch(el) {
+    if (el.classList.contains('good')) return;
+    if (el.dataset.side === 'L') {
+      document.querySelectorAll('#varMatch .strat-card').forEach(c => {
+        if (!c.classList.contains('good')) c.style.outline = '';
+      });
+      el.style.outline = '3px solid #7E57C2';
+      vLeft = el;
+    } else if (vLeft) {
+      if (vLeft.dataset.pair === el.dataset.pair) {
+        vLeft.classList.add('good');
+        el.classList.add('good');
+        vLeft.style.outline = '';
+        vLeft = null;
+        vCount++;
+        document.getElementById('varScore').textContent = `Ταιριάσματα: ${vCount} / 3`;
+        if (vCount === 3) showMsg('m7', '🌟 Όλα σωστά!', true);
+      } else {
+        el.style.outline = '3px solid #E57373';
+        setTimeout(() => { el.style.outline = ''; }, 400);
+        vLeft.style.outline = '';
+        vLeft = null;
+      }
+    }
+  }
+</script>
+</body>
+</html>
