@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Μάθημα 4 – Εργαστήριο Υποπρογραμμάτων | Διαδραστικό</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+  
+  :root {
+    --purple: #8E44AD;
+    --teal: #1ABC9C;
+    --orange: #E67E22;
+    --blue: #3498DB;
+    --green: #27AE60;
+    --red: #E74C3C;
+    --dark: #2C3E50;
+    --light: #F8F9FA;
+  }
+  
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(160deg, #F3E5F5 0%, #E0F7FA 40%, #FFF3E0 100%);
+    min-height: 100vh;
+    color: var(--dark);
+    padding: 16px;
+  }
+  
+  .top-bar {
+    background: white;
+    border-radius: 18px;
+    padding: 18px 24px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .top-bar h1 {
+    font-size: 1.7rem;
+    color: var(--purple);
+    margin-bottom: 4px;
+  }
+  
+  .top-bar p { color: #666; font-size: 1rem; }
+  
+  .nav-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 22px;
+  }
+  
+  .nav-tab {
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 50px;
+    padding: 10px 18px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--dark);
+  }
+  
+  .nav-tab:hover { border-color: var(--purple); color: var(--purple); }
+  .nav-tab.active {
+    background: var(--purple);
+    color: white;
+    border-color: var(--purple);
+  }
+  
+  .panel {
+    display: none;
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    max-width: 820px;
+    margin: 0 auto 30px;
+    animation: fadeIn 0.35s;
+  }
+  
+  .panel.active { display: block; }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  h2 {
+    font-size: 1.35rem;
+    margin-bottom: 8px;
+    color: var(--purple);
+  }
+  
+  .desc {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 1.02rem;
+  }
+  
+  /* ===== LAB 1: Live Subprogram Simulator ===== */
+  .sim-box {
+    background: #f0f4ff;
+    border-radius: 16px;
+    padding: 20px;
+    border: 2px dashed var(--blue);
+  }
+  
+  .sim-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  
+  .sim-row label { font-weight: 700; min-width: 140px; }
+  
+  input[type="number"], input[type="text"] {
+    padding: 10px 14px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    width: 140px;
+    font-family: inherit;
+  }
+  
+  input:focus { outline: none; border-color: var(--purple); }
+  
+  .btn {
+    background: var(--purple);
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 50px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.2s;
+    font-family: inherit;
+  }
+  
+  .btn:hover { transform: scale(1.04); background: #7D3C98; }
+  .btn.teal { background: var(--teal); }
+  .btn.teal:hover { background: #16A085; }
+  .btn.orange { background: var(--orange); }
+  .btn.orange:hover { background: #D35400; }
+  .btn.green { background: var(--green); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  
+  .result-box {
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 12px;
+    background: #e8f8f5;
+    border-left: 5px solid var(--teal);
+    font-size: 1.15rem;
+    font-weight: 700;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .block {
+    display: inline-block;
+    background: #9B59B6;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: 700;
+    margin: 4px;
+    font-size: 0.95rem;
+  }
+  
+  .block.input { background: #E67E22; }
+  .block.num { background: #3498DB; }
+  
+  /* ===== LAB 2: Drag & Drop Steps ===== */
+  .drag-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  
+  @media (max-width: 600px) {
+    .drag-area { grid-template-columns: 1fr; }
+  }
+  
+  .drag-list, .drop-list {
+    min-height: 220px;
+    background: #f7f9fc;
+    border: 2px dashed #bbb;
+    border-radius: 14px;
+    padding: 12px;
+  }
+  
+  .drop-list {
+    border-color: var(--teal);
+    background: #e8f8f5;
+  }
+  
+  .drag-item {
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    cursor: grab;
+    font-weight: 600;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  
+  .drag-item:active { cursor: grabbing; }
+  .drag-item.dragging { opacity: 0.5; }
+  .drag-item.correct-pos { border-color: var(--green); background: #d5f5e3; }
+  
+  .drop-list .placeholder {
+    color: #999;
+    text-align: center;
+    padding: 30px 10px;
+    font-style: italic;
+  }
+  
+  /* ===== LAB 3: Build the Block ===== */
+  .code-builder {
+    background: #2C3E50;
+    border-radius: 14px;
+    padding: 18px;
+    color: white;
+    font-family: monospace;
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+  
+  .slot {
+    display: inline-block;
+    min-width: 80px;
+    border-bottom: 2px dashed #F1C40F;
+    color: #F1C40F;
+    text-align: center;
+    padding: 0 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .slot:hover { background: rgba(241,196,15,0.2); }
+  .slot.filled { color: #2ECC71; border-bottom-color: #2ECC71; font-weight: 700; }
+  
+  .choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  
+  .choice-btn {
+    background: #ecf0f1;
+    border: 2px solid #bdc3c7;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  
+  .choice-btn:hover { border-color: var(--purple); background: #f5eef8; }
+  .choice-btn.used { opacity: 0.4; pointer-events: none; }
+  
+  /* ===== LAB 4: Match ===== */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  
+  .match-item {
+    background: #f7f9fc;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .match-item:hover { border-color: var(--blue); }
+  .match-item.selected { border-color: var(--purple); background: #f5eef8; box-shadow: 0 0 0 3px rgba(142,68,173,0.3); }
+  .match-item.matched { border-color: var(--green); background: #d5f5e3; pointer-events: none; }
+  .match-item.wrong-flash { border-color: var(--red); background: #fadbd8; }
+  
+  /* ===== LAB 5: Fix the Bug ===== */
+  .bug-code {
+    background: #2C3E50;
+    color: #ecf0f1;
+    border-radius: 12px;
+    padding: 16px;
+    font-family: monospace;
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 14px;
+  }
+  
+  .bug-line {
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .bug-line:hover { background: rgba(231,76,60,0.3); }
+  .bug-line.found { background: rgba(39,174,96,0.4); }
+  
+  /* ===== Feedback ===== */
+  .feedback {
+    margin-top: 16px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-weight: 700;
+    display: none;
+  }
+  
+  .feedback.show { display: block; animation: fadeIn 0.3s; }
+  .feedback.ok { background: #d5f5e3; color: #1e8449; }
+  .feedback.err { background: #fadbd8; color: #922b21; }
+  
+  .stars {
+    font-size: 1.4rem;
+    margin-left: 8px;
+  }
+  
+  .progress-mini {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-top: 12px;
+  }
+  
+  .pdot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ddd;
+  }
+  
+  .pdot.done { background: var(--green); }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>🧪 Εργαστήριο Υποπρογραμμάτων</h1>
+  <p>Μάθημα 4 • Scratch • ΣΤ΄ Δημοτικού • Πάτα τις καρτέλες και πειραματίσου!</p>
+</div>
+
+<div class="nav-tabs">
+  <button class="nav-tab active" onclick="showPanel(1)">1️⃣ Ζωντανό Υποπρόγραμμα</button>
+  <button class="nav-tab" onclick="showPanel(2)">2️⃣ Ταξινόμησε τα Βήματα</button>
+  <button class="nav-tab" onclick="showPanel(3)">3️⃣ Φτιάξε τον Κώδικα</button>
+  <button class="nav-tab" onclick="showPanel(4)">4️⃣ Ταίριαξε</button>
+  <button class="nav-tab" onclick="showPanel(5)">5️⃣ Βρες το Λάθος</button>
+  <button class="nav-tab" onclick="showPanel(6)">6️⃣ Τετράγωνο Live</button>
+  <button class="nav-tab" onclick="showPanel(7)">7️⃣ Κάλεσε το!</button>
+  <button class="nav-tab" onclick="showPanel(8)">8️⃣ Πρόκληση</button>
+</div>
+
+<!-- ==================== PANEL 1 ==================== -->
+<div class="panel active" id="panel1">
+  <h2>1️⃣ Ζωντανό Υποπρόγραμμα: Περιφέρεια Κύκλου</h2>
+  <p class="desc">Δοκίμασε πώς δουλεύει ένα υποπρόγραμμα! Δώσε την <strong>ακτίνα</strong> (είσοδος) και δες το αποτέλεσμα.</p>
+  
+  <div class="sim-box">
+    <div style="margin-bottom:14px;font-weight:700;color:var(--purple);">
+      ορισμός <span class="block">υπολογισμός περιφέρειας</span> <span class="block input">ακτίνα</span>
+    </div>
+    
+    <div class="sim-row">
+      <label>Δώσε ακτίνα (cm):</label>
+      <input type="number" id="radius1" value="5" min="0" step="0.1">
+      <button class="btn" onclick="runCircle()">▶ Κάλεσε το υποπρόγραμμα</button>
+    </div>
+    
+    <div class="result-box" id="result1">
+      Το αποτέλεσμα θα εμφανιστεί εδώ...
+    </div>
+    
+    <p style="margin-top:14px;font-size:0.95rem;color:#555;">
+      💡 Το υποπρόγραμμα παίρνει την <strong>ακτίνα</strong> ως είσοδο και υπολογίζει: 2 × 3.14 × ακτίνα
+    </p>
+  </div>
+  
+  <div class="feedback" id="fb1"></div>
+</div>
+
+<!-- ==================== PANEL 2 ==================== -->
+<div class="panel" id="panel2">
+  <h2>2️⃣ Ταξινόμησε τα Βήματα</h2>
+  <p class="desc">Σύρε τα βήματα στη σωστή σειρά για να δημιουργήσεις υποπρόγραμμα με είσοδο.</p>
+  
+  <div class="drag-area">
+    <div>
+      <p style="font-weight:700;margin-bottom:8px;">🔀 Ανακατεμένα βήματα (σύρε από εδώ)</p>
+      <div class="drag-list" id="dragSource">
+        <div class="drag-item" draggable="true" data-order="3">Βάζω τις εντολές υπολογισμού κάτω από τον ορισμό</div>
+        <div class="drag-item" draggable="true" data-order="1">Πηγαίνω στην κατηγορία «Οι εντολές μου»</div>
+        <div class="drag-item" draggable="true" data-order="4">Καλώ το υποπρόγραμμα από το κυρίως πρόγραμμα δίνοντας τιμή</div>
+        <div class="drag-item" draggable="true" data-order="2">Δημιουργώ νέα εντολή και προσθέτω μεταβλητή εισόδου</div>
+      </div>
+    </div>
+    <div>
+      <p style="font-weight:700;margin-bottom:8px;">✅ Σωστή σειρά (άφησε εδώ)</p>
+      <div class="drop-list" id="dropTarget">
+        <div class="placeholder">Σύρε εδώ τα βήματα με τη σωστή σειρά...</div>
+      </div>
+    </div>
+  </div>
+  
+  <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+    <button class="btn teal" onclick="checkOrder()">✓ Έλεγχος σειράς</button>
+    <button class="btn orange" onclick="resetOrder()">↺ Επαναφορά</button>
+  </div>
+  
+  <div class="feedback" id="fb2"></div>
+</div>
+
+<!-- ==================== PANEL 3 ==================== -->
+<div class="panel" id="panel3">
+  <h2>3️⃣ Φτιάξε τον Κώδικα (Συμπλήρωσε τα κενά)</h2>
+  <p class="desc">Πάτα ένα κενό και μετά διάλεξε τη σωστή λέξη/τιμή από τις επιλογές.</p>
+  
+  <div class="code-builder" id="codeBuilder">
+    ορισμός <span class="slot" data-slot="0" onclick="selectSlot(0)">_____</span> 
+    <span class="slot" data-slot="1" onclick="selectSlot(1)">_____</span><br><br>
+    &nbsp;&nbsp;όρισε μήκος κύκλου σε 
+    <span class="slot" data-slot="2" onclick="selectSlot(2)">_____</span> * 
+    <span class="slot" data-slot="3" onclick="selectSlot(3)">_____</span> * 
+    <span class="slot" data-slot="4" onclick="selectSlot(4)">_____</span><br><br>
+    &nbsp;&nbsp;πες (ένωσε "Η περιφέρεια είναι " μήκος κύκλου)
+  </div>
+  
+  <div class="choices" id="choices3">
+    <button class="choice-btn" data-val="υπολογισμός περιφέρειας" onclick="pickChoice(this)">υπολογισμός περιφέρειας</button>
+    <button class="choice-btn" data-val="ακτίνα" onclick="pickChoice(this)">ακτίνα</button>
+    <button class="choice-btn" data-val="2" onclick="pickChoice(this)">2</button>
+    <button class="choice-btn" data-val="3.14" onclick="pickChoice(this)">3.14</button>
+    <button class="choice-btn" data-val="ακτίνα" onclick="pickChoice(this)">ακτίνα</button>
+  </div>
+  
+  <div style="margin-top:16px;">
+    <button class="btn" onclick="checkCode()">✓ Έλεγχος κώδικα</button>
+    <button class="btn orange" onclick="resetCode()">↺ Καθαρισμός</button>
+  </div>
+  
+  <div class="feedback" id="fb3"></div>
+</div>
+
+<!-- ==================== PANEL 4 ==================== -->
+<div class="panel" id="panel4">
+  <h2>4️⃣ Ταίριαξε τις έννοιες</h2>
+  <p class="desc">Πάτα πρώτα μια έννοια αριστερά και μετά το σωστό ταίρι δεξιά.</p>
+  
+  <div class="match-grid" id="matchGrid">
+    <div class="match-item" data-pair="a" onclick="selectMatch(this, 'left')">Υποπρόγραμμα</div>
+    <div class="match-item" data-pair="a" onclick="selectMatch(this, 'right')">Νέα εντολή που φτιάχνουμε εμείς</div>
+    
+    <div class="match-item" data-pair="b" onclick="selectMatch(this, 'left')">Μεταβλητή εισόδου</div>
+    <div class="match-item" data-pair="b" onclick="selectMatch(this, 'right')">Δεδομένα που δίνουμε όταν καλούμε το υποπρόγραμμα</div>
+    
+    <div class="match-item" data-pair="c" onclick="selectMatch(this, 'left')">Κλήση υποπρογράμματος</div>
+    <div class="match-item" data-pair="c" onclick="selectMatch(this, 'right')">Χρησιμοποιούμε το μπλοκ της νέας εντολής στο κυρίως πρόγραμμα</div>
+    
+    <div class="match-item" data-pair="d" onclick="selectMatch(this, 'left')">Πλεονέκτημα</div>
+    <div class="match-item" data-pair="d" onclick="selectMatch(this, 'right')">Ο κώδικας γίνεται πιο καθαρός και επαναχρησιμοποιήσιμος</div>
+  </div>
+  
+  <div class="feedback" id="fb4"></div>
+  <p style="margin-top:12px;text-align:center;font-weight:700;" id="matchScore">Ταιριάσματα: 0 / 4</p>
+</div>
+
+<!-- ==================== PANEL 5 ==================== -->
+<div class="panel" id="panel5">
+  <h2>5️⃣ Βρες το Λάθος!</h2>
+  <p class="desc">Κάποια γραμμή έχει λάθος. Πάτα πάνω στη γραμμή που νομίζεις ότι είναι λάθος.</p>
+  
+  <div class="bug-code" id="bugCode">
+    <div class="bug-line" data-bug="false" onclick="findBug(this)">ορισμός υπολογισμός περιφέρειας ακτίνα</div>
+    <div class="bug-line" data-bug="true" onclick="findBug(this)">&nbsp;&nbsp;όρισε μήκος κύκλου σε 2 * 3,14 * ακτίνα</div>
+    <div class="bug-line" data-bug="false" onclick="findBug(this)">&nbsp;&nbsp;πες (ένωσε "Η περιφέρεια είναι " μήκος κύκλου)</div>
+  </div>
+  
+  <p style="font-size:0.95rem;color:#666;">💡 Υπόδειξη: Στο Scratch οι δεκαδικοί γράφονται με τελεία...</p>
+  
+  <div class="feedback" id="fb5"></div>
+</div>
+
+<!-- ==================== PANEL 6 ==================== -->
+<div class="panel" id="panel6">
+  <h2>6️⃣ Ζωντανό Υποπρόγραμμα: Περίμετρος Τετραγώνου</h2>
+  <p class="desc">Φτιάξε νοερά το υποπρόγραμμα για τετράγωνο και δοκίμασέ το!</p>
+  
+  <div class="sim-box">
+    <div style="margin-bottom:14px;font-weight:700;color:var(--teal);">
+      ορισμός <span class="block" style="background:var(--teal)">περίμετρος τετραγώνου</span> 
+      <span class="block input">πλευρά</span>
+    </div>
+    
+    <div class="sim-row">
+      <label>Μήκος πλευράς (cm):</label>
+      <input type="number" id="side6" value="4" min="0" step="0.1">
+      <button class="btn teal" onclick="runSquare()">▶ Κάλεσε το υποπρόγραμμα</button>
+    </div>
+    
+    <div class="result-box" id="result6">
+      Το αποτέλεσμα θα εμφανιστεί εδώ...
+    </div>
+    
+    <p style="margin-top:14px;font-size:0.95rem;color:#555;">
+      💡 Τύπος: περίμετρος = 4 × πλευρά
+    </p>
+  </div>
+  
+  <div class="feedback" id="fb6"></div>
+</div>
+
+<!-- ==================== PANEL 7 ==================== -->
+<div class="panel" id="panel7">
+  <h2>7️⃣ Κάλεσε το υποπρόγραμμα σωστά!</h2>
+  <p class="desc">Διάλεξε ποια κλήση είναι σωστή για να υπολογίσει την περιφέρεια με ακτίνα 7.</p>
+  
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <button class="choice-btn" style="text-align:left;padding:14px;" onclick="checkCall(this, false)">
+      υπολογισμός περιφέρειας &nbsp;<span class="block num">απάντηση</span>
+    </button>
+    <button class="choice-btn" style="text-align:left;padding:14px;" onclick="checkCall(this, true)">
+      υπολογισμός περιφέρειας &nbsp;<span class="block num">7</span>
+    </button>
+    <button class="choice-btn" style="text-align:left;padding:14px;" onclick="checkCall(this, false)">
+      υπολογισμός περιφέρειας &nbsp;<span class="block num">μήκος κύκλου</span>
+    </button>
+    <button class="choice-btn" style="text-align:left;padding:14px;" onclick="checkCall(this, false)">
+      όρισε ακτίνα σε 7
+    </button>
+  </div>
+  
+  <div class="feedback" id="fb7"></div>
+</div>
+
+<!-- ==================== PANEL 8 ==================== -->
+<div class="panel" id="panel8">
+  <h2>8️⃣ Πρόκληση: Διπλό Υποπρόγραμμα</h2>
+  <p class="desc">Υπολόγισε πρώτα την περιφέρεια κύκλου με ακτίνα 3 και μετά την περίμετρο τετραγώνου με πλευρά ίση με αυτή την περιφέρεια!</p>
+  
+  <div class="sim-box">
+    <div class="sim-row">
+      <label>Ακτίνα κύκλου:</label>
+      <input type="number" id="r8" value="3" min="0" step="0.1">
+    </div>
+    
+    <button class="btn" onclick="challengeStep1()">1. Υπολόγισε περιφέρεια</button>
+    
+    <div class="result-box" id="res8a" style="margin:12px 0;">Περιφέρεια: —</div>
+    
+    <button class="btn teal" id="btn8b" disabled onclick="challengeStep2()">2. Χρησιμοποίησε την ως πλευρά τετραγώνου</button>
+    
+    <div class="result-box" id="res8b" style="margin-top:12px;">Περίμετρος τετραγώνου: —</div>
+  </div>
+  
+  <div class="feedback" id="fb8"></div>
+</div>
+
+<script>
+  // ========== NAV ==========
+  function showPanel(n) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel' + n).classList.add('active');
+    document.querySelectorAll('.nav-tab')[n-1].classList.add('active');
+  }
+  
+  // ========== PANEL 1 ==========
+  function runCircle() {
+    const r = parseFloat(document.getElementById('radius1').value);
+    if (isNaN(r) || r < 0) {
+      showFb('fb1', 'Γράψε έναν θετικό αριθμό!', false);
+      return;
+    }
+    const result = 2 * 3.14 * r;
+    document.getElementById('result1').innerHTML = 
+      `🎯 Η περιφέρεια είναι <span style="color:var(--teal);font-size:1.3rem;">${result.toFixed(2)}</span> cm`;
+    showFb('fb1', 'Μπράβο! Κάλεσες σωστά το υποπρόγραμμα με είσοδο την ακτίνα!', true);
+  }
+  
+  // ========== PANEL 2: Drag & Drop ==========
+  let dragged = null;
+  
+  document.querySelectorAll('.drag-item').forEach(item => {
+    item.addEventListener('dragstart', e => {
+      dragged = item;
+      item.classList.add('dragging');
+    });
+    item.addEventListener('dragend', () => {
+      item.classList.remove('dragging');
+    });
+  });
+  
+  const dropTarget = document.getElementById('dropTarget');
+  
+  dropTarget.addEventListener('dragover', e => {
+    e.preventDefault();
+  });
+  
+  dropTarget.addEventListener('drop', e => {
+    e.preventDefault();
+    if (dragged) {
+      const placeholder = dropTarget.querySelector('.placeholder');
+      if (placeholder) placeholder.remove();
+      dropTarget.appendChild(dragged);
+      dragged = null;
+    }
+  });
+  
+  document.getElementById('dragSource').addEventListener('dragover', e => e.preventDefault());
+  document.getElementById('dragSource').addEventListener('drop', e => {
+    e.preventDefault();
+    if (dragged) {
+      document.getElementById('dragSource').appendChild(dragged);
+      dragged = null;
+      if (dropTarget.children.length === 0) {
+        dropTarget.innerHTML = '<div class="placeholder">Σύρε εδώ τα βήματα με τη σωστή σειρά...</div>';
+      }
+    }
+  });
+  
+  function checkOrder() {
+    const items = [...dropTarget.querySelectorAll('.drag-item')];
+    if (items.length < 4) {
+      showFb('fb2', 'Πρέπει να βάλεις και τα 4 βήματα!', false);
+      return;
+    }
+    let ok = true;
+    items.forEach((item, i) => {
+      if (parseInt(item.dataset.order) !== i + 1) ok = false;
+      else item.classList.add('correct-pos');
+    });
+    if (ok) {
+      showFb('fb2', '🎉 Τέλεια σειρά! Έτσι ακριβώς δημιουργούμε υποπρόγραμμα!', true);
+    } else {
+      showFb('fb2', 'Όχι ακόμα... Κοίτα ξανά τη σειρά των βημάτων.', false);
+      items.forEach(i => i.classList.remove('correct-pos'));
+    }
+  }
+  
+  function resetOrder() {
+    const source = document.getElementById('dragSource');
+    const items = [...dropTarget.querySelectorAll('.drag-item')];
+    items.forEach(i => {
+      i.classList.remove('correct-pos');
+      source.appendChild(i);
+    });
+    dropTarget.innerHTML = '<div class="placeholder">Σύρε εδώ τα βήματα με τη σωστή σειρά...</div>';
+    hideFb('fb2');
+  }
+  
+  // ========== PANEL 3: Code Builder ==========
+  let activeSlot = null;
+  const correctCode = ['υπολογισμός περιφέρειας', 'ακτίνα', '2', '3.14', 'ακτίνα'];
+  const filled = [null, null, null, null, null];
+  
+  function selectSlot(n) {
+    activeSlot = n;
+    document.querySelectorAll('.slot').forEach(s => s.style.background = '');
+    document.querySelector(`.slot[data-slot="${n}"]`).style.background = 'rgba(241,196,15,0.25)';
+  }
+  
+  function pickChoice(btn) {
+    if (activeSlot === null) {
+      alert('Πάτα πρώτα ένα κενό (κίτρινη γραμμή)!');
+      return;
+    }
+    const val = btn.dataset.val;
+    filled[activeSlot] = val;
+    const slot = document.querySelector(`.slot[data-slot="${activeSlot}"]`);
+    slot.textContent = val;
+    slot.classList.add('filled');
+    slot.style.background = '';
+    activeSlot = null;
+  }
+  
+  function checkCode() {
+    let ok = true;
+    for (let i = 0; i < 5; i++) {
+      if (filled[i] !== correctCode[i]) ok = false;
+    }
+    // special: slots 1 and 4 both "ακτίνα" are fine
+    if (filled[0] === 'υπολογισμός περιφέρειας' && 
+        filled[1] === 'ακτίνα' && 
+        filled[2] === '2' && 
+        filled[3] === '3.14' && 
+        filled[4] === 'ακτίνα') {
+      showFb('fb3', '🎉 Τέλεια! Ο κώδικας του υποπρογράμματος είναι σωστός!', true);
+    } else {
+      showFb('fb3', 'Κάτι λείπει ή είναι λάθος. Ξανακοίτα τα κενά!', false);
+    }
+  }
+  
+  function resetCode() {
+    filled.fill(null);
+    document.querySelectorAll('.slot').forEach(s => {
+      s.textContent = '_____';
+      s.classList.remove('filled');
+      s.style.background = '';
+    });
+    activeSlot = null;
+    hideFb('fb3');
+  }
+  
+  // ========== PANEL 4: Match ==========
+  let leftSel = null;
+  let matchCount = 0;
+  
+  function selectMatch(el, side) {
+    if (el.classList.contains('matched')) return;
+    
+    if (side === 'left') {
+      document.querySelectorAll('.match-item').forEach(m => {
+        if (!m.classList.contains('matched')) m.classList.remove('selected');
+      });
+      el.classList.add('selected');
+      leftSel = el;
+    } else if (leftSel) {
+      if (leftSel.dataset.pair === el.dataset.pair) {
+        leftSel.classList.add('matched');
+        el.classList.add('matched');
+        leftSel.classList.remove('selected');
+        leftSel = null;
+        matchCount++;
+        document.getElementById('matchScore').textContent = `Ταιριάσματα: ${matchCount} / 4`;
+        if (matchCount === 4) {
+          showFb('fb4', '🌟 Όλα σωστά! Κατάλαβες τέλεια τις έννοιες!', true);
+        }
+      } else {
+        el.classList.add('wrong-flash');
+        setTimeout(() => el.classList.remove('wrong-flash'), 400);
+        leftSel.classList.remove('selected');
+        leftSel = null;
+      }
+    }
+  }
+  
+  // ========== PANEL 5: Bug Hunt ==========
+  function findBug(line) {
+    if (line.dataset.bug === 'true') {
+      line.classList.add('found');
+      showFb('fb5', '✅ Βρήκες το λάθος! Στο Scratch γράφουμε 3.14 με τελεία, όχι κόμμα (3,14)!', true);
+      document.querySelectorAll('.bug-line').forEach(l => l.style.pointerEvents = 'none');
+    } else {
+      showFb('fb5', 'Αυτό δεν είναι το λάθος. Κοίτα προσεκτικά τους αριθμούς...', false);
+    }
+  }
+  
+  // ========== PANEL 6 ==========
+  function runSquare() {
+    const s = parseFloat(document.getElementById('side6').value);
+    if (isNaN(s) || s < 0) {
+      showFb('fb6', 'Γράψε έναν θετικό αριθμό!', false);
+      return;
+    }
+    const result = 4 * s;
+    document.getElementById('result6').innerHTML = 
+      `🎯 Η περίμετρος είναι <span style="color:var(--teal);font-size:1.3rem;">${result.toFixed(2)}</span> cm`;
+    showFb('fb6', 'Τέλεια! Το υποπρόγραμμα πήρε την πλευρά ως είσοδο και υπολόγισε 4 × πλευρά!', true);
+  }
+  
+  // ========== PANEL 7 ==========
+  function checkCall(btn, correct) {
+    document.querySelectorAll('#panel7 .choice-btn').forEach(b => {
+      b.style.pointerEvents = 'none';
+      b.style.opacity = '0.6';
+    });
+    if (correct) {
+      btn.style.borderColor = 'var(--green)';
+      btn.style.background = '#d5f5e3';
+      btn.style.opacity = '1';
+      showFb('fb7', '🎉 Σωστά! Δίνουμε την τιμή 7 στη μεταβλητή εισόδου τη στιγμή της κλήσης!', true);
+    } else {
+      btn.style.borderColor = 'var(--red)';
+      btn.style.background = '#fadbd8';
+      btn.style.opacity = '1';
+      showFb('fb7', 'Όχι αυτό... Πρέπει να δώσουμε τον αριθμό (την τιμή) στη μεταβλητή εισόδου.', false);
+    }
+  }
+  
+  // ========== PANEL 8: Challenge ==========
+  let circ8 = 0;
+  
+  function challengeStep1() {
+    const r = parseFloat(document.getElementById('r8').value);
+    if (isNaN(r) || r < 0) return;
+    circ8 = 2 * 3.14 * r;
+    document.getElementById('res8a').innerHTML = 
+      `Περιφέρεια: <strong style="color:var(--purple)">${circ8.toFixed(2)} cm</strong>`;
+    document.getElementById('btn8b').disabled = false;
+    showFb('fb8', 'Ωραία! Τώρα χρησιμοποίησε αυτή την τιμή ως πλευρά τετραγώνου.', true);
+  }
+  
+  function challengeStep2() {
+    const perim = 4 * circ8;
+    document.getElementById('res8b').innerHTML = 
+      `Περίμετρος τετραγώνου: <strong style="color:var(--teal);font-size:1.2rem">${perim.toFixed(2)} cm</strong>`;
+    showFb('fb8', '🏆 Καταπληκτικά! Χρησιμοποίησες το αποτέλεσμα του ενός υποπρογράμματος ως είσοδο στο άλλο!', true);
+  }
+  
+  // ========== Helpers ==========
+  function showFb(id, text, ok) {
+    const el = document.getElementById(id);
+    el.textContent = text;
+    el.className = 'feedback show ' + (ok ? 'ok' : 'err');
+  }
+  
+  function hideFb(id) {
+    document.getElementById(id).className = 'feedback';
+  }
+</script>
+</body>
+</html>
