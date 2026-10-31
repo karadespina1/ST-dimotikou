@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Μάθημα 3: Είσοδος & Έξοδος στο Scratch - Διαδραστικά Εργαστήρια</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --scratch-orange: #ffab19;
+      --scratch-blue: #4cbfe6;
+      --scratch-purple: #9966ff;
+      --scratch-green: #59c059;
+      --scratch-var: #ff8c1a;
+      --scratch-event: #ffd233;
+      --bg-base: #0f172a;
+      --panel-bg: #1e293b;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --border-color: #cbd5e1;
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', system-ui, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #1e1b4b 0%, #0f172a 100%);
+      color: #f8fafc;
+      min-height: 100vh;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 940px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Top Console Bar */
+    header {
+      background: rgba(30, 41, 59, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius);
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .cat-badge {
+      background: linear-gradient(135deg, #ff8c00, #ffab19);
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      box-shadow: 0 4px 12px rgba(255, 140, 0, 0.4);
+    }
+
+    .brand-title h1 {
+      font-size: 1.35rem;
+      color: #ffffff;
+    }
+
+    .brand-title p {
+      font-size: 0.88rem;
+      color: #94a3b8;
+    }
+
+    .score-chip {
+      background: rgba(255, 171, 25, 0.15);
+      border: 1px solid var(--scratch-orange);
+      color: #fde047;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-weight: bold;
+      font-size: 1.15rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Map of Labs (8 Missions) */
+    .mission-nav {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    @media (max-width: 650px) {
+      .mission-nav {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .nav-station {
+      background: rgba(30, 41, 59, 0.7);
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nav-station:hover {
+      background: rgba(79, 70, 229, 0.25);
+      border-color: #6366f1;
+      color: white;
+    }
+
+    .nav-station.active {
+      background: linear-gradient(135deg, #4f46e5, #4338ca);
+      border-color: #818cf8;
+      color: white;
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
+    }
+
+    .nav-station.is-done .check-icon {
+      color: #4ade80;
+    }
+
+    /* Mission Workstation Arena */
+    .workbench {
+      background: #ffffff;
+      color: var(--text-main);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .mission-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 2px dashed #e2e8f0;
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+    }
+
+    .mission-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #1e1b4b;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sub-switch {
+      display: flex;
+      gap: 6px;
+    }
+
+    .sub-step-btn {
+      background: #f1f5f9;
+      border: 2px solid transparent;
+      padding: 6px 14px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 0.82rem;
+      cursor: pointer;
+      color: #64748b;
+      transition: all 0.2s;
+    }
+
+    .sub-step-btn.active {
+      background: #4f46e5;
+      color: white;
+    }
+
+    .sub-step-btn.done {
+      background: #dcfce7;
+      color: #15803d;
+      border-color: #86efac;
+    }
+
+    .briefing {
+      background: #f8fafc;
+      border-left: 5px solid #6366f1;
+      padding: 12px 18px;
+      border-radius: 0 12px 12px 0;
+      font-size: 1.02rem;
+      color: #334155;
+      margin-bottom: 20px;
+    }
+
+    /* Scratch Stylized Blocks */
+    .sb-block {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      font-size: 0.95rem;
+      box-shadow: 0 3px 0 rgba(0,0,0,0.18);
+      user-select: none;
+    }
+
+    .sb-sensing { background-color: #4cbfe6; border: 1px solid #2e8eb0; }
+    .sb-looks { background-color: #9966ff; border: 1px solid #774dc1; }
+    .sb-operators { background-color: #59c059; border: 1px solid #389438; }
+    .sb-variables { background-color: #ff8c1a; border: 1px solid #db6e00; }
+    .sb-events { background-color: #ffd233; color: #403000; border: 1px solid #d4a511; }
+
+    .sb-input {
+      background: white;
+      color: #0f172a;
+      padding: 2px 10px;
+      border-radius: 14px;
+      border: 1px solid #cbd5e1;
+      font-size: 0.9rem;
+      display: inline-block;
+    }
+
+    /* Interactive Mechanism: Drag/Click Connectors & Matchers */
+    .field-area {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 220px;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 600px) {
+      .options-grid.two-cols {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .click-choice {
+      background: white;
+      border: 2px solid #cbd5e1;
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-size: 0.98rem;
+      font-weight: bold;
+      color: #334155;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+      transition: all 0.2s ease;
+    }
+
+    .click-choice:hover {
+      border-color: #6366f1;
+      background: #f5f3ff;
+      transform: translateY(-2px);
+    }
+
+    .click-choice.correct {
+      background: #dcfce7 !important;
+      border-color: #22c55e !important;
+      color: #15803d !important;
+    }
+
+    .click-choice.wrong {
+      background: #fee2e2 !important;
+      border-color: #f43f5e !important;
+      color: #9f1239 !important;
+    }
+
+    /* Scratch Live Stage Simulator */
+    .scratch-stage-box {
+      background: #ffffff;
+      border: 3px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .stage-cat {
+      font-size: 4.5rem;
+      animation: catFloat 2.2s infinite ease-in-out;
+    }
+
+    @keyframes catFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .cat-bubble {
+      background: #ffffff;
+      border: 3px solid #334155;
+      padding: 12px 22px;
+      border-radius: 20px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #1e293b;
+      position: relative;
+      max-width: 85%;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+    }
+
+    .cat-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 12px 12px 0;
+      border-style: solid;
+      border-color: #ffffff transparent;
+    }
+
+    .stage-controls {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      max-width: 380px;
+      margin-top: 10px;
+    }
+
+    .stage-controls input {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 2px solid #94a3b8;
+      font-size: 1.05rem;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .stage-controls input:focus {
+      border-color: #4cbfe6;
+    }
+
+    .stage-controls button {
+      background: #4cbfe6;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+
+    .live-vars-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 12px;
+    }
+
+    /* Feedback Banner */
+    .status-alert {
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 0.98rem;
+      margin-top: 18px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-alert.show-win {
+      display: flex;
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #86efac;
+    }
+
+    .status-alert.show-err {
+      display: flex;
+      background: #ffe4e6;
+      color: #be123c;
+      border: 1px solid #fda4af;
+    }
+
+    /* Navigation Footer */
+    .stage-footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .primary-btn {
+      background: #4f46e5;
+      color: white;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .primary-btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .ghost-btn {
+      background: #f1f5f9;
+      color: #475569;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .ghost-btn:hover {
+      background: #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-shell">
+    <!-- Top Console -->
+    <header>
+      <div class="brand">
+        <div class="cat-badge">🐱</div>
+        <div class="brand-title">
+          <h1>Εργαστήριο Scratch: Είσοδος &amp; Έξοδος</h1>
+          <p>Πληροφορική ΣΤ΄ Δημοτικού • Μάθημα 3ο</p>
+        </div>
+      </div>
+      <div class="score-chip">
+        <span>⭐ Αστέρια:</span>
+        <span id="star-counter">0</span> / 24
+      </div>
+    </header>
+
+    <!-- 8 Activity Stations -->
+    <div class="mission-nav">
+      <button class="nav-station active" onclick="jumpMission(1)" id="btn-m1">
+        <span>1. Είσοδος «ρώτησε»</span> <span class="check-icon">⚪</span>
+      </button>
+      <button class="nav-station" onclick="jumpMission(2)" id="btn-m2">
+        <span>2. Η Μεταβλητή «απάντηση»</span> <span class="check-icon">⚪</span>
+      </button>
+      <button class="nav-station" onclick="jumpMission(3)" id="btn-m3">
+        <span>3. Έξοδος «πες...»</span> <span class="check-icon">⚪</span>
+      </button>
+      <button class="nav-station" onclick="jumpMission(4)" id="btn-m4">
+        <span>4. Τελεστής «ένωσε»</span> <span class="check-icon">⚪</span>
+      </button>
+      <button class="nav-station" onclick="jumpMission(5)" id="btn-m5">
+        <span>5. Υπολογισμός 2*3.14*ρ</span> <span class="check-icon">⚪</span>
+      </button>
+      <button class="nav-station" onclick="jumpMission(6)" id="btn-m6">
+        <span>6. Ζωντανή Γατούλα</span> <span class="check-icon">⚪</span>
+      </button>
+      <button class="nav-station" onclick="jumpMission(7)" id="btn-m7">
+        <span>7. Σειρά Προγράμματος</span> <span class="check-icon">⚪</span>
+      </button>
+      <button class="nav-station" onclick="jumpMission(8)" id="btn-m8">
+        <span>8. Τελική Εμπέδωση</span> <span class="check-icon">⚪</span>
+      </button>
+    </div>
+
+    <!-- Main Workspace -->
+    <div class="workbench">
+      <div class="mission-header">
+        <div class="mission-title" id="m-title">Εργαστήριο 1</div>
+        <div class="sub-switch">
+          <button class="sub-step-btn active" id="sub-dot-1" onclick="jumpSub(1)">Βήμα 1</button>
+          <button class="sub-step-btn" id="sub-dot-2" onclick="jumpSub(2)">Βήμα 2</button>
+          <button class="sub-step-btn" id="sub-dot-3" onclick="jumpSub(3)">Βήμα 3</button>
+        </div>
+      </div>
+
+      <div id="mission-body"></div>
+
+      <div class="stage-footer">
+        <button class="ghost-btn" onclick="stepNav(-1)">⬅ Προηγούμενο</button>
+        <button class="primary-btn" onclick="stepNav(1)">Επόμενο ➡</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Audio Synthesizer (Web Audio API)
+    let audioContext = null;
+    function beep(type) {
+      try {
+        if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+
+        if (type === 'win') {
+          osc.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+          osc.frequency.exponentialRampToValueAtTime(1046.5, audioContext.currentTime + 0.25); // C6
+          gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+          gain.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.3);
+          osc.start();
+          osc.stop(audioContext.currentTime + 0.3);
+        } else {
+          osc.frequency.setValueAtTime(240, audioContext.currentTime);
+          osc.frequency.linearRampToValueAtTime(150, audioContext.currentTime + 0.2);
+          gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+          gain.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.25);
+          osc.start();
+          osc.stop(audioContext.currentTime + 0.25);
+        }
+      } catch (e) {}
+    }
+
+    let activeMission = 1;
+    let activeSub = 1;
+    const earnedStars = new Set();
+
+    // Data for 8 Labs - Shuffle options so the correct answer is NOT always first!
+    const missionsData = {
+      1: {
+        title: "1. Είσοδος Δεδομένων &amp; Αισθητήρες",
+        steps: [
+          {
+            prompt: "Ποιο πλακίδιο στο Scratch αντιστοιχεί στην εντολή «Διάβασε» του αλγορίθμου;",
+            type: "choice",
+            // Correct answer is placed at index 1 (second option)
+            options: [
+              { label: "πες [Γεια σου!] για 2 δευτερόλεπτα (Όψεις)", isCorrect: false },
+              { label: "ρώτησε [Πώς σε λένε;] και περίμενε (Αισθητήρες)", isCorrect: true },
+              { label: "όρισε [σκορ] σε 0 (Μεταβλητές)", isCorrect: false }
+            ],
+            okMsg: "Μπράβο! Η εντολή «ρώτησε... και περίμενε» ζητά δεδομένα από τον χρήστη!",
+            errMsg: "Σκέψου: ποια εντολή ανοίγει πλαίσιο για να πληκτρολογήσει ο χρήστης;"
+          },
+          {
+            prompt: "Σε ποια κατηγορία εντολών βρίσκεται η «ρώτησε ... και περίμενε»;",
+            type: "category-quiz",
+            block: "ρώτησε [Δώσε ακτίνα:] και περίμενε",
+            // Correct answer is placed at index 2 (third option)
+            categories: [
+              { name: "Κίνηση (Μπλε)", code: "motion", isCorrect: false, color: "#4c97ff" },
+              { name: "Όψεις (Μοβ)", code: "looks", isCorrect: false, color: "#9966ff" },
+              { name: "Αισθητήρες (Γαλάζιο)", code: "sensing", isCorrect: true, color: "#4cbfe6" },
+              { name: "Τελεστές (Πράσινο)", code: "operators", isCorrect: false, color: "#59c059" }
+            ],
+            okMsg: "Σωστά! Έχει γαλάζιο χρώμα και ανήκει στους Αισθητήρες!",
+            errMsg: "Κοίταξε το χρώμα της εντολής στο βιβλίο. Είναι γαλάζιο!"
+          },
+          {
+            prompt: "Εκτός από το συννεφάκι ομιλίας, τι άλλο εμφανίζεται στη σκηνή μόλις εκτελεστεί η «ρώτησε...»;",
+            type: "choice",
+            // Correct answer is placed at index 2 (third option)
+            options: [
+              { label: "Μια δεύτερη γάτα που τρέχει.", isCorrect: false },
+              { label: "Σβήνουν τα φώτα της οθόνης.", isCorrect: false },
+              { label: "Ένα λευκό πλαίσιο κειμένου στο κάτω μέρος για πληκτρολόγηση.", isCorrect: true }
+            ],
+            okMsg: "Ακριβώς! Ανοίγει η μπάρα εισαγωγής για να γράψουμε την απάντηση!",
+            errMsg: "Πού γράφει ο χρήστης το όνομά του ή τον αριθμό;"
+          }
+        ]
+      },
+      2: {
+        title: "2. Η Μαγική Μεταβλητή «απάντηση»",
+        steps: [
+          {
+            prompt: "Πού φυλάσσεται αυτόματα αυτό που πληκτρολόγησε ο χρήστης;",
+            type: "choice",
+            // Correct answer is placed at index 1 (second option)
+            options: [
+              { label: "Στο κουμπί της πράσινης σημαίας.", isCorrect: false },
+              { label: "Στην ενσωματωμένη μεταβλητή «απάντηση» (στους Αισθητήρες).", isCorrect: true },
+              { label: "Στον κάδο ανακύκλωσης των windows.", isCorrect: false }
+            ],
+            okMsg: "Πολύ σωστά! Η «απάντηση» αποθηκεύει αυτόματα ό,τι πληκτρολογούμε!",
+            errMsg: "Το Scratch έχει μια ειδική στρογγυλή μεταβλητή για αυτόν τον σκοπό."
+          },
+          {
+            prompt: "Αν ρωτήσουμε ξανά και δώσουμε νέα τιμή, τι θα συμβεί στην «απάντηση»;",
+            type: "choice",
+            // Correct answer is placed at index 0 (first option)
+            options: [
+              { label: "Η παλιά τιμή διαγράφεται και η «απάντηση» παίρνει τη νέα τιμή.", isCorrect: true },
+              { label: "Κολλάνε όλες οι τιμές μαζί σε μία τεράστια πρόταση.", isCorrect: false },
+              { label: "Ο υπολογιστής κολλάει και κλείνει.", isCorrect: false }
+            ],
+            okMsg: "Τέλεια! Σε κάθε μεταβλητή, η νέα τιμή αντικαθιστά την παλιά!",
+            errMsg: "Θυμήσου: μία μεταβλητή κρατάει κάθε φορά μόνο την τελευταία τιμή της!"
+          },
+          {
+            prompt: "Πώς μπορούμε να κάνουμε τη μεταβλητή «απάντηση» ορατή πάνω στη σκηνή;",
+            type: "choice",
+            // Correct answer is placed at index 2 (third option)
+            options: [
+              { label: "Πατώντας πολλές φορές το κουμπί επανεκκίνησης.", isCorrect: false },
+              { label: "Φωνάζοντας στο μικρόφωνο.", isCorrect: false },
+              { label: "Κάνοντας κλικ (τικ ✔) στο τετραγωνάκι δίπλα στο όνομά της στην παλέτα.", isCorrect: true }
+            ],
+            okMsg: "Μπράβο! Το τικ (✔) εμφανίζει τον μετρητή πάνω στη σκηνή του έργου!",
+            errMsg: "Στο Scratch, κάθε μεταβλητή έχει δίπλα της ένα κουτάκι για τικ!"
+          }
+        ]
+      },
+      3: {
+        title: "3. Έξοδος Αποτελεσμάτων &amp; Εντολή «πες...»",
+        steps: [
+          {
+            prompt: "Σε ποια κατηγορία ανήκει η εντολή εξόδου «πες [...] για 2 δευτερόλεπτα»;",
+            type: "category-quiz",
+            block: "πες [Ο κύκλος έχει μήκος ...] για 2 δευτερόλεπτα",
+            // Correct answer is placed at index 1 (second option)
+            categories: [
+              { name: "Ήχοι (Ροζ)", code: "sound", isCorrect: false, color: "#d946ef" },
+              { name: "Όψεις (Μοβ)", code: "looks", isCorrect: true, color: "#9966ff" },
+              { name: "Αισθητήρες (Γαλάζιο)", code: "sensing", isCorrect: false, color: "#4cbfe6" }
+            ],
+            okMsg: "Μπράβο! Όλες οι εντολές ομιλίας/σκέψης ανήκουν στις Όψεις!",
+            errMsg: "Το μοβ χρώμα στο Scratch σημαίνει Όψεις (Looks)!"
+          },
+          {
+            prompt: "Ποια είναι η διαφορά των εντολών «ρώτησε...» και «πες...»;",
+            type: "choice",
+            // Correct answer is placed at index 2 (third option)
+            options: [
+              { label: "Δεν έχουν καμία διαφορά, είναι συνώνυμες.", isCorrect: false },
+              { label: "Και οι δύο περιμένουν πληκτρολόγηση από τον χρήστη.", isCorrect: false },
+              { label: "Η «ρώτησε» είναι είσοδος δεδομένων, ενώ η «πες» είναι έξοδος μηνύματος.", isCorrect: true }
+            ],
+            okMsg: "Εξαιρετικά! Ρώτησε = Είσοδος 📥, Πες = Έξοδος 📤!",
+            errMsg: "Σκέψου: ποια παίρνει δεδομένα και ποια εμφανίζει αποτελέσματα;"
+          },
+          {
+            prompt: "Εκτός από την εντολή «πες...», πώς αλλιώς μπορεί να δει ο χρήστης το αποτέλεσμα ενός υπολογισμού;",
+            type: "choice",
+            // Correct answer is placed at index 1 (second option)
+            options: [
+              { label: "Κλείνοντας την οθόνη του υπολογιστή.", isCorrect: false },
+              { label: "Εμφανίζοντας απευθείας τη μεταβλητή του αποτελέσματος στη σκηνή (με τικ).", isCorrect: true },
+              { label: "Δεν υπάρχει άλλος τρόπος.", isCorrect: false }
+            ],
+            okMsg: "Σωστά! Η μεταβλητή μπορεί να εμφανίζεται αυτόνομα πάνω στη σκηνή!",
+            errMsg: "Όπως αναφέρει το βιβλίο, μπορούμε να τικάρουμε τη μεταβλητή για να φαίνεται!"
+          }
+        ]
+      },
+      4: {
+        title: "4. Το Μπλοκ «ένωσε» (Σύνδεση Κειμένου &amp; Μεταβλητής)",
+        steps: [
+          {
+            prompt: "Σε ποια κατηγορία βρίσκεται το μπλοκ «ένωσε [μήλο] [μπανάνα]»;",
+            type: "category-quiz",
+            block: "ένωσε [Γεια σου ] [απάντηση]",
+            // Correct answer is placed at index 2 (third option)
+            categories: [
+              { name: "Συμβάντα (Κίτρινο)", code: "events", isCorrect: false, color: "#ffd233" },
+              { name: "Έλεγχος (Χρυσαφί)", code: "control", isCorrect: false, color: "#ffab19" },
+              { name: "Τελεστές (Πράσινο)", code: "operators", isCorrect: true, color: "#59c059" }
+            ],
+            okMsg: "Σωστότατα! Το πράσινο χρώμα ανήκει στην κατηγορία Τελεστές!",
+            errMsg: "Το μπλοκ «ένωσε» επεξεργάζεται κείμενο και είναι πράσινο!"
+          },
+          {
+            prompt: "Αν γράψουμε [ένωσε [Γεια σου] [απάντηση]] ΧΩΡΙΣ κενό, πώς θα φανεί στην οθόνη αν η απάντηση είναι «Νίκος»;",
+            type: "choice",
+            // Correct answer is placed at index 1 (second option)
+            options: [
+              { label: "«Γεια σου Νίκος» (με ωραίο κενό)", isCorrect: false },
+              { label: "«Γεια σουΝίκος» (κολλημένα χωρίς κενό)", isCorrect: true },
+              { label: "Θα σβηστεί το όνομα", isCorrect: false }
+            ],
+            okMsg: "Ακριβώς! Ο υπολογιστής ενώνει κατά γράμμα! Πρέπει να βάλουμε κενό μετά το «Γεια σου »!",
+            errMsg: "Αν δεν βάλουμε κενό εμείς, ο υπολογιστής θα τα κολλήσει μαζί!"
+          },
+          {
+            prompt: "Μπορούμε να βάλουμε ένα μπλοκ «ένωσε» μέσα σε ένα άλλο μπλοκ «ένωσε»;",
+            type: "choice",
+            // Correct answer is placed at index 0 (first option)
+            options: [
+              { label: "Ναι! Έτσι μπορούμε να ενώσουμε 3 ή περισσότερα κομμάτια κειμένου μαζί!", isCorrect: true },
+              { label: "Όχι, απαγορεύεται αυστηρά στο Scratch.", isCorrect: false }
+            ],
+            okMsg: "Μπράβο! Αυτό ονομάζεται φωλιασμός εντολών!",
+            errMsg: "Στο Scratch μπορούμε να τοποθετήσουμε ένα οβάλ μπλοκ μέσα στο κυκλάκι ενός άλλου!"
+          }
+        ]
+      },
+      5: {
+        title: "5. Αριθμητικοί Υπολογισμοί με 3 Αριθμούς",
+        steps: [
+          {
+            prompt: "Για να υπολογίσουμε το γινόμενο 3 αριθμών (2 * 3.14 * ακτίνα), πόσα πράσινα μπλοκ πολλαπλασιασμού (*) χρειαζόμαστε;",
+            type: "choice",
+            // Correct answer is placed at index 2 (third option)
+            options: [
+              { label: "Μόνο 1 μπλοκ πρόσθεσης (+).", isCorrect: false },
+              { label: "3 μπλοκ διαίρεσης.", isCorrect: false },
+              { label: "2 μπλοκ πολλαπλασιασμού (*) βάζοντας το ένα μέσα στο άλλο.", isCorrect: true }
+            ],
+            okMsg: "Σωστά! Κάθε μπλοκ πολλαπλασιάζει 2 αριθμούς, άρα φωλιάζουμε 2 μπλοκ!",
+            errMsg: "Σκέψου: έχουμε 3 αριθμούς, άρα χρειάζονται δύο πράξεις πολλαπλασιασμού!"
+          },
+          {
+            prompt: "ΠΡΟΣΟΧΗ: Πώς γράφεται ο δεκαδικός αριθμός 3,14 στο Scratch;",
+            type: "choice",
+            // Correct answer is placed at index 1 (second option)
+            options: [
+              { label: "3,14 (με ελληνική υποδιαστολή κόμμα)", isCorrect: false },
+              { label: "3.14 (πάντα με τελεία)", isCorrect: true },
+              { label: "3_14 (με κάτω παύλα)", isCorrect: false }
+            ],
+            okMsg: "Πολύ σημαντικό! Στον προγραμματισμό οι δεκαδικοί γράφονται πάντα με τελεία (.)!",
+            errMsg: "Αν βάλεις κόμμα, το Scratch δεν μπορεί να κάνει τον μαθηματικό υπολογισμό!"
+          },
+          {
+            prompt: "Αν η ακτίνα είναι 10 εκ., ποιο είναι το μήκος περιφέρειας (2 * 3.14 * 10);",
+            type: "choice",
+            // Correct answer is placed at index 0 (first option)
+            options: [
+              { label: "62.8 εκατοστά", isCorrect: true },
+              { label: "25.14 εκατοστά", isCorrect: false },
+              { label: "314 εκατοστά", isCorrect: false }
+            ],
+            okMsg: "Μπράβο! 2 * 3.14 = 6.28 και 6.28 * 10 = 62.8 εκατοστά!",
+            errMsg: "Κάνε τον υπολογισμό: 2 επί 3.14 = 6.28. Έπειτα πολλαπλασίασε επί 10!"
+          }
+        ]
+      },
+      6: {
+        title: "6. Ζωντανή Γατούλα (Προσομοιωτής)",
+        steps: [
+          {
+            prompt: "Πληκτρολόγησε το όνομά σου στο πλαίσιο εισόδου και πάτα Enter (ή κλικ στο ✔):",
+            type: "interactive-sim",
+            simPhase: 1,
+            okMsg: "Μπράβο! Η γατούλα πήρε την είσοδο, την αποθήκευσε στην «απάντηση» και σε χαιρέτησε!",
+            errMsg: "Γράψε το όνομά σου στο πλαίσιο και πάτα το κουμπί ✔!"
+          },
+          {
+            prompt: "Τώρα δώσε την ακτίνα ενός κύκλου σε εκατοστά (π.χ. 10):",
+            type: "interactive-sim",
+            simPhase: 2,
+            okMsg: "Εξαιρετικά! 2 * 3.14 * 10 = 62.8 εκ.! Η γατούλα ολοκλήρωσε τον υπολογισμό!",
+            errMsg: "Πληκτρολόγησε έναν θετικό αριθμό για την ακτίνα!"
+          },
+          {
+            prompt: "Δοκίμασε άλλη μία ακτίνα (π.χ. 5) για να δεις τη νέα έξοδο:",
+            type: "interactive-sim",
+            simPhase: 3,
+            okMsg: "Τέλεια! 2 * 3.14 * 5 = 31.4 εκ.! Ολοκλήρωσες όλες τις δοκιμές του προσομοιωτή!",
+            errMsg: "Δώσε έναν αριθμό για τη νέα δοκιμή!"
+          }
+        ]
+      },
+      7: {
+        title: "7. Σειρά Εκτέλεσης του Προγράμματος",
+        steps: [
+          {
+            prompt: "Κάνε κλικ με τη σωστή σειρά στα 4 μπλοκ για να φτιάξεις το ολοκληρωμένο πρόγραμμα:",
+            type: "block-sequence",
+            // The blocks are shuffled in the UI, target sequence is b1 -> b2 -> b3 -> b4
+            blocks: [
+              { id: "b3", text: "όρισε [μήκος κύκλου] σε (2 * 3.14 * απάντηση)", color: "#ff8c1a" },
+              { id: "b1", text: "όταν στο ⚑ γίνει κλικ", color: "#ffd233", fontColor: "#403000" },
+              { id: "b4", text: "πες (ένωσε [Ο κύκλος έχει μήκος ] [μήκος κύκλου])", color: "#9966ff" },
+              { id: "b2", text: "ρώτησε [Δώσε το μήκος της ακτίνας] και περίμενε", color: "#4cbfe6" }
+            ],
+            targetOrder: ["b1", "b2", "b3", "b4"],
+            okMsg: "Τέλεια! Έστησες το πρόγραμμα με απόλυτη λογική ακολουθία!",
+            errMsg: "Η σειρά δεν είναι σωστή. Πάτα «Καθαρισμός» και σκέψου ποιο βήμα προηγείται!"
+          },
+          {
+            prompt: "Πού πρέπει να τοποθετηθεί το μπλοκ της πράσινης σημαίας (⚑);",
+            type: "choice",
+            // Correct answer is placed at index 1 (second option)
+            options: [
+              { label: "Στο τέλος μετά την έξοδο.", isCorrect: false },
+              { label: "Στην κορυφή του προγράμματος (συμβάν έναρξης).", isCorrect: true },
+              { label: "Μέσα στον πολλαπλασιασμό.", isCorrect: false }
+            ],
+            okMsg: "Σωστά! Η πράσινη σημαία ξεκινά την εκτέλεση του κώδικα!",
+            errMsg: "Τα καπέλα συμβάντων μπαίνουν πάντα στην κορυφή ενός σεναρίου!"
+          },
+          {
+            prompt: "Πότε πρέπει να εκτελεστεί ο υπολογισμός με το «όρισε...»;",
+            type: "choice",
+            // Correct answer is placed at index 0 (first option)
+            options: [
+              { label: "ΑΜΕΣΩΣ ΜΕΤΑ την εντολή εισόδου «ρώτησε... και περίμενε».", isCorrect: true },
+              { label: "Πριν ρωτήσουμε τον χρήστη.", isCorrect: false }
+            ],
+            okMsg: "Ακριβώς! Χρειαζόμαστε πρώτα την ακτίνα για να μπορέσουμε να υπολογίσουμε!",
+            errMsg: "Αν δεν διαβάσουμε πρώτα την ακτίνα, τι αριθμό θα πολλαπλασιάσει;"
+          }
+        ]
+      },
+      8: {
+        title: "8. Τελική Σύνδεση &amp; Εμπέδωση",
+        steps: [
+          {
+            prompt: "Σε ποιον σταθμό λειτουργίας ανήκει η εντολή «πες (ένωσε ...) για 3 δευτερόλεπτα»;",
+            type: "choice",
+            // Correct answer is placed at index 2 (third option)
+            options: [
+              { label: "Σταθμός Εισόδου (Input)", isCorrect: false },
+              { label: "Σταθμός Επεξεργασίας (Process)", isCorrect: false },
+              { label: "Σταθμός Εξόδου (Output)", isCorrect: true }
+            ],
+            okMsg: "Μπράβο! Εμφανίζει τα αποτελέσματα στην οθόνη, άρα είναι έξοδος!",
+            errMsg: "Η εντολή «πες» εμφανίζει μηνύματα προς τον χρήστη."
+          },
+          {
+            prompt: "Ποια είναι η εντολή εκχώρησης τιμής σε μία μεταβλητή στο Scratch;",
+            type: "choice",
+            // Correct answer is placed at index 1 (second option)
+            options: [
+              { label: "στρίψε δεξιά 15 μοίρες", isCorrect: false },
+              { label: "όρισε [μεταβλητή] σε [τιμή]", isCorrect: true },
+              { label: "πήγαινε στο x:0 y:0", isCorrect: false }
+            ],
+            okMsg: "Σωστά! Η εντολή «όρισε... σε» δίνει τιμή σε μεταβλητή!",
+            errMsg: "Στην κατηγορία Μεταβλητές, η βασική εντολή εκχώρησης είναι το «όρισε ... σε»!"
+          },
+          {
+            prompt: "Στο επόμενο μάθημα (Μάθημα 4), πώς θα οργανώσουμε αυτούς τους υπολογισμούς;",
+            type: "choice",
+            // Correct answer is placed at index 1 (second option)
+            options: [
+              { label: "Σβήνοντας το Scratch.", isCorrect: false },
+              { label: "Φτιάχνοντας δικές μας νέες εντολές: Υποπρογράμματα με μεταβλητές εισόδου!", isCorrect: true },
+              { label: "Παίζοντας μόνο βιντεοπαιχνίδια.", isCorrect: false }
+            ],
+            okMsg: "Τέλεια! Στο Μάθημα 4 θα φτιάξουμε τα δικά μας υποπρογράμματα (My Blocks)!",
+            errMsg: "Στο 4ο μάθημα μαθαίνουμε για τα Υποπρογράμματα!"
+          }
+        ]
+      }
+    };
+
+    // Render Sub-Step
+    function renderWorkplace() {
+      const mission = missionsData[activeMission];
+      const step = mission.steps[activeSub - 1];
+      const subKey = `${activeMission}-${activeSub}`;
+
+      document.getElementById('m-title').innerHTML = mission.title;
+
+      // Sub tabs state
+      for (let s = 1; s <= 3; s++) {
+        const btn = document.getElementById(`sub-dot-${s}`);
+        btn.className = `sub-step-btn ${s === activeSub ? 'active' : ''} ${earnedStars.has(`${activeMission}-${s}`) ? 'done' : ''}`;
+      }
+
+      let html = `<div class="briefing">${step.prompt}</div>`;
+
+      // 1. Multiple Choice
+      if (step.type === 'choice') {
+        html += `<div class="options-grid">`;
+        step.options.forEach(opt => {
+          html += `
+            <button class="click-choice" onclick="checkChoiceAnswer(this, ${opt.isCorrect})">
+              <span>🔘</span> <span>${opt.label}</span>
+            </button>
+          `;
+        });
+        html += `</div>`;
+      }
+
+      // 2. Category Quiz
+      else if (step.type === 'category-quiz') {
+        html += `
+          <div class="field-area" style="text-align: center; align-items: center;">
+            <div style="margin-bottom: 12px;">
+              <span class="sb-block" style="background:#1e293b; font-size:1.15rem; padding: 12px 20px;">
+                ${step.block}
+              </span>
+            </div>
+            <div style="font-weight: bold; color: #64748b; margin-bottom: 8px;">Διάλεξε τη σωστή κατηγορία:</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;">
+        `;
+        step.categories.forEach(cat => {
+          html += `
+            <button class="click-choice" style="background: ${cat.color}; color: white; border: none; font-size: 1rem;" onclick="checkCategoryAnswer(this, ${cat.isCorrect})">
+              📁 ${cat.name}
+            </button>
+          `;
+        });
+        html += `</div></div>`;
+      }
+
+      // 3. Scratch Stage Simulator (Act 6)
+      else if (step.type === 'interactive-sim') {
+        html += `
+          <div class="scratch-stage-box">
+            <div class="cat-bubble" id="sim-bubble">🐱 Γεια σου! Πώς σε λένε;</div>
+            <div class="stage-cat">🐱</div>
+            <div class="stage-controls">
+              <input type="text" id="sim-text-in" placeholder="Γράψε εδώ..." autofocus onkeydown="if(event.key==='Enter') executeSim()">
+              <button onclick="executeSim()">✔</button>
+            </div>
+            <div class="live-vars-row">
+              <span class="sb-block sb-sensing">απάντηση = <span class="sb-input" id="lbl-ans">...</span></span>
+              <span class="sb-block sb-variables">μήκος κύκλου = <span class="sb-input" id="lbl-res">...</span></span>
+            </div>
+          </div>
+        `;
+      }
+
+      // 4. Sequence of Blocks (Act 7.1)
+      else if (step.type === 'block-sequence') {
+        html += `
+          <div class="field-area">
+            <div style="font-weight: bold; color: #64748b;">Πάτα διαδοχικά τα μπλοκ για να τα βάλεις στη σωστή σειρά εκτέλεσης:</div>
+            <div style="display: flex; flex-direction: column; gap: 8px; margin: 12px 0;" id="seq-pool">
+        `;
+        step.blocks.forEach(b => {
+          html += `
+            <div class="click-choice" id="${b.id}" style="background: ${b.color}; color: ${b.fontColor || '#ffffff'}; border: none;" onclick="pickSeqBlock(this, '${b.id}')">
+              ${b.text}
+            </div>
+          `;
+        });
+        html += `
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button class="primary-btn" onclick="checkSeqOrder()">Έλεγχος Σειράς</button>
+              <button class="ghost-btn" onclick="renderWorkplace()">🔄 Καθαρισμός</button>
+            </div>
+          </div>
+        `;
+      }
+
+      html += `<div class="status-alert" id="status-box"></div>`;
+      document.getElementById('mission-body').innerHTML = html;
+
+      if (step.type === 'interactive-sim') {
+        configSim();
+      }
+    }
+
+    // Evaluation Handlers
+    function checkChoiceAnswer(btn, isOk) {
+      const subKey = `${activeMission}-${activeSub}`;
+      const step = missionsData[activeMission].steps[activeSub - 1];
+      const box = document.getElementById('status-box');
+      const allChoices = document.querySelectorAll('.click-choice');
+
+      if (isOk) {
+        allChoices.forEach(c => c.classList.remove('wrong'));
+        btn.classList.add('correct');
+        box.className = 'status-alert show-win';
+        box.innerHTML = `<span>🎉</span> <span>${step.okMsg}</span>`;
+        beep('win');
+        unlockStar(subKey);
+      } else {
+        btn.classList.add('wrong');
+        box.className = 'status-alert show-err';
+        box.innerHTML = `<span>❌</span> <span>${step.errMsg}</span>`;
+        beep('err');
+      }
+    }
+
+    function checkCategoryAnswer(btn, isOk) {
+      const subKey = `${activeMission}-${activeSub}`;
+      const step = missionsData[activeMission].steps[activeSub - 1];
+      const box = document.getElementById('status-box');
+
+      if (isOk) {
+        box.className = 'status-alert show-win';
+        box.innerHTML = `<span>🎉</span> <span>${step.okMsg}</span>`;
+        beep('win');
+        unlockStar(subKey);
+      } else {
+        box.className = 'status-alert show-err';
+        box.innerHTML = `<span>❌</span> <span>${step.errMsg}</span>`;
+        beep('err');
+      }
+    }
+
+    // Live Simulator Logic
+    let studentName = "";
+    function configSim() {
+      const bubble = document.getElementById('sim-bubble');
+      const input = document.getElementById('sim-text-in');
+      if (!bubble || !input) return;
+
+      if (activeSub === 1) {
+        bubble.innerText = "🐱 Γεια σου! Πώς σε λένε και περίμενε...";
+        input.placeholder = "Γράψε το όνομά σου...";
+      } else if (activeSub === 2) {
+        bubble.innerText = `🐱 Χαίρομαι ${studentName || 'φίλε μου'}! Δώσε την ακτίνα του κύκλου σε εκ.:`;
+        input.placeholder = "π.χ. 10";
+      } else if (activeSub === 3) {
+        bubble.innerText = "🐱 Δώσε άλλη μία ακτίνα (π.χ. 5) για νέο υπολογισμό:";
+        input.placeholder = "π.χ. 5";
+      }
+    }
+
+    function executeSim() {
+      const input = document.getElementById('sim-text-in');
+      const val = input.value.trim();
+      const bubble = document.getElementById('sim-bubble');
+      const ansLabel = document.getElementById('lbl-ans');
+      const resLabel = document.getElementById('lbl-res');
+      const box = document.getElementById('status-box');
+      const subKey = `${activeMission}-${activeSub}`;
+
+      if (!val) return;
+      ansLabel.innerText = val;
+
+      if (activeSub === 1) {
+        studentName = val;
+        bubble.innerText = `🐱 Γεια σου ${studentName}! Θα υπολογίσω για σένα το μήκος κύκλου (2*3.14*ρ)!`;
+        box.className = 'status-alert show-win';
+        box.innerHTML = "<span>🎉</span> <span>Μπράβο! Το όνομα αποθηκεύτηκε στην «απάντηση» και εμφανίστηκε με την «πες»!</span>";
+        beep('win');
+        unlockStar(subKey);
+      } else {
+        const r = parseFloat(val);
+        if (isNaN(r) || r <= 0) {
+          box.className = 'status-alert show-err';
+          box.innerHTML = "<span>❌</span> <span>Δώσε έναν έγκυρο θετικό αριθμό!</span>";
+          beep('err');
+          return;
+        }
+        const perimeter = (2 * 3.14 * r).toFixed(2);
+        resLabel.innerText = perimeter + " εκ.";
+        bubble.innerText = `🐱 Ο κύκλος έχει μήκος ${perimeter} εκατοστά!`;
+        box.className = 'status-alert show-win';
+        box.innerHTML = `<span>🎉</span> <span>Υπολογισμός: 2 * 3.14 * ${r} = ${perimeter} εκ.!</span>`;
+        beep('win');
+        unlockStar(subKey);
+      }
+      input.value = "";
+    }
+
+    // Sequence Builder Logic (Act 7.1)
+    let userSeq = [];
+    function pickSeqBlock(el, id) {
+      if (userSeq.includes(id)) return;
+      userSeq.push(id);
+      el.style.opacity = '0.5';
+      el.style.transform = 'scale(0.98)';
+    }
+
+    function checkSeqOrder() {
+      const box = document.getElementById('status-box');
+      const step = missionsData[activeMission].steps[activeSub - 1];
+      const subKey = `${activeMission}-${activeSub}`;
+
+      if (userSeq.length < 4) {
+        box.className = 'status-alert show-err';
+        box.innerHTML = '⚠️ Πάτησε και τα 4 μπλοκ με τη σειρά πριν πατήσεις έλεγχο!';
+        return;
+      }
+
+      let isCorrect = true;
+      for (let i = 0; i < 4; i++) {
+        if (userSeq[i] !== step.targetOrder[i]) isCorrect = false;
+      }
+
+      if (isCorrect) {
+        box.className = 'status-alert show-win';
+        box.innerHTML = `<span>🎉</span> <span>${step.okMsg}</span>`;
+        beep('win');
+        unlockStar(subKey);
+      } else {
+        box.className = 'status-alert show-err';
+        box.innerHTML = `<span>❌</span> <span>${step.errMsg}</span>`;
+        beep('err');
+      }
+    }
+
+    // Star Tracker & Station Update
+    function unlockStar(subKey) {
+      if (!earnedStars.has(subKey)) {
+        earnedStars.add(subKey);
+        document.getElementById('star-counter').innerText = earnedStars.size;
+
+        let allDone = true;
+        for (let s = 1; s <= 3; s++) {
+          if (!earnedStars.has(`${activeMission}-${s}`)) allDone = false;
+        }
+        if (allDone) {
+          const stBtn = document.getElementById(`btn-m${activeMission}`);
+          stBtn.querySelector('.check-icon').innerText = '⭐';
+          stBtn.classList.add('is-done');
+        }
+
+        renderWorkplace();
+      }
+    }
+
+    // Navigation Logic
+    function jumpMission(mNum) {
+      activeMission = mNum;
+      activeSub = 1;
+      userSeq = [];
+      document.querySelectorAll('.nav-station').forEach((b, idx) => {
+        b.classList.toggle('active', (idx + 1) === mNum);
+      });
+      renderWorkplace();
+    }
+
+    function jumpSub(sNum) {
+      activeSub = sNum;
+      userSeq = [];
+      renderWorkplace();
+    }
+
+    function stepNav(direction) {
+      if (direction === 1) {
+        if (activeSub < 3) {
+          activeSub++;
+        } else if (activeMission < 8) {
+          activeMission++;
+          activeSub = 1;
+        }
+      } else if (direction === -1) {
+        if (activeSub > 1) {
+          activeSub--;
+        } else if (activeMission > 1) {
+          activeMission--;
+          activeSub = 3;
+        }
+      }
+      userSeq = [];
+      document.querySelectorAll('.nav-station').forEach((b, idx) => {
+        b.classList.toggle('active', (idx + 1) === activeMission);
+      });
+      renderWorkplace();
+    }
+
+    window.onload = () => {
+      renderWorkplace();
+    };
+  </script>
+</body>
+</html>
