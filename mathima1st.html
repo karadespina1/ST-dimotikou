@@ -3,672 +3,804 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Μάθημα 1: Η Έννοια του Προβλήματος & Ανάλυση</title>
+  <title>Πληροφορική ΣΤ΄ Δημοτικού - Μάθημα 1: Προβλήματα και Αλγόριθμοι</title>
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800&family=Comfortaa:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Confetti library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
   <style>
-    .tab-btn.active {
-      background-color: #0284c7;
-      color: #ffffff;
-      border-color: #0284c7;
+    body {
+      font-family: 'Fredoka', cursive, sans-serif;
+    }
+    .font-sub {
+      font-family: 'Comfortaa', cursive, sans-serif;
+    }
+    .btn-bounce:active {
+      transform: scale(0.95);
     }
   </style>
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans min-h-screen p-3 sm:p-5 md:p-8 flex flex-col items-center text-base leading-relaxed">
+<body class="bg-gradient-to-b from-sky-100 via-amber-50 to-emerald-50 min-h-screen text-slate-800 flex flex-col selection:bg-amber-200">
 
-  <div class="max-w-4xl w-full bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden flex flex-col">
-
-    <!-- Header -->
-    <header class="bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-700 p-5 sm:p-6 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-4">
-        <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl backdrop-blur-md shrink-0">
-          🧩
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white shadow-lg sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
+      <!-- Title -->
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 bg-amber-400 text-slate-900 rounded-2xl flex items-center justify-center text-2xl shadow-md">
+          🤖
         </div>
         <div>
-          <span class="bg-white/20 text-sky-100 text-xs sm:text-sm font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-            Πληροφορική ΣΤ΄ Δημοτικού • Ενότητα 1
-          </span>
-          <h1 class="text-xl sm:text-2xl font-black mt-1">Μάθημα 1: Η Έννοια του Προβλήματος</h1>
+          <div class="flex items-center gap-2">
+            <span class="bg-amber-300 text-amber-950 text-[11px] font-extrabold px-2 py-0.5 rounded-full">ΣΤ΄ ΔΗΜΟΤΙΚΟΥ</span>
+            <span class="text-blue-100 text-xs hidden sm:inline">Μάθημα 1ο</span>
+          </div>
+          <h1 class="text-lg sm:text-2xl font-extrabold tracking-wide">Προβλήματα &amp; Αλγόριθμοι</h1>
         </div>
       </div>
-      <div class="bg-white/20 px-4 py-2 rounded-2xl text-center backdrop-blur-md shrink-0">
-        <div class="text-xs text-sky-100 font-bold uppercase tracking-wider">Συνολικό Σκορ</div>
-        <div id="score-display" class="text-2xl font-black text-white">0 / 800</div>
-      </div>
-    </header>
 
-    <!-- Μπάρα Πλοήγησης (8 Επίπεδα) -->
-    <nav class="bg-slate-50 border-b border-slate-200 p-2.5 overflow-x-auto">
-      <div class="flex gap-2 min-w-max">
-        <button onclick="changeTab(1)" id="tbtn-1" class="tab-btn active px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
-          1. Τι είναι Πρόβλημα;
+      <!-- Score & Controls -->
+      <div class="flex items-center gap-2 sm:gap-3 bg-white/20 backdrop-blur-md px-3 py-1.5 sm:px-4 sm:py-2 rounded-2xl border border-white/20">
+        <div class="flex items-center gap-1.5">
+          <span class="text-2xl">⭐</span>
+          <span id="star-count" class="text-lg sm:text-2xl font-black text-amber-300">0</span>
+          <span class="text-xs text-blue-200 font-bold">/ 24</span>
+        </div>
+        <div class="h-6 w-px bg-white/30 mx-1"></div>
+        <button onclick="toggleAudio()" id="audio-btn" class="w-8 h-8 rounded-xl bg-white/20 hover:bg-white/30 flex items-center justify-center text-sm transition" title="Ήχος">
+          <i class="fa-solid fa-volume-high" id="audio-icon"></i>
         </button>
-        <button onclick="changeTab(2)" id="tbtn-2" class="tab-btn px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
-          2. Καταστάσεις & Ενέργειες
-        </button>
-        <button onclick="changeTab(3)" id="tbtn-3" class="tab-btn px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
-          3. Ανάλυση σε Υποπροβλήματα
-        </button>
-        <button onclick="changeTab(4)" id="tbtn-4" class="tab-btn px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
-          4. Δεδομένα & Ζητούμενα
-        </button>
-        <button onclick="changeTab(5)" id="tbtn-5" class="tab-btn px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
-          5. Είδη Προβλημάτων
-        </button>
-        <button onclick="changeTab(6)" id="tbtn-6" class="tab-btn px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
-          6. Επίλυση με Υπολογιστή
-        </button>
-        <button onclick="changeTab(7)" id="tbtn-7" class="tab-btn px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
-          7. Πρακτικό Σενάριο
-        </button>
-        <button onclick="changeTab(8)" id="tbtn-8" class="tab-btn px-3.5 py-2 rounded-xl text-sm font-bold border border-slate-200 hover:bg-white transition-all">
-          8. Τελικό Quiz
+        <button onclick="resetGame()" class="w-8 h-8 rounded-xl bg-rose-500/80 hover:bg-rose-500 flex items-center justify-center text-sm transition" title="Επανεκκίνηση">
+          <i class="fa-solid fa-rotate-right"></i>
         </button>
       </div>
-    </nav>
-
-    <!-- Περιεχόμενο Δραστηριοτήτων -->
-    <main class="p-4 sm:p-6 md:p-8 flex-grow">
-
-      <!-- ========================================== -->
-      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 1: Τι είναι Πρόβλημα;        -->
-      <!-- ========================================== -->
-      <section id="pane-1" class="tab-pane space-y-5">
-        <div class="border-b pb-3 flex items-center justify-between">
-          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
-            <span class="w-8 h-8 rounded-full bg-sky-600 text-white flex items-center justify-center text-sm font-bold">1</span>
-            Η Έννοια του Προβλήματος (σελ. 9)
-          </h2>
-          <span class="text-xs sm:text-sm font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">+100 Πόντοι</span>
-        </div>
-        <p class="text-slate-600 text-sm sm:text-base">Επίλεξε τη σωστή απάντηση για τις βασικές έννοιες:</p>
-
-        <div class="space-y-4">
-          <div id="box-1-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Τι ονομάζουμε «πρόβλημα» στην καθημερινή ζωή και στην Πληροφορική;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g1_q1" value="0" class="w-4 h-4 text-sky-600">
-                <span>Μια δυσάρεστη κατάσταση που δεν έχει ποτέ καμία λύση.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g1_q1" value="1" class="w-4 h-4 text-sky-600">
-                <span>Μια κατάσταση που απαιτεί σκέψη, ενέργειες και αποφάσεις για να φτάσουμε σε μια επιθυμητή λύση.</span>
-              </label>
-            </div>
-          </div>
-
-          <div id="box-1-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Ποιο από τα παρακάτω αποτελεί παράδειγμα προβλήματος;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g1_q2" value="1" class="w-4 h-4 text-sky-600">
-                <span>Ο σχεδιασμός του προγράμματος μιας σχολικής εκδρομής ώστε να προλάβουμε όλα τα μουσεία.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g1_q2" value="0" class="w-4 h-4 text-sky-600">
-                <span>Το να καθόμαστε στον καναπέ και να κοιτάμε το ταβάνι.</span>
-              </label>
-            </div>
-          </div>
-
-          <div id="box-1-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Έχουν όλα τα προβλήματα μόνο μαθηματικό χαρακτήρα;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g1_q3" value="0" class="w-4 h-4 text-sky-600">
-                <span>Ναι, πρόβλημα υπάρχει μόνο όταν κάνουμε πρόσθεση ή αφαίρεση αριθμών.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g1_q3" value="1" class="w-4 h-4 text-sky-600">
-                <span>Όχι, προβλήματα συναντάμε σε κάθε τομέα: στην καθημερινότητα, στις τέχνες, στον αθλητισμό κ.ά.</span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between pt-3">
-          <button onclick="checkGroup(1, ['g1_q1', 'g1_q2', 'g1_q3'])" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow transition-all">
-            Έλεγχος 1
-          </button>
-          <div id="fb-1" class="text-sm font-bold"></div>
-        </div>
-      </section>
-
-      <!-- ========================================== -->
-      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 2: Καταστάσεις & Ενέργειες   -->
-      <!-- ========================================== -->
-      <section id="pane-2" class="tab-pane space-y-5 hidden">
-        <div class="border-b pb-3 flex items-center justify-between">
-          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
-            <span class="w-8 h-8 rounded-full bg-sky-600 text-white flex items-center justify-center text-sm font-bold">2</span>
-            Αρχική Κατάσταση, Ενέργειες & Τελική Κατάσταση (σελ. 9-10)
-          </h2>
-          <span class="text-xs sm:text-sm font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">+100 Πόντοι</span>
-        </div>
-        <p class="text-slate-600 text-sm sm:text-base">Κάθε επίλυση προβλήματος είναι ένα ταξίδι από μια αφετηρία σε έναν στόχο:</p>
-
-        <div class="space-y-4">
-          <div id="box-2-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Τι ονομάζουμε «Αρχική Κατάσταση» ενός προβλήματος;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g2_q1" value="0" class="w-4 h-4 text-sky-600">
-                <span>Το αποτέλεσμα αφού έχουμε τελειώσει όλες τις ενέργειες.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g2_q1" value="1" class="w-4 h-4 text-sky-600">
-                <span>Τις συνθήκες και τα στοιχεία που υπάρχουν στην αρχή, πριν ξεκινήσουμε τη λύση.</span>
-              </label>
-            </div>
-          </div>
-
-          <div id="box-2-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Τι είναι οι «ενέργειες επίλυσης»;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g2_q2" value="1" class="w-4 h-4 text-sky-600">
-                <span>Τα βήματα και οι πράξεις που εκτελούμε για να μεταβούμε από την αρχική στην τελική κατάσταση.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g2_q2" value="0" class="w-4 h-4 text-sky-600">
-                <span>Τα εμπόδια που μας αναγκάζουν να τα παρατήσουμε.</span>
-              </label>
-            </div>
-          </div>
-
-          <div id="box-2-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Στο πρόβλημα «Θέλω να φτιάξω μια τούρτα», ποια είναι η Επιθυμητή/Τελική Κατάσταση;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g2_q3" value="1" class="w-4 h-4 text-sky-600">
-                <span>Η έτοιμη, ψημένη και στολισμένη τούρτα.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g2_q3" value="0" class="w-4 h-4 text-sky-600">
-                <span>Το αλεύρι και τα αυγά πάνω στον πάγκο της κουζίνας.</span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between pt-3">
-          <button onclick="checkGroup(2, ['g2_q1', 'g2_q2', 'g2_q3'])" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow transition-all">
-            Έλεγχος 2
-          </button>
-          <div id="fb-2" class="text-sm font-bold"></div>
-        </div>
-      </section>
-
-      <!-- ========================================== -->
-      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 3: Ανάλυση σε Υποπροβλήματα   -->
-      <!-- ========================================== -->
-      <section id="pane-3" class="tab-pane space-y-5 hidden">
-        <div class="border-b pb-3 flex items-center justify-between">
-          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
-            <span class="w-8 h-8 rounded-full bg-sky-600 text-white flex items-center justify-center text-sm font-bold">3</span>
-            Ανάλυση Προβλήματος σε Υποπροβλήματα (σελ. 10)
-          </h2>
-          <span class="text-xs sm:text-sm font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">+100 Πόντοι</span>
-        </div>
-        <p class="text-slate-600 text-sm sm:text-base">Μάθε τη βασική στρατηγική «Διαίρει και Βασίλευε»:</p>
-
-        <div class="space-y-4">
-          <div id="box-3-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Τι εννοούμε με τον όρο «Ανάλυση ενός προβλήματος»;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g3_q1" value="0" class="w-4 h-4 text-sky-600">
-                <span>Τη διαγραφή του προβλήματος για να μην ασχοληθούμε μαζί του.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g3_q1" value="1" class="w-4 h-4 text-sky-600">
-                <span>Τη διάσπαση ενός σύνθετου προβλήματος σε μικρότερα και απλούστερα υποπροβλήματα.</span>
-              </label>
-            </div>
-          </div>
-
-          <div id="box-3-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Γιατί αναλύουμε ένα μεγάλο πρόβλημα σε μικρότερα κομμάτια;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g3_q2" value="1" class="w-4 h-4 text-sky-600">
-                <span>Επειδή τα απλούστερα προβλήματα επιλύονται ευκολότερα και μπορούμε να μοιράσουμε εργασίες.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g3_q2" value="0" class="w-4 h-4 text-sky-600">
-                <span>Για να γίνει το πρόβλημα πιο περίπλοκο και δύσκολο.</span>
-              </label>
-            </div>
-          </div>
-
-          <div id="box-3-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Ποια είναι υποπροβλήματα του γενικού προβλήματος «Οργάνωση Σχολικής Εφημερίδας»;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g3_q3" value="1" class="w-4 h-4 text-sky-600">
-                <span>Συγγραφή άρθρων, φωτογράφιση εκδηλώσεων, σελιδοποίηση και εκτύπωση.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g3_q3" value="0" class="w-4 h-4 text-sky-600">
-                <span>Αγορά καινούριων παπουτσιών για τρέξιμο.</span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between pt-3">
-          <button onclick="checkGroup(3, ['g3_q1', 'g3_q2', 'g3_q3'])" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow transition-all">
-            Έλεγχος 3
-          </button>
-          <div id="fb-3" class="text-sm font-bold"></div>
-        </div>
-      </section>
-
-      <!-- ========================================== -->
-      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 4: Δεδομένα & Ζητούμενα      -->
-      <!-- ========================================== -->
-      <section id="pane-4" class="tab-pane space-y-5 hidden">
-        <div class="border-b pb-3 flex items-center justify-between">
-          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
-            <span class="w-8 h-8 rounded-full bg-sky-600 text-white flex items-center justify-center text-sm font-bold">4</span>
-            Δεδομένα και Ζητούμενα ενός Προβλήματος (σελ. 10)
-          </h2>
-          <span class="text-xs sm:text-sm font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">+100 Πόντοι</span>
-        </div>
-        <p class="text-slate-600 text-sm sm:text-base">Διάκριση ανάμεσα σε όσα γνωρίζουμε και σε όσα ψάχνουμε:</p>
-
-        <div class="space-y-4">
-          <div id="box-4-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Τι ονομάζουμε «Δεδομένα» σε ένα πρόβλημα;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g4_q1" value="1" class="w-4 h-4 text-sky-600">
-                <span>Τις γνωστές πληροφορίες και στοιχεία που μας δίνονται για να ξεκινήσουμε τη λύση.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g4_q1" value="0" class="w-4 h-4 text-sky-600">
-                <span>Το τελικό αποτέλεσμα που δεν γνωρίζουμε ακόμη.</span>
-              </label>
-            </div>
-          </div>
-
-          <div id="box-4-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Τι ονομάζουμε «Ζητούμενα»;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g4_q2" value="0" class="w-4 h-4 text-sky-600">
-                <span>Όσα στοιχεία γνωρίζαμε ήδη από την αρχή.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g4_q2" value="1" class="w-4 h-4 text-sky-600">
-                <span>Τα αποτελέσματα ή τις απαντήσεις που ψάχνουμε να βρούμε με τη λύση.</span>
-              </label>
-            </div>
-          </div>
-
-          <div id="box-4-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">3. «Έχουμε 25 μαθητές και 50 μήλα. Πόσα μήλα παίρνει ο καθένας;». Ποιο είναι το ΖΗΤΟΥΜΕΝΟ;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g4_q3" value="1" class="w-4 h-4 text-sky-600">
-                <span>Ο αριθμός των μήλων που αντιστοιχεί σε κάθε μαθητή.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g4_q3" value="0" class="w-4 h-4 text-sky-600">
-                <span>Το ότι οι μαθητές είναι 25.</span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between pt-3">
-          <button onclick="checkGroup(4, ['g4_q1', 'g4_q2', 'g4_q3'])" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow transition-all">
-            Έλεγχος 4
-          </button>
-          <div id="fb-4" class="text-sm font-bold"></div>
-        </div>
-      </section>
-
-      <!-- ========================================== -->
-      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 5: Είδη Προβλημάτων          -->
-      <!-- ========================================== -->
-      <section id="pane-5" class="tab-pane space-y-5 hidden">
-        <div class="border-b pb-3 flex items-center justify-between">
-          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
-            <span class="w-8 h-8 rounded-full bg-sky-600 text-white flex items-center justify-center text-sm font-bold">5</span>
-            Κατηγορίες Προβλημάτων (σελ. 11)
-          </h2>
-          <span class="text-xs sm:text-sm font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">+100 Πόντοι</span>
-        </div>
-        <p class="text-slate-600 text-sm sm:text-base">Διάκριση των προβλημάτων με βάση τη δυνατότητα επίλυσής τους:</p>
-
-        <div class="space-y-4">
-          <div id="box-5-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Τι ονομάζουμε «Επιλύσιμο πρόβλημα»;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g5_q1" value="0" class="w-4 h-4 text-sky-600">
-                <span>Ένα πρόβλημα που δεν έχει λυθεί ακόμη από κανέναν επιστήμονα.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g5_q1" value="1" class="w-4 h-4 text-sky-600">
-                <span>Ένα πρόβλημα για το οποίο γνωρίζουμε με βεβαιότητα ότι υπάρχει λύση και τρόπο να το λύσουμε.</span>
-              </label>
-            </div>
-          </div>
-
-          <div id="box-5-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Ποιο από τα παρακάτω είναι «Άλυτο πρόβλημα» (δεν επιδέχεται λύση με τους νόμους της φύσης);</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g5_q2" value="1" class="w-4 h-4 text-sky-600">
-                <span>Το ταξίδι πίσω στον χρόνο στο παρελθόν.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g5_q2" value="0" class="w-4 h-4 text-sky-600">
-                <span>Ο υπολογισμός του μέσου όρου των βαθμών μιας τάξης.</span>
-              </label>
-            </div>
-          </div>
-
-          <div id="box-5-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Τι ονομάζουμε «Ανοικτό πρόβλημα»;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g5_q3" value="1" class="w-4 h-4 text-sky-600">
-                <span>Ένα πρόβλημα που δεν έχει βρεθεί ακόμη λύση, αλλά δεν έχει αποδειχθεί ούτε ότι είναι άλυτο (π.χ. ζωή σε άλλον γαλαξία).</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g5_q3" value="0" class="w-4 h-4 text-sky-600">
-                <span>Ένα πρόβλημα που λύνεται σε 2 δευτερόλεπτα.</span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between pt-3">
-          <button onclick="checkGroup(5, ['g5_q1', 'g5_q2', 'g5_q3'])" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow transition-all">
-            Έλεγχος 5
-          </button>
-          <div id="fb-5" class="text-sm font-bold"></div>
-        </div>
-      </section>
-
-      <!-- ========================================== -->
-      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 6: Επίλυση με Υπολογιστή      -->
-      <!-- ========================================== -->
-      <section id="pane-6" class="tab-pane space-y-5 hidden">
-        <div class="border-b pb-3 flex items-center justify-between">
-          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
-            <span class="w-8 h-8 rounded-full bg-sky-600 text-white flex items-center justify-center text-sm font-bold">6</span>
-            Ο Υπολογιστής ως Εργαλείο Επίλυσης (σελ. 11-12)
-          </h2>
-          <span class="text-xs sm:text-sm font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">+100 Πόντοι</span>
-        </div>
-        <p class="text-slate-600 text-sm sm:text-base">Πώς βοηθά η Πληροφορική στην επίλυση προβλημάτων:</p>
-
-        <div class="space-y-4">
-          <div id="box-6-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Μπορεί ο υπολογιστής να λύσει ένα πρόβλημα μόνος του από το μηδέν;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g6_q1" value="1" class="w-4 h-4 text-sky-600">
-                <span>Όχι, ο άνθρωπος πρέπει πρώτα να αναλύσει το πρόβλημα και να δώσει σαφείς εντολές στον υπολογιστή.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g6_q1" value="0" class="w-4 h-4 text-sky-600">
-                <span>Ναι, ο υπολογιστής σκέφτεται όπως ο άνθρωπος και βρίσκει λύσεις χωρίς προγραμματισμό.</span>
-              </label>
-            </div>
-          </div>
-
-          <div id="box-6-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Ποιο είναι το μεγάλο πλεονέκτημα του υπολογιστή στην επίλυση προβλημάτων;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g6_q2" value="0" class="w-4 h-4 text-sky-600">
-                <span>Ότι μπορεί να καταλάβει τα ανθρώπινα συναισθήματα.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g6_q2" value="1" class="w-4 h-4 text-sky-600">
-                <span>Η τεράστια ταχύτητα επεξεργασίας, η ακρίβεια στους υπολογισμούς και η αποθήκευση μεγάλου όγκου δεδομένων.</span>
-              </label>
-            </div>
-          </div>
-
-          <div id="box-6-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Ποια είναι η σωστή σειρά βημάτων για να λύσουμε ένα πρόβλημα με υπολογιστή;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g6_q3" value="1" class="w-4 h-4 text-sky-600">
-                <span>Κατανόηση προβλήματος ➔ Ανάλυση σε βήματα ➔ Δημιουργία προγράμματος (εντολές) ➔ Έλεγχος αποτελεσμάτων.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g6_q3" value="0" class="w-4 h-4 text-sky-600">
-                <span>Γράφουμε κατευθείαν τυχαίες εντολές χωρίς να ξέρουμε τι ζητάμε.</span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between pt-3">
-          <button onclick="checkGroup(6, ['g6_q1', 'g6_q2', 'g6_q3'])" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow transition-all">
-            Έλεγχος 6
-          </button>
-          <div id="fb-6" class="text-sm font-bold"></div>
-        </div>
-      </section>
-
-      <!-- ========================================== -->
-      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 7: Πρακτικό Σενάριο          -->
-      <!-- ========================================== -->
-      <section id="pane-7" class="tab-pane space-y-5 hidden">
-        <div class="border-b pb-3 flex items-center justify-between">
-          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
-            <span class="w-8 h-8 rounded-full bg-sky-600 text-white flex items-center justify-center text-sm font-bold">7</span>
-            Πρακτικό Σενάριο: Οργάνωση Σχολικής Γιορτής
-          </h2>
-          <span class="text-xs sm:text-sm font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">+100 Πόντοι</span>
-        </div>
-        <p class="text-slate-600 text-sm sm:text-base">Εφάρμοσε τη μεθοδολογία επίλυσης σε ένα ρεαλιστικό πρόβλημα του σχολείου:</p>
-
-        <div class="space-y-4">
-          <div id="box-7-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Η ΣΤ΄ τάξη αναλαμβάνει τη γιορτή αποφοίτησης. Ποια είναι η «Αρχική Κατάσταση»;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g7_q1" value="0" class="w-4 h-4 text-sky-600">
-                <span>Το χειροκρότημα των γονιών στο τέλος της επιτυχημένης γιορτής.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g7_q1" value="1" class="w-4 h-4 text-sky-600">
-                <span>Μια άδεια σκηνή, χωρίς θεατρικό κείμενο, χωρίς ρόλους και χωρίς προσκλήσεις.</span>
-              </label>
-            </div>
-          </div>
-
-          <div id="box-7-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Πώς εφαρμόζουμε την «ανάλυση προβλήματος» στη σχολική γιορτή;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g7_q2" value="1" class="w-4 h-4 text-sky-600">
-                <span>Χωρίζουμε την τάξη σε ομάδες: θεατρικού, μουσικής, σκηνικών και δημιουργίας ψηφιακής πρόσκλησης.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g7_q2" value="0" class="w-4 h-4 text-sky-600">
-                <span>Αφήνουμε έναν μόνο μαθητή να τα κάνει όλα μόνος του την τελευταία μέρα.</span>
-              </label>
-            </div>
-          </div>
-
-          <div id="box-7-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Ποιο ψηφιακό εργαλείο μπορεί να βοηθήσει στην οργάνωση των εξόδων της γιορτής;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g7_q3" value="1" class="w-4 h-4 text-sky-600">
-                <span>Ένα υπολογιστικό φύλλο (π.χ. LibreOffice Calc) με αυτόματους υπολογισμούς κόστους.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g7_q3" value="0" class="w-4 h-4 text-sky-600">
-                <span>Ένα πρόγραμμα αναπαραγωγής βίντεο.</span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between pt-3">
-          <button onclick="checkGroup(7, ['g7_q1', 'g7_q2', 'g7_q3'])" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow transition-all">
-            Έλεγχος 7
-          </button>
-          <div id="fb-7" class="text-sm font-bold"></div>
-        </div>
-      </section>
-
-      <!-- ========================================== -->
-      <!-- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 8: Τελικό Quiz               -->
-      <!-- ========================================== -->
-      <section id="pane-8" class="tab-pane space-y-5 hidden">
-        <div class="border-b pb-3 flex items-center justify-between">
-          <h2 class="font-bold text-slate-800 text-lg sm:text-xl flex items-center gap-2">
-            <span class="w-8 h-8 rounded-full bg-sky-600 text-white flex items-center justify-center text-sm font-bold">8</span>
-            Το Μεγάλο Τελικό Challenge Προβλημάτων
-          </h2>
-          <span class="text-xs sm:text-sm font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">+100 Πόντοι</span>
-        </div>
-        <p class="text-slate-600 text-sm sm:text-base">Ολοκλήρωσε και τις 3 τελευταίες ερωτήσεις για να κερδίσεις το τελικό σκορ:</p>
-
-        <div class="space-y-4">
-          <div id="box-8-1" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">1. Τι σημαίνει η φράση «κατανόηση του προβλήματος»;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g8_q1" value="1" class="w-4 h-4 text-sky-600">
-                <span>Να ξεκαθαρίσουμε ποια δεδομένα έχουμε στα χέρια μας και ποια ακριβώς είναι τα ζητούμενα.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g8_q1" value="0" class="w-4 h-4 text-sky-600">
-                <span>Να μάθουμε απέξω ολόκληρο το κείμενο χωρίς να καταλαβαίνουμε τι λέει.</span>
-              </label>
-            </div>
-          </div>
-
-          <div id="box-8-2" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">2. Πώς συνδέεται η επίλυση προβλημάτων με τον προγραμματισμό (Scratch);</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g8_q2" value="0" class="w-4 h-4 text-sky-600">
-                <span>Δεν έχουν καμία σχέση, ο προγραμματισμός είναι μόνο παιχνίδι.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g8_q2" value="1" class="w-4 h-4 text-sky-600">
-                <span>Κάθε πρόγραμμα είναι μια σειρά από βήματα (αλγόριθμος) που λύνει ένα πρόβλημα (π.χ. πώς κινείται ένας ήρωας).</span>
-              </label>
-            </div>
-          </div>
-
-          <div id="box-8-3" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
-            <p class="font-medium text-slate-800 text-sm sm:text-base">3. Τι κάνουμε αφού ολοκληρώσουμε τη λύση ενός προβλήματος;</p>
-            <div class="space-y-2 text-sm sm:text-base">
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g8_q3" value="1" class="w-4 h-4 text-sky-600">
-                <span>Ελέγχουμε (επαληθεύουμε) αν το αποτέλεσμα είναι σωστό και ικανοποιεί όλα τα ζητούμενα.</span>
-              </label>
-              <label class="p-3 bg-white border rounded-xl flex items-center gap-3 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="g8_q3" value="0" class="w-4 h-4 text-sky-600">
-                <span>Κλείνουμε το τετράδιο χωρίς να δούμε αν βγάλαμε σωστό συμπέρασμα.</span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between pt-3">
-          <button onclick="checkGroup(8, ['g8_q1', 'g8_q2', 'g8_q3'])" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow transition-all">
-            Έλεγχος 8
-          </button>
-          <div id="fb-8" class="text-sm font-bold"></div>
-        </div>
-      </section>
-
-    </main>
-
-    <!-- Modal Ολοκλήρωσης -->
-    <div id="win-modal" class="hidden m-4 sm:m-6 p-6 sm:p-8 bg-sky-50 border-2 border-sky-400 rounded-3xl text-center space-y-4">
-      <div class="text-5xl">🏆</div>
-      <h3 class="text-2xl font-black text-sky-900">Συγχαρητήρια! Είσαι Master Επίλυσης Προβλημάτων!</h3>
-      <p class="text-slate-600 max-w-md mx-auto">
-        Ολοκλήρωσες επιτυχώς και τις 8 δραστηριότητες του Μαθήματος 1. Τώρα γνωρίζεις πώς να αναλύεις κάθε σύνθετο πρόβλημα, να ξεχωρίζεις τα δεδομένα από τα ζητούμενα και να σχεδιάζεις βήμα-βήμα τη λύση του!
-      </p>
-      <div class="text-3xl font-black text-sky-600">800 / 800 Πόντοι</div>
-      <button onclick="location.reload()" class="px-8 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow">Παίξε Ξανά</button>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-slate-100 p-4 border-t border-slate-200 text-center text-xs sm:text-sm text-slate-500">
-      Πληροφορική ΣΤ΄ Δημοτικού • Μάθημα 1: Η έννοια του προβλήματος – Ανάλυση προβλήματος
-    </footer>
+    <!-- Simple Progress Bar -->
+    <div class="w-full bg-blue-950/40 h-2">
+      <div id="progress-line" class="bg-amber-400 h-2 transition-all duration-300" style="width: 0%"></div>
+    </div>
+  </header>
 
+  <!-- Main Container -->
+  <main class="max-w-5xl mx-auto w-full px-4 py-5 flex-1 flex flex-col gap-4">
+
+    <!-- Top Activities Selector Carousel -->
+    <div class="bg-white rounded-2xl p-2.5 shadow-sm border border-slate-200 overflow-x-auto flex gap-2" id="act-buttons-bar">
+      <!-- Injected dynamically -->
+    </div>
+
+    <!-- Active Activity Box -->
+    <div class="bg-white rounded-3xl p-5 sm:p-7 shadow-md border-2 border-slate-200 flex-1 flex flex-col justify-between" id="activity-card">
+      
+      <!-- Activity Sub-header -->
+      <div>
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3 mb-4">
+          <div class="flex items-center gap-3">
+            <span id="act-icon" class="text-3xl">🧩</span>
+            <div>
+              <span id="act-tag" class="text-xs font-bold uppercase tracking-wider text-blue-600">Δραστηριοτητα 1</span>
+              <h2 id="act-heading" class="text-xl sm:text-2xl font-black text-slate-800">Αλγόριθμος ή Όχι;</h2>
+            </div>
+          </div>
+
+          <!-- Step Indicators (3 stars for this activity) -->
+          <div class="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-2xl">
+            <span class="text-xs font-bold text-slate-500 mr-1">Επίπεδα:</span>
+            <button onclick="changeSubStep(1)" id="step-btn-1" class="w-8 h-8 rounded-xl font-black text-xs transition flex items-center justify-center bg-blue-600 text-white shadow">1</button>
+            <button onclick="changeSubStep(2)" id="step-btn-2" class="w-8 h-8 rounded-xl font-black text-xs transition flex items-center justify-center bg-slate-200 text-slate-600">2</button>
+            <button onclick="changeSubStep(3)" id="step-btn-3" class="w-8 h-8 rounded-xl font-black text-xs transition flex items-center justify-center bg-slate-200 text-slate-600">3</button>
+          </div>
+        </div>
+
+        <!-- Task Instructions -->
+        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3 sm:p-4 mb-5 flex items-center gap-3">
+          <span class="text-2xl">💡</span>
+          <p id="act-instruction" class="text-sm sm:text-base text-amber-950 font-medium">
+            Σκέψου: Μπορούμε να το λύσουμε με συγκεκριμένα βήματα (1, 2, 3...);
+          </p>
+        </div>
+
+        <!-- Interactive Playground Content Area -->
+        <div id="play-area" class="min-h-[220px] flex flex-col justify-center items-center">
+          <!-- Dynamic Mini Game Here -->
+        </div>
+      </div>
+
+      <!-- Live Feedback & Navigation -->
+      <div class="mt-6 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+        <div id="feedback-msg" class="text-base sm:text-lg font-black min-h-[30px] flex items-center gap-2">
+          <!-- Success / Error messages -->
+        </div>
+
+        <div class="flex items-center gap-2 ml-auto">
+          <button id="btn-prev" onclick="prevAct()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition btn-bounce">
+            <i class="fa-solid fa-arrow-left"></i> Πίσω
+          </button>
+          <button id="btn-next" onclick="nextAct()" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-sm transition btn-bounce shadow-md">
+            Επόμενο <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Big Victory Modal -->
+  <div id="win-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl border-4 border-amber-400 transform animate-bounce">
+      <div class="text-6xl mb-2">🎉</div>
+      <h3 class="text-2xl font-black text-slate-800">ΜΠΡΑΒΟ!</h3>
+      <p class="text-sm text-slate-600 my-3">
+        Κέρδισες και τα <strong>24 χρυσά αστέρια</strong>! Είσαι πλέον ένας σούπερ βοηθός του υπολογιστή!
+      </p>
+      <button onclick="closeWinModal()" class="w-full py-3 bg-gradient-to-r from-amber-400 to-amber-500 text-slate-900 font-black rounded-2xl shadow hover:brightness-105 transition">
+        Παίξε Ξανά! 🚀
+      </button>
+    </div>
   </div>
 
   <script>
-    let scores = { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0 };
+    // --- Web Audio Simple Sound Generator ---
+    let soundEnabled = true;
+    let audioCtx = null;
 
-    function updateTotalScore() {
-      const sum = Object.values(scores).reduce((a, b) => a + b, 0);
-      document.getElementById('score-display').innerText = `${sum} / 800`;
-      if (sum === 800) {
+    function playTone(freqs, type = 'sine', duration = 0.15) {
+      if (!soundEnabled) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let now = audioCtx.currentTime;
+        freqs.forEach((f, idx) => {
+          let osc = audioCtx.createOscillator();
+          let gain = audioCtx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(f, now + idx * 0.08);
+          gain.gain.setValueAtTime(0.2, now + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + duration);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + idx * 0.08);
+          osc.stop(now + idx * 0.08 + duration);
+        });
+      } catch (e) {}
+    }
+
+    function soundRight() { playTone([523, 659, 784, 1046], 'triangle', 0.25); }
+    function soundWrong() { playTone([220, 180], 'sawtooth', 0.2); }
+    function soundPop() { playTone([600], 'sine', 0.08); }
+
+    function toggleAudio() {
+      soundEnabled = !soundEnabled;
+      document.getElementById('audio-icon').className = soundEnabled ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-xmark text-rose-300';
+    }
+
+    // --- State & Progress (24 Stars) ---
+    let curAct = 1;
+    let curSub = 1;
+    let stars = JSON.parse(localStorage.getItem('inf_dimotiko_m1_stars') || '{}');
+
+    function saveStars() {
+      localStorage.setItem('inf_dimotiko_m1_stars', JSON.stringify(stars));
+      updateScoreUI();
+    }
+
+    function earnStar(act, sub) {
+      let key = `${act}_${sub}`;
+      if (!stars[key]) {
+        stars[key] = true;
+        saveStars();
+        soundRight();
+        confetti({ particleCount: 35, spread: 55, origin: { y: 0.8 } });
+      }
+    }
+
+    function updateScoreUI() {
+      let count = Object.keys(stars).length;
+      document.getElementById('star-count').textContent = count;
+      document.getElementById('progress-line').style.width = `${(count / 24) * 100}%`;
+
+      if (count === 24 && !sessionStorage.getItem('m1_cleared')) {
+        sessionStorage.setItem('m1_cleared', 'true');
         document.getElementById('win-modal').classList.remove('hidden');
+        confetti({ particleCount: 150, spread: 90, origin: { y: 0.5 } });
+      }
+      renderNav();
+    }
+
+    function closeWinModal() {
+      document.getElementById('win-modal').classList.add('hidden');
+    }
+
+    function resetGame() {
+      if (confirm('Θέλεις να ξεκινήσεις από την αρχή όλα τα παιχνίδια;')) {
+        stars = {};
+        sessionStorage.removeItem('m1_cleared');
+        saveStars();
+        renderView();
       }
     }
 
-    function changeTab(n) {
-      document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    // --- 8 Activities Overview ---
+    const acts = [
+      { id: 1, name: "Αλγόριθμος ή Όχι;", icon: "🤔", desc: "Μπορούμε να το λύσουμε με συγκεκριμένα βήματα (1, 2, 3...);" },
+      { id: 2, name: "Η Σωστή Σειρά!", icon: "🚴", desc: "Βάλε τα 3 βήματα του αλγορίθμου στη σωστή σειρά!" },
+      { id: 3, name: "Ο Κουμπαράς", icon: "🐷", desc: "Πρόσθεσε χρήματα και δες πώς αλλάζει το άθροισμα!" },
+      { id: 4, name: "Ποιος Κερδίζει;", icon: "🏆", desc: "Σύγκρινε δύο ομάδες και βρες ποια έχει τις περισσότερες νίκες!" },
+      { id: 5, name: "Ονόματα Μεταβλητών", icon: "🏷️", desc: "Θυμήσου τον χρυσό κανόνα: Ποτέ κενό ανάμεσα στις λέξεις!" },
+      { id: 6, name: "Είσοδος - Έξοδος", icon: "💻", desc: "Τι μπαίνει, τι υπολογίζεται και τι βγαίνει στην οθόνη;" },
+      { id: 7, name: "Ο Μέσος Όρος", icon: "⚖️", desc: "Μοιράζουμε δίκαια: Όλο το Άθροισμα διά το Πλήθος!" },
+      { id: 8, name: "Το Τετράγωνο", icon: "🟩", desc: "Περίμετρος = 4 φορές την πλευρά! Βρες το αποτέλεσμα!" }
+    ];
 
-      const target = document.getElementById(`pane-${n}`);
-      if (target) target.classList.remove('hidden');
-
-      const btn = document.getElementById(`tbtn-${n}`);
-      if (btn) btn.classList.add('active');
-    }
-
-    function checkGroup(actNum, names) {
-      const fb = document.getElementById(`fb-${actNum}`);
-      let answeredCount = 0;
-      let correctCount = 0;
-
-      names.forEach((name, idx) => {
-        const box = document.getElementById(`box-${actNum}-${idx + 1}`);
-        const checked = document.querySelector(`input[name="${name}"]:checked`);
-
-        if (checked) {
-          answeredCount++;
-          if (checked.value === "1") {
-            correctCount++;
-            box.className = "p-4 bg-white border-2 border-emerald-400 rounded-2xl space-y-2";
-          } else {
-            box.className = "p-4 bg-rose-50 border-2 border-rose-300 rounded-2xl space-y-2";
-          }
-        } else {
-          box.className = "p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2";
-        }
+    function renderNav() {
+      const bar = document.getElementById('act-buttons-bar');
+      bar.innerHTML = '';
+      acts.forEach(a => {
+        let done = (stars[`${a.id}_1`]?1:0) + (stars[`${a.id}_2`]?1:0) + (stars[`${a.id}_3`]?1:0);
+        let btn = document.createElement('button');
+        btn.onclick = () => { soundPop(); curAct = a.id; curSub = 1; renderView(); };
+        btn.className = `px-3 py-2 rounded-xl text-xs font-black whitespace-nowrap transition flex items-center gap-1.5 ${
+          curAct === a.id ? 'bg-blue-600 text-white shadow-md' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+        }`;
+        btn.innerHTML = `<span>${a.icon}</span> <span>${a.id}. ${a.name}</span> <span class="text-amber-400 font-extrabold text-[11px]">${done}/3⭐</span>`;
+        bar.appendChild(btn);
       });
+    }
 
-      if (answeredCount < names.length) {
-        fb.innerHTML = '<span class="text-rose-600">Απάντησε και στις 3 ερωτήσεις!</span>';
-        return;
+    function changeSubStep(num) {
+      soundPop();
+      curSub = num;
+      renderView();
+    }
+
+    function prevAct() {
+      if (curSub > 1) { curSub--; }
+      else if (curAct > 1) { curAct--; curSub = 3; }
+      soundPop();
+      renderView();
+    }
+
+    function nextAct() {
+      if (curSub < 3) { curSub++; }
+      else if (curAct < 8) { curAct++; curSub = 1; }
+      soundPop();
+      renderView();
+    }
+
+    // --- Main View Renderer ---
+    function renderView() {
+      const act = acts[curAct - 1];
+      document.getElementById('act-icon').textContent = act.icon;
+      document.getElementById('act-tag').textContent = `Δραστηριοτητα ${act.id} • Μερος ${curSub}/3`;
+      document.getElementById('act-heading').textContent = act.name;
+      document.getElementById('act-instruction').textContent = act.desc;
+      document.getElementById('feedback-msg').textContent = '';
+
+      // Update Step buttons 1, 2, 3
+      for (let s = 1; s <= 3; s++) {
+        const btn = document.getElementById(`step-btn-${s}`);
+        const isDone = stars[`${curAct}_${s}`];
+        if (s === curSub) {
+          btn.className = "w-8 h-8 rounded-xl font-black text-xs transition flex items-center justify-center bg-blue-600 text-white shadow-md ring-2 ring-blue-300";
+        } else if (isDone) {
+          btn.className = "w-8 h-8 rounded-xl font-black text-xs transition flex items-center justify-center bg-emerald-500 text-white";
+        } else {
+          btn.className = "w-8 h-8 rounded-xl font-black text-xs transition flex items-center justify-center bg-slate-200 text-slate-600 hover:bg-slate-300";
+        }
+        btn.innerHTML = isDone ? '⭐' : s;
       }
 
-      if (correctCount === names.length) {
-        scores[actNum] = 100;
-        updateTotalScore();
-        fb.innerHTML = '<span class="text-emerald-600">🎉 Μπράβο! Όλες οι απαντήσεις είναι σωστές (3/3)!</span>';
+      // Prev / Next button states
+      document.getElementById('btn-prev').disabled = (curAct === 1 && curSub === 1);
+      document.getElementById('btn-next').disabled = (curAct === 8 && curSub === 3);
+
+      // Render the current task
+      const playArea = document.getElementById('play-area');
+      playArea.innerHTML = '';
+      handlers[`${curAct}_${curSub}`](playArea);
+    }
+
+    function showFeedback(ok, text) {
+      const el = document.getElementById('feedback-msg');
+      if (ok) {
+        el.className = "text-base sm:text-lg font-black text-emerald-600 flex items-center gap-2";
+        el.innerHTML = `<span>🎉</span> <span>${text}</span>`;
       } else {
-        scores[actNum] = 0;
-        updateTotalScore();
-        fb.innerHTML = '<span class="text-amber-600">Υπάρχει λάθος. Διόρθωσε τις κόκκινες κάρτες και ξαναπάτα έλεγχο!</span>';
+        el.className = "text-base sm:text-lg font-black text-rose-500 flex items-center gap-2";
+        el.innerHTML = `<span>❌</span> <span>${text}</span>`;
       }
     }
+
+    // =========================================================================
+    // 24 MINI-TASKS (SIMPLE, 1-2 CLICKS FOR 6th GRADERS)
+    // =========================================================================
+    const handlers = {};
+
+    /* --- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 1: Αλγόριθμος ή Όχι; --- */
+    function makeYesNoQuestion(area, question, isAlgo, explain) {
+      area.innerHTML = `
+        <div class="text-center max-w-lg">
+          <div class="text-4xl mb-3">🧐</div>
+          <h3 class="text-xl sm:text-2xl font-black text-slate-800 mb-6">«${question}»</h3>
+          <p class="text-slate-500 text-sm mb-6">Μπορεί αυτό το πρόβλημα να λυθεί ακολουθώντας συγκεκριμένα βήματα (αλγόριθμο);</p>
+          <div class="flex justify-center gap-4">
+            <button onclick="answer1(true)" class="px-6 py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-black text-lg rounded-2xl shadow-lg transition btn-bounce flex items-center gap-2">
+              <span>👍</span> ΝΑΙ, με Αλγόριθμο!
+            </button>
+            <button onclick="answer1(false)" class="px-6 py-4 bg-rose-500 hover:bg-rose-600 text-white font-black text-lg rounded-2xl shadow-lg transition btn-bounce flex items-center gap-2">
+              <span>👎</span> ΟΧΙ, δεν έχει βήματα!
+            </button>
+          </div>
+        </div>
+      `;
+      window.answer1 = function(userPick) {
+        if (userPick === isAlgo) {
+          showFeedback(true, `Μπράβο! ${explain}`);
+          earnStar(curAct, curSub);
+        } else {
+          soundWrong();
+          showFeedback(false, `Ξανασκέψου το! Μπορούμε να γράψουμε βήματα 1, 2, 3 για αυτό;`);
+        }
+      };
+    }
+
+    handlers['1_1'] = (a) => makeYesNoQuestion(a, "Συνταγή για να φτιάξω ένα τοστ", true, "Έχει σαφή βήματα: 1. Ψωμί, 2. Τυρί, 3. Ψήσιμο!");
+    handlers['1_2'] = (a) => makeYesNoQuestion(a, "Ξέχασα το φαγητό στο σπίτι και έφτασα στο σχολείο", false, "Εδώ δεν υπάρχει σειρά βημάτων που να φέρνει μαγικά το φαγητό!");
+    handlers['1_3'] = (a) => makeYesNoQuestion(a, "Υπολογισμός των χρημάτων που ξόδεψα σε 5 ημέρες", true, "Μαζεύουμε τα ποσά και τα προσθέτουμε ένα-ένα με βήματα!");
+
+    /* --- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 2: Η Σωστή Σειρά (Ρόδα Ποδηλάτου) --- */
+    function makeOrderTask(area, prompt, correctArr, items) {
+      let chosen = [];
+      area.innerHTML = `
+        <div class="w-full max-w-xl text-center">
+          <p class="text-sm text-slate-600 mb-4 font-bold">${prompt}</p>
+          <div class="space-y-2 mb-4" id="order-box">
+            <!-- Selected items display -->
+          </div>
+          <div class="flex flex-col gap-2" id="source-steps">
+            ${items.map(it => `
+              <button onclick="pickStep('${it.id}')" id="btn-step-${it.id}" class="w-full text-left p-3.5 bg-slate-50 hover:bg-blue-50 border-2 border-slate-200 hover:border-blue-400 rounded-2xl text-sm font-bold text-slate-700 transition flex items-center justify-between">
+                <span>${it.text}</span>
+                <span class="text-xs text-blue-600 font-black">Πάτησέ με! 👆</span>
+              </button>
+            `).join('')}
+          </div>
+          <button onclick="resetOrder()" class="mt-4 text-xs font-bold text-rose-500 hover:underline">
+            🔄 Ξεκίνα ξανά τη σειρά
+          </button>
+        </div>
+      `;
+
+      function renderChosen() {
+        const ob = document.getElementById('order-box');
+        if (chosen.length === 0) {
+          ob.innerHTML = `<div class="p-4 border-2 border-dashed border-slate-200 rounded-2xl text-xs text-slate-400">Πάτησε τα παρακάτω κουμπιά με τη σωστή σειρά (1ο, 2ο, 3ο)...</div>`;
+        } else {
+          ob.innerHTML = chosen.map((id, idx) => {
+            let item = items.find(x => x.id === id);
+            return `<div class="p-3 bg-blue-600 text-white rounded-xl text-sm font-black flex items-center justify-between animate-fadeIn">
+              <span>${idx + 1}. ${item.text}</span>
+              <span>✅</span>
+            </div>`;
+          }).join('');
+        }
+      }
+      renderChosen();
+
+      window.pickStep = function(id) {
+        soundPop();
+        if (chosen.includes(id)) return;
+        chosen.push(id);
+        document.getElementById(`btn-step-${id}`).classList.add('opacity-30', 'pointer-events-none');
+        renderChosen();
+
+        if (chosen.length === 3) {
+          if (chosen.join('') === correctArr.join('')) {
+            showFeedback(true, "Τέλεια! Αυτή είναι η σωστή σειρά εκτέλεσης!");
+            earnStar(curAct, curSub);
+          } else {
+            soundWrong();
+            showFeedback(false, "Λάθος σειρά! Σκέψου: Τι πρέπει να μάθουμε ΠΡΩΤΑ απ' όλα;");
+          }
+        }
+      };
+
+      window.resetOrder = function() {
+        soundPop();
+        chosen = [];
+        items.forEach(it => {
+          let b = document.getElementById(`btn-step-${it.id}`);
+          if (b) b.classList.remove('opacity-30', 'pointer-events-none');
+        });
+        renderChosen();
+        document.getElementById('feedback-msg').textContent = '';
+      };
+    }
+
+    handlers['2_1'] = (a) => makeOrderTask(a, "Βάλε στη σειρά τα βήματα για να βρούμε το μήκος της ρόδας:", ['A', 'B', 'C'], [
+      { id: 'B', text: 'Όρισε το μήκος σε 2 * 3,14 * ακτίνα' },
+      { id: 'A', text: 'Διάβασε την ακτίνα της ρόδας (από το πληκτρολόγιο)' },
+      { id: 'C', text: 'Γράψε το μήκος της ρόδας (στην οθόνη)' }
+    ]);
+
+    handlers['2_2'] = (a) => makeOrderTask(a, "Τι πρέπει να κάνουμε ΠΡΩΤΟ για να υπολογίσουμε τη ρόδα;", ['X', 'Y', 'Z'], [
+      { id: 'Y', text: 'Βήμα 2: Κάνε τον πολλαπλασιασμό' },
+      { id: 'Z', text: 'Βήμα 3: Δείξε το αποτέλεσμα στην οθόνη' },
+      { id: 'X', text: 'Βήμα 1: Ρώτησε πόσα εκατοστά είναι η ακτίνα' }
+    ]);
+
+    handlers['2_3'] = (a) => makeOrderTask(a, "Πώς τελειώνει πάντα ένας χρήσιμος αλγόριθμος;", ['1', '2', '3'], [
+      { id: '2', text: 'Υπολογισμός αποτελέσματος' },
+      { id: '1', text: 'Είσοδος δεδομένων' },
+      { id: '3', text: 'Εμφάνιση του τελικού αποτελέσματος στο παιδί' }
+    ]);
+
+    /* --- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 3: Ο Κουμπαράς (Άθροισμα) --- */
+    handlers['3_1'] = function(area) {
+      let total = 0;
+      area.innerHTML = `
+        <div class="text-center max-w-sm">
+          <div class="text-6xl mb-2">🐷</div>
+          <span class="text-xs uppercase font-extrabold text-amber-800 bg-amber-100 px-3 py-1 rounded-full">Μεταβλητή: άθροισμα</span>
+          <div id="pig-sum" class="text-5xl font-black text-amber-900 my-3">0 €</div>
+          <p class="text-xs text-slate-500 mb-4">Πάτησε το κέρμα 3 φορές για να βάλεις από 2€ στον κουμπαρά!</p>
+          <button onclick="addCoin(2)" id="coin-btn" class="w-20 h-20 bg-amber-400 hover:bg-amber-300 border-4 border-amber-500 text-slate-900 font-black text-xl rounded-full shadow-lg transition btn-bounce mx-auto flex items-center justify-center">
+            +2€
+          </button>
+        </div>
+      `;
+      let count = 0;
+      window.addCoin = function(val) {
+        soundPop();
+        total += val;
+        count++;
+        document.getElementById('pig-sum').textContent = `${total} €`;
+        if (count === 3) {
+          document.getElementById('coin-btn').disabled = true;
+          document.getElementById('coin-btn').classList.add('opacity-40');
+          showFeedback(true, "Μπράβο! Το άθροισμα αυξήθηκε κατά 2 σε κάθε βήμα και έγινε 6€!");
+          earnStar(3, 1);
+        }
+      };
+    };
+
+    handlers['3_2'] = function(area) {
+      area.innerHTML = `
+        <div class="text-center max-w-md">
+          <div class="text-4xl mb-3">❓</div>
+          <h3 class="text-lg sm:text-xl font-bold text-slate-800 mb-4">
+            Πριν ρίξουμε το πρώτο κέρμα, ποια πρέπει να είναι η αρχική τιμή του κουμπαρά;
+          </h3>
+          <div class="grid grid-cols-3 gap-3">
+            <button onclick="pick3_2(10)" class="py-4 bg-slate-100 hover:bg-blue-100 font-black text-2xl rounded-2xl border-2 border-slate-200 transition btn-bounce">10</button>
+            <button onclick="pick3_2(0)" class="py-4 bg-slate-100 hover:bg-blue-100 font-black text-2xl rounded-2xl border-2 border-slate-200 transition btn-bounce">0</button>
+            <button onclick="pick3_2(1)" class="py-4 bg-slate-100 hover:bg-blue-100 font-black text-2xl rounded-2xl border-2 border-slate-200 transition btn-bounce">1</button>
+          </div>
+        </div>
+      `;
+      window.pick3_2 = function(val) {
+        if (val === 0) {
+          showFeedback(true, "Σωστά! Αρχικοποιούμε τον κουμπαρά πάντα στο 0 για να μην έχει λάθος χρήματα μέσα!");
+          earnStar(3, 2);
+        } else {
+          soundWrong();
+          showFeedback(false, "Όχι! Όταν ένας κουμπαράς είναι άδειος στην αρχή, πόσα χρήματα έχει μέσα;");
+        }
+      };
+    };
+
+    handlers['3_3'] = function(area) {
+      area.innerHTML = `
+        <div class="text-center max-w-md">
+          <div class="text-4xl mb-3">🧠</div>
+          <h3 class="text-lg sm:text-xl font-bold text-slate-800 mb-4">
+            Αν ο κουμπαράς έχει 5€ και του προσθέσουμε 3€, ποια θα είναι η νέα τιμή της μεταβλητής;
+          </h3>
+          <div class="grid grid-cols-3 gap-3">
+            <button onclick="pick3_3(7)" class="py-4 bg-slate-100 hover:bg-blue-100 font-black text-2xl rounded-2xl border-2 border-slate-200 transition btn-bounce">7€</button>
+            <button onclick="pick3_3(8)" class="py-4 bg-slate-100 hover:bg-blue-100 font-black text-2xl rounded-2xl border-2 border-slate-200 transition btn-bounce">8€</button>
+            <button onclick="pick3_3(15)" class="py-4 bg-slate-100 hover:bg-blue-100 font-black text-2xl rounded-2xl border-2 border-slate-200 transition btn-bounce">15€</button>
+          </div>
+        </div>
+      `;
+      window.pick3_3 = function(val) {
+        if (val === 8) {
+          showFeedback(true, "Μπράβο! 5 + 3 = 8€! Η μεταβλητή αλλάζει τιμή και κρατά το νέο άθροισμα!");
+          earnStar(3, 3);
+        } else {
+          soundWrong();
+          showFeedback(false, "Κάνε την πρόσθεση: 5 συν 3 πόσο κάνει;");
+        }
+      };
+    };
+
+    /* --- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 4: Ποιος Κερδίζει; (Εύρεση Μεγαλύτερου) --- */
+    function makeCompareTask(area, teamA, winsA, teamB, winsB) {
+      area.innerHTML = `
+        <div class="text-center max-w-lg">
+          <p class="text-sm font-bold text-slate-500 mb-4">Ποια ομάδα έχει τις περισσότερες νίκες (Μέγιστος αριθμός);</p>
+          <div class="grid grid-cols-2 gap-4">
+            <button onclick="pickWinner('A')" class="p-5 bg-gradient-to-br from-amber-50 to-orange-50 border-3 border-amber-300 hover:border-amber-500 rounded-3xl shadow transition btn-bounce flex flex-col items-center">
+              <span class="text-4xl mb-2">🦅</span>
+              <span class="text-lg font-black text-slate-800">${teamA}</span>
+              <span class="text-2xl font-black text-amber-600 mt-1">${winsA} Νίκες</span>
+            </button>
+            <button onclick="pickWinner('B')" class="p-5 bg-gradient-to-br from-blue-50 to-indigo-50 border-3 border-blue-300 hover:border-blue-500 rounded-3xl shadow transition btn-bounce flex flex-col items-center">
+              <span class="text-4xl mb-2">🦁</span>
+              <span class="text-lg font-black text-slate-800">${teamB}</span>
+              <span class="text-2xl font-black text-blue-600 mt-1">${winsB} Νίκες</span>
+            </button>
+          </div>
+        </div>
+      `;
+      window.pickWinner = function(side) {
+        let ok = (winsA > winsB && side === 'A') || (winsB > winsA && side === 'B');
+        if (ok) {
+          let winner = side === 'A' ? teamA : teamB;
+          let maxVal = Math.max(winsA, winsB);
+          showFeedback(true, `Σωστά! Ο υπολογιστής συγκρίνει και αποθηκεύει τον μεγαλύτερο: ${winner} (${maxVal})!`);
+          earnStar(curAct, curSub);
+        } else {
+          soundWrong();
+          showFeedback(false, "Κοίταξε τους δύο αριθμούς. Ποιος από τους δύο είναι ο μεγαλύτερος;");
+        }
+      };
+    }
+
+    handlers['4_1'] = (a) => makeCompareTask(a, "Αετοί", 9, "Λιοντάρια", 5);
+    handlers['4_2'] = (a) => makeCompareTask(a, "Δελφίνια", 4, "Τίγρεις", 11);
+    handlers['4_3'] = function(area) {
+      area.innerHTML = `
+        <div class="text-center max-w-md">
+          <div class="text-4xl mb-3">🔍</div>
+          <h3 class="text-lg sm:text-xl font-bold text-slate-800 mb-4">
+            Αν θέλουμε να βρούμε τον <strong>μικρότερο</strong> (ελάχιστο) αριθμό, ποιο σύμβολο θα χρησιμοποιήσουμε;
+          </h3>
+          <div class="grid grid-cols-2 gap-4">
+            <button onclick="pickSymbol('<')" class="py-5 bg-slate-100 hover:bg-emerald-100 border-2 border-slate-300 font-black text-3xl rounded-2xl transition btn-bounce">&lt; (Μικρότερο)</button>
+            <button onclick="pickSymbol('>')" class="py-5 bg-slate-100 hover:bg-emerald-100 border-2 border-slate-300 font-black text-3xl rounded-2xl transition btn-bounce">&gt; (Μεγαλύτερο)</button>
+          </div>
+        </div>
+      `;
+      window.pickSymbol = function(s) {
+        if (s === '<') {
+          showFeedback(true, "Μπράβο! Το σύμβολο < σημαίνει 'μικρότερο από'!");
+          earnStar(4, 3);
+        } else {
+          soundWrong();
+          showFeedback(false, "Το σύμβολο > σημαίνει 'μεγαλύτερο από'. Δοκίμασε το άλλο!");
+        }
+      };
+    };
+
+    /* --- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 5: Ονόματα Μεταβλητών (Χωρίς Κενά) --- */
+    function makeVarNameTask(area, q, options, correctIdx, why) {
+      area.innerHTML = `
+        <div class="text-center max-w-md w-full">
+          <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-4">${q}</h3>
+          <div class="space-y-3">
+            ${options.map((opt, i) => `
+              <button onclick="pickVar(${i})" class="w-full py-3.5 px-4 bg-slate-50 hover:bg-blue-50 border-2 border-slate-200 hover:border-blue-400 rounded-2xl font-mono text-sm sm:text-base font-black text-slate-800 transition btn-bounce">
+                ${opt}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+      window.pickVar = function(idx) {
+        if (idx === correctIdx) {
+          showFeedback(true, `Μπράβο! ${why}`);
+          earnStar(curAct, curSub);
+        } else {
+          soundWrong();
+          showFeedback(false, "Προσοχή! Στον προγραμματισμό απαγορεύεται το κενό διάστημα ανάμεσα στις λέξεις!");
+        }
+      };
+    }
+
+    handlers['5_1'] = (a) => makeVarNameTask(a, "Ποιο όνομα είναι ΣΩΣΤΟ για την τιμή ενός προϊόντος;", [
+      "τιμή προϊόντος",
+      "τιμή_προϊόντος",
+      "τιμή - προϊόντος"
+    ], 1, "Το 'τιμή_προϊόντος' χρησιμοποιεί κάτω παύλα (_) αντί για κενό!");
+
+    handlers['5_2'] = (a) => makeVarNameTask(a, "Ποιο όνομα είναι γραμμένο σε στυλ 'καμήλας' (camelCase);", [
+      "ακτίνα_κύκλου",
+      "ακτίνα κύκλου",
+      "ακτίναΚύκλου"
+    ], 2, "Στο camelCase η δεύτερη λέξη ξεκινά με κεφαλαίο γράμμα (ακτίναΚύκλου) χωρίς κενό!");
+
+    handlers['5_3'] = (a) => makeVarNameTask(a, "Γιατί είναι ΛΑΘΟΣ το όνομα: «βαθμός μαθητή»;", [
+      "Επειδή έχει κενό ανάμεσα στις λέξεις",
+      "Επειδή είναι στα ελληνικά",
+      "Επειδή έχει πάρα πολλά γράμματα"
+    ], 0, "Σωστά! Οι υπολογιστές μπερδεύονται όταν υπάρχει κενό στο όνομα μιας μεταβλητής!");
+
+    /* --- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 6: Είσοδος - Επεξεργασία - Έξοδος --- */
+    function makePipeTask(area, title, emoji, correctType) {
+      area.innerHTML = `
+        <div class="text-center max-w-md w-full">
+          <div class="text-5xl mb-2">${emoji}</div>
+          <h3 class="text-xl font-black text-slate-800 mb-2">${title}</h3>
+          <p class="text-sm text-slate-500 mb-5">Σε ποιο στάδιο ανήκει;</p>
+          <div class="grid grid-cols-3 gap-3">
+            <button onclick="pickPipe('in')" class="py-4 bg-sky-100 hover:bg-sky-200 border-2 border-sky-300 text-sky-900 font-black rounded-2xl transition btn-bounce">
+              📥 Είσοδος
+            </button>
+            <button onclick="pickPipe('proc')" class="py-4 bg-purple-100 hover:bg-purple-200 border-2 border-purple-300 text-purple-900 font-black rounded-2xl transition btn-bounce">
+              ⚙️ Υπολογισμός
+            </button>
+            <button onclick="pickPipe('out')" class="py-4 bg-emerald-100 hover:bg-emerald-200 border-2 border-emerald-300 text-emerald-900 font-black rounded-2xl transition btn-bounce">
+              📤 Έξοδος
+            </button>
+          </div>
+        </div>
+      `;
+      window.pickPipe = function(type) {
+        if (type === correctType) {
+          showFeedback(true, "Σωστά! Το αναγνώρισες αμέσως!");
+          earnStar(curAct, curSub);
+        } else {
+          soundWrong();
+          showFeedback(false, "Σκέψου: Δίνουμε πληροφορία στον υπολογιστή, κάνει πράξη ή μας δείχνει το αποτέλεσμα;");
+        }
+      };
+    }
+
+    handlers['6_1'] = (a) => makePipeTask(a, "Πληκτρολόγιο (ή εντολή «Διάβασε»)", "⌨️", "in");
+    handlers['6_2'] = (a) => makePipeTask(a, "Η πράξη: 2 * 3,14 * ακτίνα", "🧮", "proc");
+    handlers['6_3'] = (a) => makePipeTask(a, "Οθόνη (ή εντολή «Γράψε»)", "🖥️", "out");
+
+    /* --- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 7: Ο Μέσος Όρος (Δίκαιο Μοίρασμα) --- */
+    handlers['7_1'] = function(area) {
+      area.innerHTML = `
+        <div class="text-center max-w-md">
+          <div class="text-4xl mb-2">⚖️</div>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">
+            Δύο φίλοι έγραψαν βαθμούς 8 και 10. Ποιο είναι το άθροισμά τους;
+          </h3>
+          <div class="grid grid-cols-3 gap-3 mb-4">
+            <button onclick="pick7_1(16)" class="py-3 bg-slate-100 hover:bg-blue-100 font-black text-xl rounded-2xl border-2 border-slate-200 transition btn-bounce">16</button>
+            <button onclick="pick7_1(18)" class="py-3 bg-slate-100 hover:bg-blue-100 font-black text-xl rounded-2xl border-2 border-slate-200 transition btn-bounce">18</button>
+            <button onclick="pick7_1(20)" class="py-3 bg-slate-100 hover:bg-blue-100 font-black text-xl rounded-2xl border-2 border-slate-200 transition btn-bounce">20</button>
+          </div>
+        </div>
+      `;
+      window.pick7_1 = function(val) {
+        if (val === 18) {
+          showFeedback(true, "Σωστά! 8 + 10 = 18! Αυτό είναι το πρώτο βήμα (το άθροισμα)!");
+          earnStar(7, 1);
+        } else {
+          soundWrong();
+          showFeedback(false, "Πρόσθεσε 8 συν 10!");
+        }
+      };
+    };
+
+    handlers['7_2'] = function(area) {
+      area.innerHTML = `
+        <div class="text-center max-w-md">
+          <div class="text-4xl mb-2">🍕</div>
+          <h3 class="text-lg font-bold text-slate-800 mb-3">
+            Το άθροισμα είναι 18 και οι μαθητές είναι 2. Ποιος είναι ο Μέσος Όρος; (18 δια 2)
+          </h3>
+          <div class="grid grid-cols-3 gap-3 mb-4">
+            <button onclick="pick7_2(8)" class="py-3 bg-slate-100 hover:bg-blue-100 font-black text-2xl rounded-2xl border-2 border-slate-200 transition btn-bounce">8</button>
+            <button onclick="pick7_2(9)" class="py-3 bg-slate-100 hover:bg-blue-100 font-black text-2xl rounded-2xl border-2 border-slate-200 transition btn-bounce">9</button>
+            <button onclick="pick7_2(10)" class="py-3 bg-slate-100 hover:bg-blue-100 font-black text-2xl rounded-2xl border-2 border-slate-200 transition btn-bounce">10</button>
+          </div>
+        </div>
+      `;
+      window.pick7_2 = function(val) {
+        if (val === 9) {
+          showFeedback(true, "Μπράβο! 18 / 2 = 9! Ο μέσος όρος είναι 9!");
+          earnStar(7, 2);
+        } else {
+          soundWrong();
+          showFeedback(false, "Διαίρεσε το 18 στα 2!");
+        }
+      };
+    };
+
+    handlers['7_3'] = function(area) {
+      area.innerHTML = `
+        <div class="text-center max-w-md">
+          <div class="text-4xl mb-2">📐</div>
+          <h3 class="text-lg font-bold text-slate-800 mb-4">
+            Ποιος είναι ο απλός τύπος του Μέσου Όρου;
+          </h3>
+          <div class="space-y-3">
+            <button onclick="pick7_3(1)" class="w-full p-3.5 bg-slate-50 hover:bg-blue-50 border-2 border-slate-200 hover:border-blue-400 font-bold text-sm rounded-2xl transition btn-bounce">
+              Μέσος Όρος = Άθροισμα / Πλήθος
+            </button>
+            <button onclick="pick7_3(2)" class="w-full p-3.5 bg-slate-50 hover:bg-blue-50 border-2 border-slate-200 hover:border-blue-400 font-bold text-sm rounded-2xl transition btn-bounce">
+              Μέσος Όρος = Άθροισμα * Πλήθος
+            </button>
+          </div>
+        </div>
+      `;
+      window.pick7_3 = function(choice) {
+        if (choice === 1) {
+          showFeedback(true, "Τέλεια! Διαιρούμε το συνολικό άθροισμα με το πόσοι είναι όλοι μαζί!");
+          earnStar(7, 3);
+        } else {
+          soundWrong();
+          showFeedback(false, "Στον μέσο όρο κάνουμε διαίρεση ( / ) και όχι πολλαπλασιασμό!");
+        }
+      };
+    };
+
+    /* --- ΔΡΑΣΤΗΡΙΟΤΗΤΑ 8: Το Τετράγωνο (Περίμετρος = 4 x πλευρά) --- */
+    function makeSquareTask(area, side, correctPerim) {
+      area.innerHTML = `
+        <div class="text-center max-w-md">
+          <div class="w-24 h-24 bg-amber-200 border-4 border-amber-500 rounded-2xl mx-auto flex items-center justify-center font-black text-amber-900 text-lg mb-4 shadow">
+            πλευρά = ${side} εκ.
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-3">
+            Πόση είναι η περίμετρος; (4 πλευρές × ${side} εκ.)
+          </h3>
+          <div class="grid grid-cols-3 gap-3">
+            <button onclick="pickSquare(${correctPerim - 4})" class="py-3.5 bg-slate-100 hover:bg-blue-100 font-black text-xl rounded-2xl border-2 border-slate-200 transition btn-bounce">${correctPerim - 4} εκ.</button>
+            <button onclick="pickSquare(${correctPerim})" class="py-3.5 bg-slate-100 hover:bg-blue-100 font-black text-xl rounded-2xl border-2 border-slate-200 transition btn-bounce">${correctPerim} εκ.</button>
+            <button onclick="pickSquare(${correctPerim + 4})" class="py-3.5 bg-slate-100 hover:bg-blue-100 font-black text-xl rounded-2xl border-2 border-slate-200 transition btn-bounce">${correctPerim + 4} εκ.</button>
+          </div>
+        </div>
+      `;
+      window.pickSquare = function(val) {
+        if (val === correctPerim) {
+          showFeedback(true, `Μπράβο! 4 επί ${side} = ${correctPerim} εκατοστά!`);
+          earnStar(curAct, curSub);
+        } else {
+          soundWrong();
+          showFeedback(false, `Κάνε τον πολλαπλασιασμό: 4 φορές το ${side}!`);
+        }
+      };
+    }
+
+    handlers['8_1'] = (a) => makeSquareTask(a, 3, 12);
+    handlers['8_2'] = (a) => makeSquareTask(a, 5, 20);
+    handlers['8_3'] = function(area) {
+      area.innerHTML = `
+        <div class="text-center max-w-md">
+          <div class="text-5xl mb-3">🐱</div>
+          <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-4">
+            Στο Scratch, ποια εντολή λέει το αποτέλεσμα δυνατά στον χρήστη;
+          </h3>
+          <div class="space-y-3">
+            <button onclick="pick8_3(1)" class="w-full py-3.5 px-4 bg-purple-600 hover:bg-purple-500 text-white font-mono text-sm font-bold rounded-2xl shadow transition btn-bounce">
+              πες [Η περίμετρος είναι...]
+            </button>
+            <button onclick="pick8_3(2)" class="w-full py-3.5 px-4 bg-sky-500 hover:bg-sky-400 text-white font-mono text-sm font-bold rounded-2xl shadow transition btn-bounce">
+              ρώτησε [Ποια είναι η πλευρά;] και περίμενε
+            </button>
+          </div>
+        </div>
+      `;
+      window.pick8_3 = function(choice) {
+        if (choice === 1) {
+          showFeedback(true, "Υπέροχα! Η εντολή «πες» είναι η έξοδος που δείχνει το αποτέλεσμα!");
+          earnStar(8, 3);
+        } else {
+          soundWrong();
+          showFeedback(false, "Η εντολή 'ρώτησε' είναι είσοδος. Εμείς θέλουμε την έξοδο!");
+        }
+      };
+    };
+
+    // --- Onload ---
+    window.onload = function() {
+      renderNav();
+      renderView();
+      updateScoreUI();
+    };
   </script>
 </body>
 </html>
