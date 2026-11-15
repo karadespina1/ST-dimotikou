@@ -118,6 +118,34 @@
             color: #777;
         }
 
+        @media (max-width: 1100px), (orientation: portrait) {
+            body { font-size: 1.125rem; line-height: 1.45; }
+            header { padding: 1.5rem .75rem; }
+            header h1 { font-size: 2rem; }
+            header p { font-size: 1.25rem; margin: .5rem 0 0; }
+
+            .container {
+                width: 100%;
+                max-width: none;
+                margin: 1.25rem auto;
+                padding: 0 .625rem;
+            }
+
+            .section-title { font-size: 1.625rem; margin: 0 0 1rem; }
+            .lessons { grid-template-columns: minmax(0, 1fr); gap: .875rem; }
+            .lesson { padding: 1rem .75rem; border-radius: 1rem; overflow-wrap: anywhere; }
+            .lesson h2 { font-size: 1.5rem; margin: 0 0 .5rem; }
+            .lesson-icon { font-size: 2rem; margin-bottom: .375rem; }
+            .activities { margin-top: .625rem; }
+            .activity { padding: .75rem; font-size: 1.25rem; border-radius: .75rem; }
+            .coming { font-size: 1.125rem; }
+            footer { margin-top: 1.25rem; padding: 1rem .75rem; }
+        }
+
+        @media (min-width: 671px) and (orientation: portrait) {
+            html { font-size: clamp(1rem, 4.4vw, 3rem); }
+        }
+
     </style>
 
 </head>
