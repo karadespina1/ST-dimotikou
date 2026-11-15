@@ -36,7 +36,37 @@ details[open]>summary::after { content:"−" / ""; }
 footer { color:var(--muted); padding:.7rem 0 1.6rem; font-size:.9rem; }
 :focus-visible { outline:3px solid #6839c3; outline-offset:-3px; }
 [hidden] { display:none !important; }
-@media(max-width:670px) { .grid { grid-template-columns:1fr; } }
+@media (max-width: 670px) {
+  body { font-size: 1.125rem; }
+  main, .bar, footer { width: calc(100% - 1.5rem); }
+  .bar { line-height: 1.4; }
+
+  .tools {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .tools input { grid-column: 1 / -1; }
+  .tools input, .tools button {
+    min-height: 3rem;
+    font-size: 1rem;
+  }
+  .tools button { padding-inline: .4rem; }
+
+  summary {
+    min-height: 3rem;
+    padding: .75rem;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+  summary::after { flex-shrink: 0; }
+  .unit-body { padding: .5rem; }
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 0 .5rem .5rem;
+  }
+  .card { min-height: 3rem; }
+  .card small, footer { font-size: 1rem; }
+}
 </style>
 </head>
 <body>
